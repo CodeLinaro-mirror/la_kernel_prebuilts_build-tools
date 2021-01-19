@@ -23,12 +23,16 @@ if [ -n ${build_soong} ]; then
 }
 EOF
     SOONG_BINARIES=(
+        abidiff
+        abidw
         blk_alloc_to_base_fs
         build_image
+        build_super_image
         depmod
         dtc
         e2fsck
         e2fsdroid
+        lpmake
         lz4
         mkdtboimg.py
         mkuserimg_mke2fs
@@ -39,15 +43,41 @@ EOF
         ufdt_apply_overlay
     )
 
+    SOONG_LIBRARIES=(
+        libcrypto-host.so
+        libelf.so
+    )
+
     binaries="${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
+    libraries="${SOONG_LIBRARIES[@]/#/${SOONG_HOST_OUT}/lib64/}"
 
     # Build everything
-    build/soong/soong_ui.bash --make-mode --skip-make ${binaries}
+    build/soong/soong_ui.bash --make-mode --skip-make ${binaries} ${libraries}
 
     # Stage binaries
     mkdir -p ${SOONG_OUT}/dist/bin
     cp ${binaries} ${SOONG_OUT}/dist/bin/
     cp -R ${SOONG_HOST_OUT}/lib* ${SOONG_OUT}/dist/
+
+    # Stage include files
+    include_dir=${SOONG_OUT}/dist/include
+    mkdir -p ${include_dir}/openssl/
+    cp -a ${TOP}/external/boringssl/include/openssl/* ${include_dir}/openssl/
+
+    # The elfutils header locations are messy; just make them match
+    # common Linux distributions, as this is what Linux expects
+    mkdir -p ${include_dir}/elfutils
+    cp -a ${TOP}/external/elfutils/libelf/gelf.h ${include_dir}/
+    cp -a ${TOP}/external/elfutils/libelf/libelf.h ${include_dir}/
+    cp -a ${TOP}/external/elfutils/libelf/nlist.h ${include_dir}/
+    cp -a ${TOP}/external/elfutils/libelf/elf-knowledge.h ${include_dir}/elfutils/
+    cp -a ${TOP}/external/elfutils/version.h ${include_dir}/elfutils/
+
+    # Patch dist dir
+    (
+      cd ${SOONG_OUT}/dist/
+      ln -sf libcrypto-host.so lib64/libcrypto.so
+    )
 
     # Package prebuilts
     (
