@@ -25,6 +25,7 @@ EOF
     SOONG_BINARIES=(
         abidiff
         abidw
+        avbtool
         blk_alloc_to_base_fs
         build_image
         build_super_image
@@ -51,8 +52,14 @@ EOF
     binaries="${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
     libraries="${SOONG_LIBRARIES[@]/#/${SOONG_HOST_OUT}/lib64/}"
 
+    # TODO: When we have a better method of extracting zips from Soong, use that.
+    py3_stdlib_zip="${SOONG_OUT}/.intermediates/external/python/cpython3/Lib/py3-stdlib-zip/gen/py3-stdlib.zip"
+
     # Build everything
-    build/soong/soong_ui.bash --make-mode --skip-make ${binaries} ${libraries}
+    build/soong/soong_ui.bash --make-mode --skip-make \
+        ${binaries} \
+        ${libraries} \
+        ${py3_stdlib_zip}
 
     # Stage binaries
     mkdir -p ${SOONG_OUT}/dist/bin
@@ -72,6 +79,14 @@ EOF
     cp -a ${TOP}/external/elfutils/libelf/nlist.h ${include_dir}/
     cp -a ${TOP}/external/elfutils/libelf/elf-knowledge.h ${include_dir}/elfutils/
     cp -a ${TOP}/external/elfutils/version.h ${include_dir}/elfutils/
+
+    # Stage share files
+    share_dir=${SOONG_OUT}/dist/share
+    mkdir -p ${share_dir}
+
+    # Copy over the testkey for signing
+    mkdir -p ${share_dir}/avb
+    cp -a ${TOP}/external/avb/test/data/testkey_rsa2048.pem ${share_dir}/avb/
 
     # Patch dist dir
     (
