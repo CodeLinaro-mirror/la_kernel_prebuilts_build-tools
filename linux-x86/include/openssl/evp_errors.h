@@ -54,28 +54,46 @@
  * copied and put under another distribution licence
  * [including the GNU Public Licence.] */
 
-#ifndef OPENSSL_HEADER_LHASH_H
-#define OPENSSL_HEADER_LHASH_H
+#ifndef OPENSSL_HEADER_EVP_ERRORS_H
+#define OPENSSL_HEADER_EVP_ERRORS_H
 
-#include <openssl/base.h>
+#define EVP_R_BUFFER_TOO_SMALL 100
+#define EVP_R_COMMAND_NOT_SUPPORTED 101
+#define EVP_R_DECODE_ERROR 102
+#define EVP_R_DIFFERENT_KEY_TYPES 103
+#define EVP_R_DIFFERENT_PARAMETERS 104
+#define EVP_R_ENCODE_ERROR 105
+#define EVP_R_EXPECTING_AN_EC_KEY_KEY 106
+#define EVP_R_EXPECTING_AN_RSA_KEY 107
+#define EVP_R_EXPECTING_A_DSA_KEY 108
+#define EVP_R_ILLEGAL_OR_UNSUPPORTED_PADDING_MODE 109
+#define EVP_R_INVALID_DIGEST_LENGTH 110
+#define EVP_R_INVALID_DIGEST_TYPE 111
+#define EVP_R_INVALID_KEYBITS 112
+#define EVP_R_INVALID_MGF1_MD 113
+#define EVP_R_INVALID_OPERATION 114
+#define EVP_R_INVALID_PADDING_MODE 115
+#define EVP_R_INVALID_PSS_SALTLEN 116
+#define EVP_R_KEYS_NOT_SET 117
+#define EVP_R_MISSING_PARAMETERS 118
+#define EVP_R_NO_DEFAULT_DIGEST 119
+#define EVP_R_NO_KEY_SET 120
+#define EVP_R_NO_MDC2_SUPPORT 121
+#define EVP_R_NO_NID_FOR_CURVE 122
+#define EVP_R_NO_OPERATION_SET 123
+#define EVP_R_NO_PARAMETERS_SET 124
+#define EVP_R_OPERATION_NOT_SUPPORTED_FOR_THIS_KEYTYPE 125
+#define EVP_R_OPERATON_NOT_INITIALIZED 126
+#define EVP_R_UNKNOWN_PUBLIC_KEY_TYPE 127
+#define EVP_R_UNSUPPORTED_ALGORITHM 128
+#define EVP_R_UNSUPPORTED_PUBLIC_KEY_TYPE 129
+#define EVP_R_NOT_A_PRIVATE_KEY 130
+#define EVP_R_INVALID_SIGNATURE 131
+#define EVP_R_MEMORY_LIMIT_EXCEEDED 132
+#define EVP_R_INVALID_PARAMETERS 133
+#define EVP_R_INVALID_PEER_KEY 134
+#define EVP_R_NOT_XOF_OR_INVALID_LENGTH 135
+#define EVP_R_EMPTY_PSK 136
+#define EVP_R_INVALID_BUFFER_SIZE 137
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
-
-// lhash is an internal library and not exported for use outside BoringSSL. This
-// header is provided for compatibility with code that expects OpenSSL.
-
-
-// These two macros are exported for compatibility with existing callers of
-// |X509V3_EXT_conf_nid|. Do not use these symbols outside BoringSSL.
-#define LHASH_OF(type) struct lhash_st_##type
-#define DECLARE_LHASH_OF(type) LHASH_OF(type);
-
-
-#if defined(__cplusplus)
-}  // extern C
-#endif
-
-#endif  // OPENSSL_HEADER_LHASH_H
+#endif  // OPENSSL_HEADER_EVP_ERRORS_H
