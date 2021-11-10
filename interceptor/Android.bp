@@ -1,0 +1,14 @@
+cc_library_host_shared {
+    name: "libinterceptor",
+    srcs: ["interceptor.cc"],
+    static_libs: [
+        "libc++fs",
+        "libbase",
+    ],
+}
+
+sh_binary_host {
+    name: "interceptor",
+    src: "interceptor",
+}
+
