@@ -43,7 +43,7 @@ EOF
         lpmake
         lz4
         mkbootfs
-        mkdtboimg.py
+        mkdtboimg
         mkdtimg
         mke2fs
         mkfs.erofs
