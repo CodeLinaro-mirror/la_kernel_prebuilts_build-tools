@@ -7,9 +7,9 @@
 
   <superproject name="kernel/superproject" remote="aosp" revision="build-tools" />
 
-  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="db221a70d96596a831ca777fc1b13bac6c774e08" />
+  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="e3fe9a206cc3df27dc5693bda4c1ae413658d830" />
 
-  <project path="build/bazel" name="platform/build/bazel" groups="pdk" revision="e293bf835d933f14bca6a921d7229e2a7054dcd0">
+  <project path="build/bazel" name="platform/build/bazel" groups="pdk" revision="4dcacbb47e6bd7244b1fc25d8edc240ca61b0b80">
     <linkfile dest="WORKSPACE" src="bazel.WORKSPACE" />
 
     <linkfile dest="BUILD" src="bazel.BUILD" />
@@ -19,11 +19,11 @@
 
   <project path="build/blueprint" name="platform/build/blueprint" revision="a405cf7f6ab753bd3cf17a978a44ce11fa62ad73" />
 
-  <project path="build/make" name="platform/build" groups="pdk" revision="b80d9d6c33e030f099481715b2ee02181cb2bcde">
+  <project path="build/make" name="platform/build" groups="pdk" revision="bed1ff2372acd97599fc42a5f3bb13b0de52d103">
     <linkfile dest="build/tools" src="tools" />
 </project>
 
-  <project path="build/soong" name="platform/build/soong" revision="f02c7d882e9fb546864902004da38139bc1c6c1f">
+  <project path="build/soong" name="platform/build/soong" revision="57f70c03cd37be6074d2dac954a9581715cae763">
     <linkfile dest="Android.bp" src="root.bp" />
 
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
@@ -47,7 +47,7 @@
 
   <project path="prebuilts/jdk/jdk11" name="platform/prebuilts/jdk/jdk11" groups="pdk" clone-depth="1" revision="bacaa8f7ac8f1b3f1247a40dd2f8d2b6ddda1f4d" />
 
-  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="4b6ace7aec191e2e499b01aca579fb8cac57d59b" />
+  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="2cf5cc30b6160cb5f6bf30cc9ef72365b699fdea" />
 
   <project path="prebuilts/build-tools" name="platform/prebuilts/build-tools" clone-depth="1" revision="a93fba8470881ed1a247d49b4145122e4092509a" />
 
@@ -107,7 +107,7 @@
 
   <project path="external/starlark-go" name="platform/external/starlark-go" revision="312f9e324bdf0bde540b9a64d05ce0db85180478" />
 
-  <project path="external/stg" name="platform/external/stg" revision="496db39a2b24ed521158342bf093cce0149d9b60" />
+  <project path="external/stg" name="platform/external/stg" revision="0a04c9b5865bdc8d6d51fb1fe2e17caf47d02e85" />
 
   <project path="external/swig" name="platform/external/swig" revision="0ffab894f917fcbbd031eaab870fbabaefe5daaa" />
 
@@ -115,7 +115,7 @@
 
   <project path="prebuilts/clang-tools" name="platform/prebuilts/clang-tools" clone-depth="1" revision="84c009016732cb57fd5c1343285c438b6e2c8002" />
 
-  <project path="system/core" name="platform/system/core" revision="aaa402ae6a9c796350e746b581c889b88632e9ba" />
+  <project path="system/core" name="platform/system/core" revision="ed20f1ca8f4956ad2cc53a2e48531186a62655d2" />
 
   <project path="system/logging" name="platform/system/logging" revision="ae1738780eb2c1deaa72768ab232ee7ed9f37cff" />
 
@@ -123,7 +123,7 @@
 
   <project path="system/libbase" name="platform/system/libbase" revision="f96a42544b63f4826d123da79c84e62be46d66bb" />
 
-  <project path="system/security" name="platform/system/security" revision="f5a15eeec4c074eab40761ef00616f8197b4a80f" />
+  <project path="system/security" name="platform/system/security" revision="ac300b50f37905cf66add46635582ea1517a9300" />
 
   <project path="system/tools/aidl" name="platform/system/tools/aidl" revision="1f46065b2aeb639c8668179da4e774f896ee6f00" />
 
