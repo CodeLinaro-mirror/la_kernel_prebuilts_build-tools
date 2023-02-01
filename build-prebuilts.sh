@@ -51,6 +51,7 @@ EOF
         pahole
         simg2img
         soong_zip
+        stg
         stgdiff
         stginfo
         swig
