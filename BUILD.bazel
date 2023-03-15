@@ -29,6 +29,7 @@ import_libraries(
 exports_files([
     "linux-x86/bin/avbtool",
     "linux-x86/bin/certify_bootimg",
+    "linux-x86/bin/mkdtboimg",
     "linux-x86/bin/stg",
     "linux-x86/bin/stgdiff",
 ])
