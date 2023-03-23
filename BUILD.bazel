@@ -32,4 +32,5 @@ exports_files([
     "linux-x86/bin/mkdtboimg",
     "linux-x86/bin/stg",
     "linux-x86/bin/stgdiff",
+    "linux-x86/share/avb/testkey_rsa2048.pem",
 ])
