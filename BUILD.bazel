@@ -29,7 +29,9 @@ import_libraries(
 exports_files([
     "linux-x86/bin/avbtool",
     "linux-x86/bin/certify_bootimg",
+    "linux-x86/bin/img2simg",
     "linux-x86/bin/mkdtboimg",
+    "linux-x86/bin/mkuserimg_mke2fs",
     "linux-x86/bin/stg",
     "linux-x86/bin/stgdiff",
     "linux-x86/share/avb/testkey_rsa2048.pem",
