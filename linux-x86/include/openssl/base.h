@@ -193,7 +193,7 @@ extern "C" {
 // A consumer may use this symbol in the preprocessor to temporarily build
 // against multiple revisions of BoringSSL at the same time. It is not
 // recommended to do so for longer than is necessary.
-#define BORINGSSL_API_VERSION 18
+#define BORINGSSL_API_VERSION 19
 
 #if defined(BORINGSSL_SHARED_LIBRARY)
 
@@ -220,6 +220,33 @@ extern "C" {
 #define OPENSSL_EXPORT
 
 #endif  // defined(BORINGSSL_SHARED_LIBRARY)
+
+#if defined(_MSC_VER)
+
+// OPENSSL_DEPRECATED is used to mark a function as deprecated. Use
+// of any functions so marked in caller code will produce a warning.
+// OPENSSL_BEGIN_ALLOW_DEPRECATED and OPENSSL_END_ALLOW_DEPRECATED
+// can be used to suppress the warning in regions of caller code.
+#define OPENSSL_DEPRECATED __declspec(deprecated)
+#define OPENSSL_BEGIN_ALLOW_DEPRECATED \
+  __pragma(warning(push)) __pragma(warning(disable : 4996))
+#define OPENSSL_END_ALLOW_DEPRECATED __pragma(warning(pop))
+
+#elif defined(__GNUC__) || defined(__clang__)
+
+#define OPENSSL_DEPRECATED __attribute__((__deprecated__))
+#define OPENSSL_BEGIN_ALLOW_DEPRECATED \
+  _Pragma("GCC diagnostic push")       \
+      _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
+#define OPENSSL_END_ALLOW_DEPRECATED _Pragma("GCC diagnostic pop")
+
+#else
+
+#define OPENSSL_DEPRECATED
+#define OPENSSL_BEGIN_ALLOW_DEPRECATED
+#define OPENSSL_END_ALLOW_DEPRECATED
+
+#endif
 
 
 #if defined(__GNUC__) || defined(__clang__)
