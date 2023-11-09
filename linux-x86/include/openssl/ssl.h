@@ -303,6 +303,7 @@ OPENSSL_EXPORT int SSL_get_rfd(const SSL *ssl);
 // socket |BIO|.
 OPENSSL_EXPORT int SSL_get_wfd(const SSL *ssl);
 
+#if !defined(OPENSSL_NO_SOCK)
 // SSL_set_fd configures |ssl| to read from and write to |fd|. It returns one
 // on success and zero on allocation error. The caller retains ownership of
 // |fd|.
@@ -321,6 +322,7 @@ OPENSSL_EXPORT int SSL_set_rfd(SSL *ssl, int fd);
 //
 // On Windows, |fd| is cast to a |SOCKET| and used with Winsock APIs.
 OPENSSL_EXPORT int SSL_set_wfd(SSL *ssl, int fd);
+#endif  // !OPENSSL_NO_SOCK
 
 // SSL_do_handshake continues the current handshake. If there is none or the
 // handshake has completed or False Started, it returns one. Otherwise, it
@@ -3034,6 +3036,10 @@ OPENSSL_EXPORT void SSL_get0_peer_application_settings(const SSL *ssl,
 // connection and zero otherwise.
 OPENSSL_EXPORT int SSL_has_application_settings(const SSL *ssl);
 
+// SSL_set_alps_use_new_codepoint configures whether to use the new ALPS
+// codepoint. By default, the old codepoint is used.
+OPENSSL_EXPORT void SSL_set_alps_use_new_codepoint(SSL *ssl, int use_new);
+
 
 // Certificate compression.
 //
@@ -4054,12 +4060,15 @@ OPENSSL_EXPORT int SSL_CTX_set_record_protocol_version(SSL_CTX *ctx,
 
 // Handshake hints.
 //
-// *** EXPERIMENTAL — DO NOT USE WITHOUT CHECKING ***
+// WARNING: Contact the BoringSSL team before using this API. While this
+// mechanism was designed to gracefully recover from version skew and
+// configuration mismatch, splitting a single TLS server into multiple services
+// is complex.
 //
 // Some server deployments make asynchronous RPC calls in both ClientHello
 // dispatch and private key operations. In TLS handshakes where the private key
 // operation occurs in the first round-trip, this results in two consecutive RPC
-// round-trips. Handshake hints allow the RPC service to predicte a signature.
+// round-trips. Handshake hints allow the RPC service to predict a signature.
 // If correctly predicted, this can skip the second RPC call.
 //
 // First, the server installs a certificate selection callback (see
@@ -4085,10 +4094,6 @@ OPENSSL_EXPORT int SSL_CTX_set_record_protocol_version(SSL_CTX *ctx,
 // the private key in later round-trips, such as TLS 1.3 HelloRetryRequest. In
 // those cases, BoringSSL will not predict a signature as there is no benefit.
 // Callers must allow for handshakes to complete without a predicted signature.
-//
-// Handshake hints are supported for TLS 1.3 and partially supported for
-// TLS 1.2. TLS 1.2 resumption handshakes are not yet fully hinted. They will
-// still work, but may not be as efficient.
 
 // SSL_serialize_capabilities writes an opaque byte string to |out| describing
 // some of |ssl|'s capabilities. It returns one on success and zero on error.
@@ -5530,9 +5535,17 @@ BORINGSSL_MAKE_DELETER(SSL_SESSION, SSL_SESSION_free)
 BORINGSSL_MAKE_UP_REF(SSL_SESSION, SSL_SESSION_up_ref)
 
 
-// *** EXPERIMENTAL — DO NOT USE WITHOUT CHECKING ***
+// *** DEPRECATED EXPERIMENT — DO NOT USE ***
 //
 // Split handshakes.
+//
+// WARNING: This mechanism is deprecated and should not be used. It is very
+// fragile and difficult to use correctly. The relationship between
+// configuration options across the two halves is ill-defined and not
+// self-consistent. Additionally, version skew across the two halves risks
+// unusual behavior and connection failure. New development should use the
+// handshake hints API. Existing deployments should migrate to handshake hints
+// to reduce the risk of service outages.
 //
 // Split handshakes allows the handshake part of a TLS connection to be
 // performed in a different process (or on a different machine) than the data
@@ -5827,6 +5840,7 @@ BSSL_NAMESPACE_END
 #define SSL_R_ECH_REJECTED 319
 #define SSL_R_INVALID_OUTER_EXTENSION 320
 #define SSL_R_INCONSISTENT_ECH_NEGOTIATION 321
+#define SSL_R_INVALID_ALPS_CODEPOINT 322
 #define SSL_R_SSLV3_ALERT_CLOSE_NOTIFY 1000
 #define SSL_R_SSLV3_ALERT_UNEXPECTED_MESSAGE 1010
 #define SSL_R_SSLV3_ALERT_BAD_RECORD_MAC 1020
