@@ -50,7 +50,6 @@ EOF
         soong_zip
         stg
         stgdiff
-        stginfo
         swig
         tune2fs
         ufdt_apply_overlay
