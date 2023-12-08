@@ -19,32 +19,32 @@ set -e
 
 UPDATE_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=$1
-VERSION_MAJOR=$(echo $VERSION | cut -d- -f1)
+VERSION_MAJOR=$(echo "${VERSION}" | cut -d- -f1)
 
-STAGE=`mktemp -d`
-pushd $STAGE > /dev/null
+STAGE=$(mktemp -d)
+pushd "${STAGE}" > /dev/null
 
 for arch in linux-x86_64; do
-  mkdir $arch
-  pushd $arch > /dev/null
+  mkdir ${arch}
+  pushd ${arch} > /dev/null
 
   BAZEL_BINARY=bazel_nojdk-${VERSION}-${arch}
   URL=https://releases.bazel.build/${VERSION_MAJOR}/rolling/${VERSION}/${BAZEL_BINARY}
 
-  wget -nv ${URL}
-  wget -nv ${URL}.sha256
-  wget -nv ${URL}.sig
+  wget -nv "${URL}"
+  wget -nv "${URL}.sha256"
+  wget -nv "${URL}.sig"
 
-  sha256sum --check ${BAZEL_BINARY}.sha256
+  sha256sum --check "${BAZEL_BINARY}.sha256"
 
   # the public key is obtained from https://bazel.build/bazel-release.pub.gpg
-  gpg --dearmor --output bazel-release.pub.gpg $UPDATE_DIR/bazel-release.pub.gpg
-  gpg --trust-model=always --no-default-keyring --keyring=$(pwd)/bazel-release.pub.gpg --verify ${BAZEL_BINARY}.sig
+  gpg --dearmor --output bazel-release.pub.gpg "${UPDATE_DIR}/bazel-release.pub.gpg"
+  gpg --trust-model=always --no-default-keyring --keyring="$(pwd)/bazel-release.pub.gpg" --verify "${BAZEL_BINARY}.sig"
 
-  rm *.{gpg,sig,sha256}
+  rm ./*.{gpg,sig,sha256}
 
-  ln -s ${BAZEL_BINARY} bazel
-  chmod +x ${BAZEL_BINARY}
+  ln -s "${BAZEL_BINARY}" bazel
+  chmod +x "${BAZEL_BINARY}"
   ./bazel license > LICENSE
 
   popd > /dev/null
@@ -52,6 +52,6 @@ done
 
 popd > /dev/null
 
-rm -rf $UPDATE_DIR/bazel
-mv $STAGE $UPDATE_DIR/bazel
+rm -rf "${UPDATE_DIR}/bazel"
+mv "${STAGE}" "${UPDATE_DIR}/bazel"
 
