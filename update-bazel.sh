@@ -29,7 +29,14 @@ for arch in linux-x86_64; do
   pushd ${arch} > /dev/null
 
   BAZEL_BINARY=bazel_nojdk-${VERSION}-${arch}
-  URL=https://releases.bazel.build/${VERSION_MAJOR}/rolling/${VERSION}/${BAZEL_BINARY}
+
+  # Rolling releases come directly from bazel.build. Everything else is hosted
+  # on Github
+  if [[ $VERSION == *"-pre.2"* ]]; then
+    URL=https://releases.bazel.build/${VERSION_MAJOR}/rolling/${VERSION}/${BAZEL_BINARY}
+  else
+    URL=https://github.com/bazelbuild/bazel/releases/download/${VERSION_MAJOR}/${BAZEL_BINARY}
+  fi
 
   wget -nv "${URL}"
   wget -nv "${URL}.sha256"
