@@ -28,7 +28,6 @@ EOF
         abitidy
         avbtool
         blk_alloc_to_base_fs
-        btfinfo
         build_image
         build_super_image
         certify_bootimg
@@ -44,7 +43,7 @@ EOF
         lpmake
         lz4
         mkbootfs
-        mkdtboimg.py
+        mkdtboimg
         mkdtimg
         mke2fs
         mkfs.erofs
@@ -52,7 +51,9 @@ EOF
         pahole
         simg2img
         soong_zip
+        stg
         stgdiff
+        stginfo
         swig
         tune2fs
         ufdt_apply_overlay
