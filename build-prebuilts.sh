@@ -23,9 +23,6 @@ if [ -n ${build_soong} ]; then
 }
 EOF
     SOONG_BINARIES=(
-        abidiff
-        abidw
-        abitidy
         avbtool
         blk_alloc_to_base_fs
         build_image
@@ -43,7 +40,7 @@ EOF
         lpmake
         lz4
         mkbootfs
-        mkdtboimg.py
+        mkdtboimg
         mkdtimg
         mke2fs
         mkfs.erofs
@@ -51,6 +48,7 @@ EOF
         pahole
         simg2img
         soong_zip
+        stg
         stgdiff
         stginfo
         swig
@@ -102,6 +100,10 @@ EOF
     # Copy over the testkey for signing
     mkdir -p ${share_dir}/avb
     cp -a ${TOP}/external/avb/test/data/testkey_rsa2048.pem ${share_dir}/avb/
+
+    # Copy over the swig library files
+    mkdir -p ${share_dir}/swig
+    cp -a ${TOP}/external/swig/Lib/* ${share_dir}/swig/
 
     # Patch dist dir
     (
