@@ -28,8 +28,15 @@ for arch in linux-x86_64; do
   mkdir ${arch}
   pushd ${arch} > /dev/null
 
-  BAZEL_BINARY=bazel_nojdk-${VERSION}-${arch}
-  URL=https://releases.bazel.build/${VERSION_MAJOR}/rolling/${VERSION}/${BAZEL_BINARY}
+  BAZEL_BINARY=bazel-${VERSION}-${arch}
+
+  # Rolling releases come directly from bazel.build. Everything else is hosted
+  # on Github
+  if [[ $VERSION == *"-pre.2"* ]]; then
+    URL=https://releases.bazel.build/${VERSION_MAJOR}/rolling/${VERSION}/${BAZEL_BINARY}
+  else
+    URL=https://github.com/bazelbuild/bazel/releases/download/${VERSION_MAJOR}/${BAZEL_BINARY}
+  fi
 
   wget -nv "${URL}"
   wget -nv "${URL}.sha256"
@@ -46,6 +53,9 @@ for arch in linux-x86_64; do
   ln -s "${BAZEL_BINARY}" bazel
   chmod +x "${BAZEL_BINARY}"
   ./bazel license > LICENSE
+
+  # clean up the generated license file as it contains local paths
+  sed 's#.*/embedded_tools/#embedded_tools/#' -i LICENSE
 
   popd > /dev/null
 done
