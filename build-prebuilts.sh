@@ -32,6 +32,7 @@ EOF
         dtc
         e2fsck
         e2fsdroid
+        external_updater
         fec
         fsck.erofs
         img2simg
