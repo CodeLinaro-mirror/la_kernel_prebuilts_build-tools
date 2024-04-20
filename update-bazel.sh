@@ -28,7 +28,7 @@ for arch in linux-x86_64; do
   mkdir ${arch}
   pushd ${arch} > /dev/null
 
-  BAZEL_BINARY=bazel_nojdk-${VERSION}-${arch}
+  BAZEL_BINARY=bazel-${VERSION}-${arch}
 
   # Rolling releases come directly from bazel.build. Everything else is hosted
   # on Github
@@ -53,6 +53,9 @@ for arch in linux-x86_64; do
   ln -s "${BAZEL_BINARY}" bazel
   chmod +x "${BAZEL_BINARY}"
   ./bazel license > LICENSE
+
+  # clean up the generated license file as it contains local paths
+  sed 's#.*/embedded_tools/#embedded_tools/#' -i LICENSE
 
   popd > /dev/null
 done
