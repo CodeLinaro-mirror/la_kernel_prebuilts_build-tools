@@ -1,4 +1,3 @@
-
 /* Remove global namespace pollution */
 #if !defined(SWIG_NO_R_NO_REMAP)
 # define R_NO_REMAP
@@ -16,19 +15,62 @@ extern "C" {
 #endif
 
 /* for raw pointer */
+#define SWIG_R_ConvertPtr(obj, pptr, type, flags)       SWIG_R_ConvertPtrAndOwn(obj, pptr, type, flags, 0)
 #define SWIG_ConvertPtr(obj, pptr, type, flags)         SWIG_R_ConvertPtr(obj, pptr, type, flags)
-#define SWIG_ConvertPtrAndOwn(obj,pptr,type,flags,own)  SWIG_R_ConvertPtr(obj, pptr, type, flags)
+#define SWIG_ConvertPtrAndOwn(obj,pptr,type,flags,own)  SWIG_R_ConvertPtrAndOwn(obj, pptr, type, flags, own)
 #define SWIG_NewPointerObj(ptr, type, flags)            SWIG_R_NewPointerObj(ptr, type, flags)
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdarg.h>
 
 #if R_VERSION >= R_Version(2,6,0)
 #define VMAXTYPE void *
 #else
 #define VMAXTYPE char *
 #endif
+
+/* Last error */
+static int SWIG_lasterror_code = 0;
+static char SWIG_lasterror_msg[1024];
+SWIGRUNTIME void SWIG_Error(int code, const char *format, ...) {
+  va_list arg;
+  SWIG_lasterror_code = code;
+  va_start(arg, format);
+  vsnprintf(SWIG_lasterror_msg, sizeof(SWIG_lasterror_msg), format, arg);
+  va_end(arg);
+}
+
+SWIGRUNTIME const char *SWIG_ErrorType(int code) {
+  switch (code) {
+  case SWIG_MemoryError:
+    return "SWIG:MemoryError";
+  case SWIG_IOError:
+    return "SWIG:IOError";
+  case SWIG_RuntimeError:
+    return "SWIG:RuntimeError";
+  case SWIG_IndexError:
+    return "SWIG:IndexError";
+  case SWIG_TypeError:
+    return "SWIG:TypeError";
+  case SWIG_DivisionByZero:
+    return "SWIG:DivisionByZero";
+  case SWIG_OverflowError:
+    return "SWIG:OverflowError";
+  case SWIG_SyntaxError:
+    return "SWIG:SyntaxError";
+  case SWIG_ValueError:
+    return "SWIG:ValueError";
+  case SWIG_SystemError:
+    return "SWIG:SystemError";
+  case SWIG_AttributeError:
+    return "SWIG:AttributeError";
+  }
+  return "SWIG:UnknownError";
+}
+
+#define SWIG_fail goto fail
 
 /*
   This is mainly a way to avoid having lots of local variables that may 
@@ -273,9 +315,11 @@ SWIG_R_NewPointerObj(void *ptr, swig_type_info *type, int flags) {
 
 /* Convert a pointer value */
 SWIGRUNTIMEINLINE int
-SWIG_R_ConvertPtr(SEXP obj, void **ptr, swig_type_info *ty, int flags) {
+SWIG_R_ConvertPtrAndOwn(SEXP obj, void **ptr, swig_type_info *ty, int flags, int *own) {
   void *vptr;
   if (!obj) return SWIG_ERROR;
+  if (own)
+    *own = 0;
   if (obj == R_NilValue) {
     if (ptr) *ptr = NULL;
     return (flags & SWIG_POINTER_NO_NULL) ? SWIG_NullReferenceError : SWIG_OK;
@@ -290,8 +334,15 @@ SWIG_R_ConvertPtr(SEXP obj, void **ptr, swig_type_info *ty, int flags) {
     } else {
       swig_cast_info *tc = SWIG_TypeCheck(to->name,ty);
       int newmemory = 0;
-      if (ptr) *ptr = SWIG_TypeCast(tc,vptr,&newmemory);
-      assert(!newmemory); /* newmemory handling not yet implemented */
+      if (ptr) {
+        int newmemory = 0;
+        *ptr = SWIG_TypeCast(tc, vptr, &newmemory);
+        if (newmemory == SWIG_CAST_NEW_MEMORY) {
+          assert(own); /* badly formed typemap which will lead to a memory leak - it must set and use own to delete *ptr */
+          if (own)
+            *own = *own | SWIG_CAST_NEW_MEMORY;
+        }
+      }
     }
   } else {
       if (ptr) *ptr = vptr;

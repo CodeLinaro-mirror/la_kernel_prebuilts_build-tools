@@ -18,8 +18,9 @@
  *                          constants typemaps
  * ----------------------------------------------------------------------------- */
 // this basically adds to a table of constants
+/* Extra `(`...`)` here are to handle $value being e.g. `SizeOf< int,int >::size`. */
 %typemap(consttab) int, unsigned int, short, unsigned short, long, unsigned long, unsigned char, signed char, bool, enum SWIGTYPE
-       {SWIG_LUA_CONSTTAB_INT("$symname", $value)}
+       {SWIG_LUA_CONSTTAB_INT("$symname", ($value))}
 
 %typemap(consttab) float, double
        {SWIG_LUA_CONSTTAB_FLOAT("$symname", $value)}
@@ -151,7 +152,7 @@ The python/lua ones are great, but C++ ones I don't like
 (mainly because I cannot get the stack trace out of it)
 Therefore I have not bothered to try doing much in this
 
-Therefore currently its just enough to get a few test cases running ok
+Therefore currently it's just enough to get a few test cases running ok
 
 note: if you wish to throw anything related to std::exception
 use %include <std_except.i> instead
@@ -191,7 +192,7 @@ use %include <std_except.i> instead
 Throwing object is a serious problem:
 Assuming some code throws a 'FooBar'
 There are a few options:
-- return a pointer to it: but its unclear how long this will last for.
+- return a pointer to it: but it's unclear how long this will last for.
 - return a copy of it: but not all objects are copyable
 	(see exception_partial_info in the test suite for a case where you cannot do this)
 - convert to a string & throw that
@@ -213,7 +214,7 @@ SWIG_fail;%}
 //	%apply SWIGTYPE EXCEPTION_BY_VAL {FooBar};
 //	%apply SWIGTYPE& EXCEPTION_BY_VAL {FooBar&}; // note: need & twice
 %typemap(throws) SWIGTYPE EXCEPTION_BY_VAL
-%{SWIG_NewPointerObj(L,(void *)new $1_ltype(($1_ltype &) $1),$&1_descriptor,1);
+%{SWIG_NewPointerObj(L,(void *)new $1_ltype($1),$&1_descriptor,1);
 SWIG_fail;%}
 
 // similar for object reference
@@ -224,7 +225,7 @@ SWIG_fail;%}
 
 
 // note: no support for object pointers
-// its not clear how long the pointer is valid for, therefore not supporting it
+// it's not clear how long the pointer is valid for, therefore not supporting it
 
 /* -----------------------------------------------------------------------------
  *                          extras

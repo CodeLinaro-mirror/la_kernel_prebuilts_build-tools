@@ -56,16 +56,6 @@
 %fragment("StdUnorderedMapTraits","header",fragment="StdMapCommonTraits",fragment="StdUnorderedMapForwardIteratorTraits")
 {
   namespace swig {
-    template <class SwigPySeq, class K, class T, class Hash, class Compare, class Alloc>
-    inline void
-    assign(const SwigPySeq& swigpyseq, std::unordered_map<K,T,Hash,Compare,Alloc> *unordered_map) {
-      typedef typename std::unordered_map<K,T,Hash,Compare,Alloc>::value_type value_type;
-      typename SwigPySeq::const_iterator it = swigpyseq.begin();
-      for (;it != swigpyseq.end(); ++it) {
-	unordered_map->insert(value_type(it->first, it->second));
-      }
-    }
-
     template <class K, class T, class Hash, class Compare, class Alloc>
     struct traits_reserve<std::unordered_map<K,T,Hash,Compare,Alloc> > {
       static void reserve(std::unordered_map<K,T,Hash,Compare,Alloc> &seq, typename std::unordered_map<K,T,Hash,Compare,Alloc>::size_type n) {
@@ -87,7 +77,7 @@
 %#endif
 	  res = traits_asptr_stdseq<std::unordered_map<K,T,Hash,Compare,Alloc>, std::pair<K, T> >::asptr(items, val);
 	} else {
-	  unordered_map_type *p;
+	  unordered_map_type *p = 0;
 	  swig_type_info *descriptor = swig::type_info<unordered_map_type>();
 	  res = descriptor ? SWIG_ConvertPtr(obj, (void **)&p, descriptor, 0) : SWIG_ERROR;
 	  if (SWIG_IsOK(res) && val)  *val = p;
@@ -281,7 +271,11 @@
     }
 
     void __setitem__(const key_type& key, const mapped_type& x) throw (std::out_of_range) {
+%#ifdef __cpp_lib_unordered_map_try_emplace
+      (*self).insert_or_assign(key, x);
+%#else
       (*self)[key] = x;
+%#endif
     }
 
     PyObject* asdict() {
