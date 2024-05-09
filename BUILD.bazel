@@ -26,6 +26,18 @@ import_libraries(
     visibility = ["//visibility:public"],
 )
 
+import_libraries(
+    name = "linux_x86_libcrypto",
+    hdrs = glob(["linux-x86/include/openssl/*.h"]),
+    shared_libraries = ["linux-x86/lib64/libcrypto-host.so"],
+    strip_include_prefix = "linux-x86/include",
+    target_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 exports_files([
     # keep sorted
     "linux-x86/bin/avbtool",
