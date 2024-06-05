@@ -6,7 +6,11 @@ SWIGINTERN Py_hash_t
 SwigPyObject_hash(PyObject *obj) {
   SwigPyObject *sobj = (SwigPyObject *)obj;
   void *ptr = sobj->ptr;
+#if PY_VERSION_HEX < 0x03020000
+  return (Py_hash_t)(Py_ssize_t)ptr;
+#else
   return (Py_hash_t)ptr;
+#endif
 }
 
 SWIGINTERN Py_hash_t
@@ -211,7 +215,11 @@ SwigPyStaticVar_Type(void) {
       sizeof(PyGetSetDescrObject),              /* tp_basicsize */
       0,                                        /* tp_itemsize */
       (destructor)SwigPyStaticVar_dealloc,      /* tp_dealloc */
-      0,                                        /* tp_print */
+#if PY_VERSION_HEX < 0x030800b4
+      (printfunc)0,                             /* tp_print */
+#else
+      (Py_ssize_t)0,                            /* tp_vectorcall_offset */
+#endif
       0,                                        /* tp_getattr */
       0,                                        /* tp_setattr */
       0,                                        /* tp_compare */
@@ -256,6 +264,15 @@ SwigPyStaticVar_Type(void) {
 #if PY_VERSION_HEX >= 0x03040000
       0,                                        /* tp_finalize */
 #endif
+#if PY_VERSION_HEX >= 0x03080000
+      0,                                        /* tp_vectorcall */
+#endif
+#if (PY_VERSION_HEX >= 0x03080000) && (PY_VERSION_HEX < 0x03090000)
+      0,                                        /* tp_print */
+#endif
+#if PY_VERSION_HEX >= 0x030c0000
+      0,                                        /* tp_watched */
+#endif
 #ifdef COUNT_ALLOCS
       0,                                        /* tp_allocs */
       0,                                        /* tp_frees */
@@ -289,7 +306,11 @@ SwigPyObjectType(void) {
       PyType_Type.tp_basicsize,                 /* tp_basicsize */
       0,                                        /* tp_itemsize */
       0,                                        /* tp_dealloc */
-      0,                                        /* tp_print */
+#if PY_VERSION_HEX < 0x030800b4
+      (printfunc)0,                             /* tp_print */
+#else
+      (Py_ssize_t)0,                            /* tp_vectorcall_offset */
+#endif
       0,                                        /* tp_getattr */
       0,                                        /* tp_setattr */
       0,                                        /* tp_compare */
@@ -333,6 +354,15 @@ SwigPyObjectType(void) {
       0,                                        /* tp_version_tag */
 #if PY_VERSION_HEX >= 0x03040000
       0,                                        /* tp_finalize */
+#endif
+#if PY_VERSION_HEX >= 0x03080000
+      0,                                        /* tp_vectorcall */
+#endif
+#if (PY_VERSION_HEX >= 0x03080000) && (PY_VERSION_HEX < 0x03090000)
+      0,                                        /* tp_print */
+#endif
+#if PY_VERSION_HEX >= 0x030c0000
+      0,                                        /* tp_watched */
 #endif
 #ifdef COUNT_ALLOCS
       0,                                        /* tp_allocs */
@@ -402,10 +432,10 @@ SwigPyBuiltin_ThisClosure (PyObject *self, void *SWIGUNUSEDPARM(closure)) {
 SWIGINTERN void
 SwigPyBuiltin_SetMetaType (PyTypeObject *type, PyTypeObject *metatype)
 {
-#if PY_VERSION_HEX >= 0x03000000
-    type->ob_base.ob_base.ob_type = metatype;
+#if PY_VERSION_HEX >= 0x030900a4
+    Py_SET_TYPE(type, metatype);
 #else
-    type->ob_type = metatype;
+    Py_TYPE(type) = metatype;
 #endif
 }
 
@@ -510,8 +540,10 @@ SwigPyBuiltin_ternaryfunc_closure(SwigPyWrapperFunction wrapper, PyObject *a, Py
   assert(tuple);
   Py_INCREF(b);
   PyTuple_SET_ITEM(tuple, 0, b);
-  Py_INCREF(c);
-  PyTuple_SET_ITEM(tuple, 1, c);
+  if (c) {
+    Py_INCREF(c);
+    PyTuple_SET_ITEM(tuple, 1, c);
+  }
   result = wrapper(a, tuple);
   Py_DECREF(tuple);
   return result;
@@ -626,8 +658,10 @@ SwigPyBuiltin_ssizeobjargproc_closure(SwigPyWrapperFunction wrapper, PyObject *a
   tuple = PyTuple_New(2);
   assert(tuple);
   PyTuple_SET_ITEM(tuple, 0, _PyLong_FromSsize_t(b));
-  Py_INCREF(c);
-  PyTuple_SET_ITEM(tuple, 1, c);
+  if (c) {
+    Py_INCREF(c);
+    PyTuple_SET_ITEM(tuple, 1, c);
+  }
   resultobj = wrapper(a, tuple);
   result = resultobj ? 0 : -1;
   Py_XDECREF(resultobj);

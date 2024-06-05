@@ -12,10 +12,15 @@
 %insert("runtime") "swigerrors.swg"
 
 
-#ifdef SWIGPHP7
+#ifdef SWIGPHP
 %{
-#include "zend_exceptions.h"
-#define SWIG_exception(code, msg) do { zend_throw_exception(NULL, (char*)msg, code); goto thrown; } while (0)
+#define SWIG_exception(code, msg) do { zend_throw_exception( \
+    code == SWIG_TypeError ? zend_ce_type_error : \
+    code == SWIG_ValueError ? zend_ce_value_error : \
+    code == SWIG_DivisionByZero ? zend_ce_division_by_zero_error : \
+    code == SWIG_SyntaxError ? zend_ce_parse_error : \
+    code == SWIG_OverflowError ? zend_ce_arithmetic_error : \
+    NULL, msg, code); SWIG_fail; } while (0)
 %}
 #endif
 
@@ -24,9 +29,8 @@
   SWIGINTERN void SWIG_exception_ (int code, const char *msg,
                                const char *subr) {
 #define ERROR(scmerr)					\
-	scm_error(scm_from_locale_string((char *) (scmerr)),	\
-		  (char *) subr, (char *) msg,		\
-		  SCM_EOL, SCM_BOOL_F)
+	scm_error(scm_from_locale_string(scmerr),	\
+		  subr, msg, SCM_EOL, SCM_BOOL_F)
 #define MAP(swigerr, scmerr)			\
 	case swigerr:				\
 	  ERROR(scmerr);			\
