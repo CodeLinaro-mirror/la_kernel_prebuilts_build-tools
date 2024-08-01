@@ -5,8 +5,19 @@ TOP=$(pwd)
 OS=linux
 
 build_soong=1
-clean=t
-[[ "${1:-}" != '--resume' ]] || clean=''
+use_musl=false
+clean=true
+while getopts ":-:" opt; do
+    case "$opt" in
+        -)
+            case "${OPTARG}" in
+                resume) clean= ;;
+                musl) use_musl=true ;;
+                *) echo "Unknown option --${OPTARG}"; exit 1 ;;
+            esac;;
+        *) echo "'${opt}' '${OPTARG}'"
+    esac
+done
 
 # Use toybox and other prebuilts even outside of the build (test running, go, etc)
 export PATH=${TOP}/prebuilts/build-tools/path/${OS}-x86:$PATH
@@ -19,7 +30,8 @@ if [ -n ${build_soong} ]; then
     cat > ${SOONG_OUT}/soong.variables << EOF
 {
     "Allow_missing_dependencies": true,
-    "HostArch":"x86_64"
+    "HostArch":"x86_64",
+    "HostMusl": $use_musl
 }
 EOF
     SOONG_BINARIES=(
@@ -46,7 +58,6 @@ EOF
         mke2fs
         mkfs.erofs
         mkuserimg_mke2fs
-        pahole
         simg2img
         soong_zip
         stg
@@ -55,6 +66,11 @@ EOF
         tune2fs
         ufdt_apply_overlay
     )
+
+    # TODO(b/354773024): pahole needs argp
+    if [[ ${use_musl} != "true" ]]; then
+        SOONG_BINARIES+=(pahole)
+    fi
 
     SOONG_LIBRARIES=(
         libcrypto-host.so
