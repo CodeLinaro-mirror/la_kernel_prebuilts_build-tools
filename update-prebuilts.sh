@@ -29,6 +29,7 @@ function fetch_artifact() {
 
 fetch_artifact linux build-prebuilts.zip "${tmpdir}/linux.zip"
 fetch_artifact linux manifest_${BUILD_NUMBER}.xml "${tmpdir}/manifest.xml"
+fetch_artifact linux_musl build-prebuilts.zip "${tmpdir}/linux_musl.zip"
 
 function unzip_to() {
     rm -rf "$1"
@@ -37,10 +38,11 @@ function unzip_to() {
 }
 
 unzip_to linux-x86 "${tmpdir}/linux.zip"
+unzip_to linux_musl-x86 "${tmpdir}/linux_musl.zip"
 
 cp -f "${tmpdir}/manifest.xml" manifest.xml
 
-git add manifest.xml linux-x86
+git add manifest.xml linux-x86 linux_musl-x86
 git commit -m "Update kernel-build-tools to ab/${BUILD_NUMBER}
 
 https://ci.android.com/builds/branches/aosp_kernel-build-tools/grid?head=${BUILD_NUMBER}&tail=${BUILD_NUMBER}
