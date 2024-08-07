@@ -1,4 +1,5 @@
 load(":cc.bzl", "import_libraries")
+load(":prebuilt_tool.bzl", "prebuilt_tool")
 
 _SHARED_LIBS = glob(["linux-x86/lib64/*.so"])
 
@@ -38,6 +39,149 @@ import_libraries(
     visibility = ["//visibility:public"],
 )
 
+prebuilt_tool(
+    name = "avbtool",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "blk_alloc_to_base_fs",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "build_image",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "build_super_image",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "certify_bootimg",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "depmod",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "dtc",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "e2fsck",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "e2fsdroid",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "fec",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "img2simg",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "interceptor",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "interceptor_analysis",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "lpmake",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "mkbootfs",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "mkdtimg",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "mke2fs",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "mkfs.erofs",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "mkuserimg_mke2fs",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+# TODO(b/354773024): build pahole with musl against argp substitution.
+alias(
+    name = "pahole",
+    actual = "linux-x86/bin/pahole",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "simg2img",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "soong_zip",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "stg",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "stgdiff",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "swig",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "tune2fs",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "ufdt_apply_overlay",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "lz4",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+# TODO(b/335898063): These can be removed once we confirm there are no usages.
 exports_files([
     # keep sorted
     "linux-x86/bin/avbtool",
