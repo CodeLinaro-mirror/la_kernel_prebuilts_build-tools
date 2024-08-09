@@ -15,6 +15,27 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "linux_musl-x86-libs",
+    srcs = glob(["linux_musl-x86/lib64/*.so"]),
+    visibility = ["//visibility:private"],
+)
+
+# Used in prebuilt_tool()
+alias(
+    name = "libs",
+    actual = select({
+        "//build/kernel/kleaf/platforms/libc:glibc": ":linux-x86-libs",
+        "//build/kernel/kleaf/platforms/libc:musl": ":linux_musl-x86-libs",
+    }),
+    target_compatible_with = select({
+        "//build/kernel/kleaf/platforms/libc:glibc": [],
+        "//build/kernel/kleaf/platforms/libc:musl": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//visibility:private"],
+)
+
 import_libraries(
     name = "linux_x86_imported_libs",
     hdrs = glob(["linux-x86/include/**/*.h"]),
@@ -25,6 +46,12 @@ import_libraries(
         "@platforms//cpu:x86_64",
     ],
     visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "linux_x86_runpath",
+    srcs = ["linux-x86/lib64"],
+    visibility = ["//build/kernel/kleaf:__subpackages__"],
 )
 
 import_libraries(
@@ -163,6 +190,10 @@ prebuilt_tool(
 
 prebuilt_tool(
     name = "swig",
+    data = select({
+        "//build/kernel/kleaf/platforms/libc:glibc": glob(["linux-x86/share/swig/**"]),
+        "//build/kernel/kleaf/platforms/libc:musl": glob(["linux_musl-x86/share/swig/**"]),
+    }),
     visibility = ["//build/kernel:__subpackages__"],
 )
 

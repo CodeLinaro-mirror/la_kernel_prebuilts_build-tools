@@ -20,11 +20,13 @@ visibility("private")
 
 def prebuilt_tool(
         name,
+        data = None,
         **kwargs):
     """Declares a tool that fits multiple platforms/config settings.
 
     Args:
         name: name of the target
+        data: Additional data
         **kwargs: additional arguments to the internal target.
     """
 
@@ -35,6 +37,7 @@ def prebuilt_tool(
             Label("//build/kernel/kleaf/platforms/libc:musl"): "linux_musl-x86/bin/" + name,
         }),
         out = name,
+        data = [Label(":libs")] + (data or []),
         target_compatible_with = select({
             Label("//build/kernel/kleaf/platforms/libc:glibc"): [],
             Label("//build/kernel/kleaf/platforms/libc:musl"): [],
