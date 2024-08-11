@@ -1,3 +1,4 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files", "strip_prefix")
 load(":cc.bzl", "import_libraries")
 load(":prebuilt_tool.bzl", "prebuilt_tool")
 
@@ -209,6 +210,30 @@ prebuilt_tool(
 
 prebuilt_tool(
     name = "lz4",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+# For //build/kernel:gki_certification_tools
+# Don't build this directly, as it will pick the default value for
+# //build/kernel/kleaf/platforms/libc
+pkg_files(
+    name = "gki_certification_tools_pkg_files",
+    srcs = select({
+        "//build/kernel/kleaf/platforms/libc:glibc": [
+            "linux-x86/bin/avbtool",
+            "linux-x86/bin/certify_bootimg",
+        ],
+        "//build/kernel/kleaf/platforms/libc:musl": [
+            "linux_musl-x86/bin/avbtool",
+            "linux_musl-x86/bin/certify_bootimg",
+        ],
+    }) + [
+        ":libs",
+    ],
+    strip_prefix = select({
+        "//build/kernel/kleaf/platforms/libc:glibc": strip_prefix.from_pkg("linux-x86"),
+        "//build/kernel/kleaf/platforms/libc:musl": strip_prefix.from_pkg("linux_musl-x86"),
+    }),
     visibility = ["//build/kernel:__subpackages__"],
 )
 
