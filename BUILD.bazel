@@ -156,6 +156,15 @@ filegroup(
     visibility = ["@kleaf_clang_toolchain//:__subpackages__"],
 )
 
+filegroup(
+    name = "swig_lib_dir",
+    srcs = select({
+        "//build/kernel/kleaf/platforms/libc:glibc": ["linux-x86/share/swig"],
+        "//build/kernel/kleaf/platforms/libc:musl": ["linux_musl-x86/share/swig"],
+    }),
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
 prebuilt_tool(
     name = "avbtool",
     visibility = ["//build/kernel:__subpackages__"],
