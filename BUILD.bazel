@@ -167,7 +167,7 @@ filegroup(
 
 prebuilt_tool(
     name = "avbtool",
-    visibility = ["//build/kernel:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
 
 prebuilt_tool(
