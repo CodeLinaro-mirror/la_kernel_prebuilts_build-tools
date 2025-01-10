@@ -91,7 +91,7 @@ EOF
     fi
 
     # Build everything
-    build/soong/soong_ui.bash --make-mode --skip-make \
+    build/soong/soong_ui.bash --make-mode --soong-only --skip-config \
         ${binaries} \
         ${libraries} \
         ${py3_stdlib_zip} \
