@@ -74,6 +74,7 @@ EOF
 
     SOONG_LIBRARIES=(
         libcrypto-host.so
+        libdw.so
         libelf.so
         libinterceptor.so
     )
@@ -114,6 +115,10 @@ EOF
     cp -a ${TOP}/external/elfutils/libelf/nlist.h ${include_dir}/
     cp -a ${TOP}/external/elfutils/libelf/elf-knowledge.h ${include_dir}/elfutils/
     cp -a ${TOP}/external/elfutils/version.h ${include_dir}/elfutils/
+    # libdw
+    cp -a ${TOP}/external/elfutils/libdw/dwarf.h ${include_dir}/
+    cp -a ${TOP}/external/elfutils/libdw/libdw.h ${include_dir}/elfutils/
+    cp -a ${TOP}/external/elfutils/libdwfl/libdwfl.h ${include_dir}/elfutils/
 
     # Stage share files
     share_dir=${SOONG_OUT}/dist/share
