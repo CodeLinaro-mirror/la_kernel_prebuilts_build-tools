@@ -217,7 +217,7 @@ prebuilt_tool(
 
 prebuilt_tool(
     name = "img2simg",
-    visibility = ["//build/kernel:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
 
 prebuilt_tool(
@@ -241,6 +241,11 @@ prebuilt_tool(
 )
 
 prebuilt_tool(
+    name = "mkdtboimg",
+    visibility = ["//visibility:public"],
+)
+
+prebuilt_tool(
     name = "mkdtimg",
     visibility = ["//build/kernel:__subpackages__"],
 )
@@ -257,7 +262,7 @@ prebuilt_tool(
 
 prebuilt_tool(
     name = "mkuserimg_mke2fs",
-    visibility = ["//build/kernel:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
 
 # TODO(b/354773024): build pahole with musl against argp substitution.
