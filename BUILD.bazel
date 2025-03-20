@@ -221,16 +221,6 @@ prebuilt_tool(
 )
 
 prebuilt_tool(
-    name = "interceptor",
-    visibility = ["//build/kernel:__subpackages__"],
-)
-
-prebuilt_tool(
-    name = "interceptor_analysis",
-    visibility = ["//build/kernel:__subpackages__"],
-)
-
-prebuilt_tool(
     name = "lpmake",
     visibility = ["//build/kernel:__subpackages__"],
 )
