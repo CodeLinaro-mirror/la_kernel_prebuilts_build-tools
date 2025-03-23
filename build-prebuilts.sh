@@ -48,8 +48,6 @@ EOF
         fec
         fsck.erofs
         img2simg
-        interceptor
-        interceptor_analysis
         lpmake
         lz4
         mkbootfs
@@ -76,7 +74,6 @@ EOF
         libcrypto-host.so
         libdw.so
         libelf.so
-        libinterceptor.so
     )
 
     binaries="${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
