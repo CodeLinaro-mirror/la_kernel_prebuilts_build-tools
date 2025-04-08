@@ -268,11 +268,6 @@ prebuilt_tool(
 )
 
 prebuilt_tool(
-    name = "soong_zip",
-    visibility = ["//build/kernel:__subpackages__"],
-)
-
-prebuilt_tool(
     name = "stg",
     visibility = ["//build/kernel:__subpackages__"],
 )
