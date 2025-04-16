@@ -1,17 +1,22 @@
-/*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
- * Copyright (c) 2002, Oracle and/or its affiliates. All rights reserved.
- *
- * Licensed under the OpenSSL license (the "License").  You may not use
- * this file except in compliance with the License.  You can obtain a copy
- * in the file LICENSE in the source distribution or at
- * https://www.openssl.org/source/license.html
- */
+// Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+// Copyright (c) 2002, Oracle and/or its affiliates. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #ifndef OPENSSL_HEADER_X509_H
 #define OPENSSL_HEADER_X509_H
 
-#include <openssl/base.h>
+#include <openssl/base.h>   // IWYU pragma: export
 
 #include <time.h>
 
@@ -1499,9 +1504,12 @@ OPENSSL_EXPORT int X509_NAME_ENTRY_set_object(X509_NAME_ENTRY *entry,
 // pointer for OpenSSL compatibility, but callers should not mutate the result.
 // Doing so will break internal invariants in the library.
 //
-// TODO(https://crbug.com/boringssl/412): Although the spec says any ASN.1 type
-// is allowed, we currently only allow an ad-hoc set of types. Additionally, it
-// is unclear if some types can even be represented by this function.
+// See |ASN1_STRING| for how values are represented in this library. Where a
+// specific |ASN1_STRING| representation exists, that representation is used.
+// Otherwise, the |V_ASN1_OTHER| representation is used. Note that NULL, OBJECT
+// IDENTIFIER, and BOOLEAN attribute values are represented as |V_ASN1_OTHER|,
+// because their usual representation in this library is not
+// |ASN1_STRING|-compatible.
 OPENSSL_EXPORT ASN1_STRING *X509_NAME_ENTRY_get_data(
     const X509_NAME_ENTRY *entry);
 
