@@ -57,7 +57,6 @@ EOF
         mkfs.erofs
         mkuserimg_mke2fs
         simg2img
-        soong_zip
         stg
         stgdiff
         swig
