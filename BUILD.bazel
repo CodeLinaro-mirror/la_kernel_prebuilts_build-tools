@@ -255,10 +255,8 @@ prebuilt_tool(
     visibility = ["//visibility:public"],
 )
 
-# TODO(b/354773024): build pahole with musl against argp substitution.
-alias(
+prebuilt_tool(
     name = "pahole",
-    actual = "linux-x86/bin/pahole",
     visibility = ["//build/kernel:__subpackages__"],
 )
 
