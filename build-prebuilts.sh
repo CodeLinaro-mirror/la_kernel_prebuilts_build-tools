@@ -56,6 +56,7 @@ EOF
         mke2fs
         mkfs.erofs
         mkuserimg_mke2fs
+        pahole
         simg2img
         stg
         stgdiff
@@ -63,11 +64,6 @@ EOF
         tune2fs
         ufdt_apply_overlay
     )
-
-    # TODO(b/354773024): pahole needs argp
-    if [[ ${use_musl} != "true" ]]; then
-        SOONG_BINARIES+=(pahole)
-    fi
 
     SOONG_LIBRARIES=(
         libcrypto-host.so
