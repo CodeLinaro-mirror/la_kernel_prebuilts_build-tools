@@ -9,12 +9,14 @@ _MUSL_SHARED_LIBS = glob(["linux_musl-x86/lib64/*.so"])
 filegroup(
     name = "linux-x86",
     srcs = glob(["linux-x86/**"]),
+    deprecation = "glibc is no longer supported.",
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "linux-x86-libs",
     srcs = _SHARED_LIBS,
+    deprecation = "glibc is no longer supported. Use `:libs` (musl libc) instead.",
     visibility = ["//visibility:public"],
 )
 
@@ -24,98 +26,37 @@ filegroup(
     visibility = ["//visibility:private"],
 )
 
-# Used in prebuilt_tool()
 alias(
     name = "libs",
-    actual = select({
-        "//build/kernel/kleaf/platforms/libc:glibc": ":linux-x86-libs",
-        "//build/kernel/kleaf/platforms/libc:musl": ":linux_musl-x86-libs",
-    }),
-    target_compatible_with = select({
-        "//build/kernel/kleaf/platforms/libc:glibc": [],
-        "//build/kernel/kleaf/platforms/libc:musl": [],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }),
+    actual = ":linux_musl-x86-libs",
     visibility = [
         "@kleaf_clang_toolchain//:__subpackages__",
     ],
 )
 
 import_libraries(
-    name = "linux_x86_imported_libs",
-    hdrs = glob(["linux-x86/include/**/*.h"]),
-    shared_libraries = _SHARED_LIBS,
-    strip_include_prefix = "linux-x86/include",
-    target_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:x86_64",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-import_libraries(
-    name = "linux_musl_x86_imported_libs",
+    name = "imported_libs",
     hdrs = glob(["linux_musl-x86/include/**/*.h"]),
     shared_libraries = _MUSL_SHARED_LIBS,
     strip_include_prefix = "linux_musl-x86/include",
     target_compatible_with = [
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
-        "//build/kernel/kleaf/platforms/libc:musl",
     ],
-    visibility = ["//visibility:private"],
-)
-
-alias(
-    name = "imported_libs",
-    actual = select({
-        "//build/kernel/kleaf/platforms/libc:glibc": ":linux_x86_imported_libs",
-        "//build/kernel/kleaf/platforms/libc:musl": ":linux_musl_x86_imported_libs",
-    }),
     visibility = ["//build/kernel/kleaf:__subpackages__"],
 )
 
 filegroup(
     name = "runpath",
-    srcs = select({
-        "//build/kernel/kleaf/platforms/libc:glibc": ["linux-x86/lib64"],
-        "//build/kernel/kleaf/platforms/libc:musl": ["linux_musl-x86/lib64"],
-    }),
+    srcs = ["linux_musl-x86/lib64"],
     visibility = ["//build/kernel/kleaf:__subpackages__"],
 )
 
 import_libraries(
-    name = "linux_x86_libcrypto",
-    hdrs = glob(["linux-x86/include/openssl/*.h"]),
-    shared_libraries = ["linux-x86/lib64/libcrypto-host.so"],
-    strip_include_prefix = "linux-x86/include",
-    target_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:x86_64",
-        "//build/kernel/kleaf/platforms/libc:glibc",
-    ],
-    visibility = ["//visibility:private"],
-)
-
-import_libraries(
-    name = "linux_x86_musl_libcrypto",
+    name = "libcrypto",
     hdrs = glob(["linux_musl-x86/include/openssl/*.h"]),
     shared_libraries = ["linux_musl-x86/lib64/libcrypto-host.so"],
     strip_include_prefix = "linux_musl-x86/include",
-    target_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:x86_64",
-        "//build/kernel/kleaf/platforms/libc:musl",
-    ],
-    visibility = ["//visibility:private"],
-)
-
-alias(
-    name = "libcrypto",
-    actual = select({
-        "//build/kernel/kleaf/platforms/libc:glibc": ":linux_x86_libcrypto",
-        "//build/kernel/kleaf/platforms/libc:musl": ":linux_x86_musl_libcrypto",
-    }),
     visibility = ["@toybox//:__subpackages__"],
 )
 
@@ -158,10 +99,7 @@ filegroup(
 
 filegroup(
     name = "swig_lib_dir",
-    srcs = select({
-        "//build/kernel/kleaf/platforms/libc:glibc": ["linux-x86/share/swig"],
-        "//build/kernel/kleaf/platforms/libc:musl": ["linux_musl-x86/share/swig"],
-    }),
+    srcs = ["linux_musl-x86/share/swig"],
     visibility = ["//build/kernel:__subpackages__"],
 )
 
@@ -277,10 +215,7 @@ prebuilt_tool(
 
 prebuilt_tool(
     name = "swig",
-    data = select({
-        "//build/kernel/kleaf/platforms/libc:glibc": glob(["linux-x86/share/swig/**"]),
-        "//build/kernel/kleaf/platforms/libc:musl": glob(["linux_musl-x86/share/swig/**"]),
-    }),
+    data = glob(["linux_musl-x86/share/swig/**"]),
     visibility = ["//build/kernel:__subpackages__"],
 )
 
@@ -304,24 +239,14 @@ prebuilt_tool(
 # //build/kernel/kleaf/platforms/libc
 pkg_files(
     name = "gki_certification_tools_pkg_files",
-    srcs = select({
-        "//build/kernel/kleaf/platforms/libc:glibc": [
-            "linux-x86/bin/avbtool",
-            "linux-x86/bin/certify_bootimg",
-        ],
-        "//build/kernel/kleaf/platforms/libc:musl": [
-            "linux_musl-x86/bin/avbtool",
-            "linux_musl-x86/bin/certify_bootimg",
-        ],
-    }) + [
-        ":libs",
+    srcs = [
+        "linux_musl-x86/bin/avbtool",
+        "linux_musl-x86/bin/certify_bootimg",
+        ":linux_musl-x86-libs",
     ],
     attributes = pkg_attributes(
         mode = "0755",
     ),
-    strip_prefix = select({
-        "//build/kernel/kleaf/platforms/libc:glibc": strip_prefix.from_pkg("linux-x86"),
-        "//build/kernel/kleaf/platforms/libc:musl": strip_prefix.from_pkg("linux_musl-x86"),
-    }),
+    strip_prefix = strip_prefix.from_pkg("linux_musl-x86"),
     visibility = ["//build/kernel:__subpackages__"],
 )
