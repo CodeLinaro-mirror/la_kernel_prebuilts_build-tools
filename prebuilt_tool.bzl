@@ -32,16 +32,8 @@ def prebuilt_tool(
 
     native_binary(
         name = name,
-        src = select({
-            Label("//build/kernel/kleaf/platforms/libc:glibc"): "linux-x86/bin/" + name,
-            Label("//build/kernel/kleaf/platforms/libc:musl"): "linux_musl-x86/bin/" + name,
-        }),
+        src = "linux_musl-x86/bin/" + name,
         out = name,
         data = [Label(":libs")] + (data or []),
-        target_compatible_with = select({
-            Label("//build/kernel/kleaf/platforms/libc:glibc"): [],
-            Label("//build/kernel/kleaf/platforms/libc:musl"): [],
-            "//conditions:default": ["@platforms//:incompatible"],
-        }),
         **kwargs
     )
