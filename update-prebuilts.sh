@@ -32,15 +32,7 @@ fetch_artifact linux manifest_${BUILD_NUMBER}.xml "${tmpdir}/manifest.xml"
 fetch_artifact linux_musl build-prebuilts.zip "${tmpdir}/linux_musl.zip"
 fetch_artifact linux_musl musl-sysroot-x86_64-unknown-linux-musl.zip "${tmpdir}/musl-sysroot-x86_64-unknown-linux-musl.zip"
 
-function unzip_to() {
-    rm -rf "$1"
-    mkdir "$1"
-    unzip -q -d "$1" "$2"
-}
-
-unzip_to linux-x86 "${tmpdir}/linux.zip"
-unzip_to linux_musl-x86 "${tmpdir}/linux_musl.zip"
-unzip_to sysroots/x86_64-unknown-linux-musl "${tmpdir}/musl-sysroot-x86_64-unknown-linux-musl.zip"
+./unpack-prebuilts.sh . "${tmpdir}"/{linux.zip,linux_musl.zip,musl-sysroot-x86_64-unknown-linux-musl.zip}
 
 cp -f "${tmpdir}/manifest.xml" manifest.xml
 
