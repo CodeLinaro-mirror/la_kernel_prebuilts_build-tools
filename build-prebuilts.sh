@@ -49,7 +49,6 @@ EOF
         fsck.erofs
         img2simg
         lpmake
-        lz4
         mkbootfs
         mkdtboimg
         mkdtimg
