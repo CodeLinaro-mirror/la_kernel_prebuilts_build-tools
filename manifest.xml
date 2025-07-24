@@ -7,7 +7,7 @@
 
   <superproject name="kernel/superproject" remote="aosp" revision="build-tools" />
 
-  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="a87945925b76169266d61c18650afe3fa078c41a" />
+  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="c4c5a0ab67377f895bbd1f6c78e832a2199cd577" />
 
   <project path="build/blueprint" name="platform/build/blueprint" revision="01c258e5834e8c548125cb47a82e08279892d743" />
 
@@ -25,7 +25,7 @@
 
   <project path="prebuilts/jdk/jdk11" name="platform/prebuilts/jdk/jdk11" groups="pdk" clone-depth="1" revision="b43dc974b874d58e939c51c774276d3ed173e4e1" />
 
-  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="c6f34a0e5be8c7c51da37ac58d9f5611dd86f24e" />
+  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="5f1e8b6f228c45a9c839f08286541145950c4197" />
 
   <project path="prebuilts/build-tools" name="platform/prebuilts/build-tools" clone-depth="1" revision="717e0e9c5d4d84226dca0de1173e4b8d1280af0a" />
 
@@ -35,7 +35,7 @@
 
   <project path="bionic" name="platform/bionic" revision="a7a2fc457b18bfda9abc5994dd83714e541b49b3" />
 
-  <project path="external/abseil-cpp" name="platform/external/abseil-cpp" revision="a1207f05c7997c8215c9da537da3e2eb9aa024af" />
+  <project path="external/abseil-cpp" name="platform/external/abseil-cpp" revision="fb57f67c1a9d3d40ea881bf7c12a6e7572ec16dc" />
 
   <project path="external/argp-standalone" name="platform/external/argp-standalone" revision="48db6cb4dca216f5b3b38dfd0dd8b9a2675cca0f" />
 
@@ -77,7 +77,7 @@
 
   <project path="external/pcre" name="platform/external/pcre" revision="7e4a3a6023e174d22f542923c949d3c7eb287da4" />
 
-  <project path="external/protobuf" name="platform/external/protobuf" revision="ef7dbf7b1df8a293c92e020a53cb9c418d80b9de" />
+  <project path="external/protobuf" name="platform/external/protobuf" revision="65794259ad3257a208f59a1178232896757a0b96" />
 
   <project path="external/python/cpython3" name="platform/external/python/cpython3" revision="f86eb6121ae33cc969b00d82d86b12c9c4b4e989" />
 
@@ -97,7 +97,7 @@
 
   <project path="external/swig" name="platform/external/swig" revision="dcabe60c35082d3beab79359d48093a23f0b09aa" />
 
-  <project path="external/zlib" name="platform/external/zlib" revision="b44b2a860e18cb4990000cd0329bdc0a913b7c30" />
+  <project path="external/zlib" name="platform/external/zlib" revision="50715a6ec996eed1ce0bd6da4e1ea8f607da1aad" />
 
   <project path="external/zstd" name="platform/external/zstd" revision="c68bd304a00e79049632d1dcadb6551b74e7f585" />
 
@@ -115,13 +115,13 @@
 
   <project path="system/tools/aidl" name="platform/system/tools/aidl" revision="a08e0c6817890630f434b6129799428b09d1da01" />
 
-  <project path="external/avb" name="platform/external/avb" revision="216b0168faf9dc2d3851c3c121978394f3a26423" />
+  <project path="external/avb" name="platform/external/avb" revision="912825fe5965c81be82e967ced265603d0725928" />
 
   <project path="external/dtc" name="platform/external/dtc" revision="b892fefdb79a6abe7f3851a448505705e72a4305" />
 
   <project path="external/lz4" name="platform/external/lz4" revision="a66aa7e19dc13576e62ae6240d6d319625f1c94a" />
 
-  <project path="external/kmod" name="platform/external/kmod" revision="4ff4508f276b4d5a5f1858f7e7e31cae06f65fcb" />
+  <project path="external/kmod" name="platform/external/kmod" revision="d0d174f32dcb2be92e39f02d4a00d2719fbb967a" />
 
   <project path="system/tools/mkbootimg" name="platform/system/tools/mkbootimg" revision="3cf2b8d50297cdd7f0ac4886300b4f3e158b6eb3" />
 
