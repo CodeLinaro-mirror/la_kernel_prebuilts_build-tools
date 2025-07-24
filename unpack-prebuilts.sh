@@ -1,19 +1,26 @@
 #!/bin/bash -eu
 
-[ "$#" -eq 4 ] || {
-  echo "usage: $0 <target dir> linux.zip linux_musl.zip linux_musl_sysroots.zip" >&2
+if [ "$#" -eq 4 ]; then
+  TARGET="$1"
+  LINUX="$2"
+  LINUX_MUSL="$3"
+  LINUX_MUSL_SYSROOTS="$4"
+elif [ "$#" -eq 3 ]; then
+  TARGET="$1"
+  LINUX=""
+  LINUX_MUSL="$2"
+  LINUX_MUSL_SYSROOTS="$3"
+else
+  echo "usage: $0 <target dir> [linux.zip] linux_musl.zip linux_musl_sysroots.zip" >&2
   exit 1
-}
-
-TARGET="$1"
-LINUX="$2"
-LINUX_MUSL="$3"
-LINUX_MUSL_SYSROOTS="$4"
+fi
 
 function unzip_to() {
     rm -rf "$1"
-    mkdir "$1"
-    unzip -q -d "$1" "$2"
+    if [ -n "$2" ]; then
+      mkdir "$1"
+      unzip -q -d "$1" "$2"
+    fi
 }
 
 unzip_to "$TARGET"/linux-x86 "$LINUX"
