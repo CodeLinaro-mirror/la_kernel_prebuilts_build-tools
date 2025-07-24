@@ -1,22 +1,19 @@
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files", "strip_prefix")
 load(":cc.bzl", "import_libraries")
+load(":fail.bzl", "fail_rule")
 load(":prebuilt_tool.bzl", "prebuilt_tool")
-
-_SHARED_LIBS = glob(["linux-x86/lib64/*.so"])
 
 _MUSL_SHARED_LIBS = glob(["linux_musl-x86/lib64/*.so"])
 
-filegroup(
+fail_rule(
     name = "linux-x86",
-    srcs = glob(["linux-x86/**"]),
-    deprecation = "glibc is no longer supported.",
+    message = "glibc is no longer supported.",
     visibility = ["//visibility:public"],
 )
 
-filegroup(
+fail_rule(
     name = "linux-x86-libs",
-    srcs = _SHARED_LIBS,
-    deprecation = "glibc is no longer supported. Use `:libs` (musl libc) instead.",
+    message = "glibc is no longer supported. Use `:libs` (musl libc) instead.",
     visibility = ["//visibility:public"],
 )
 
