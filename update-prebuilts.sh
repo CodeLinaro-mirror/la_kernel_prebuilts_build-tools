@@ -27,16 +27,15 @@ function fetch_artifact() {
     /google/data/ro/projects/android/fetch_artifact --branch aosp_kernel-build-tools --bid ${BUILD_NUMBER} --target $1 "$2" "$3"
 }
 
-fetch_artifact linux build-prebuilts.zip "${tmpdir}/linux.zip"
-fetch_artifact linux manifest_${BUILD_NUMBER}.xml "${tmpdir}/manifest.xml"
+fetch_artifact linux_musl manifest_${BUILD_NUMBER}.xml "${tmpdir}/manifest.xml"
 fetch_artifact linux_musl build-prebuilts.zip "${tmpdir}/linux_musl.zip"
 fetch_artifact linux_musl musl-sysroot-x86_64-unknown-linux-musl.zip "${tmpdir}/musl-sysroot-x86_64-unknown-linux-musl.zip"
 
-./unpack-prebuilts.sh . "${tmpdir}"/{linux.zip,linux_musl.zip,musl-sysroot-x86_64-unknown-linux-musl.zip}
+./unpack-prebuilts.sh . "${tmpdir}"/{linux_musl.zip,musl-sysroot-x86_64-unknown-linux-musl.zip}
 
 cp -f "${tmpdir}/manifest.xml" manifest.xml
 
-git add manifest.xml linux-x86 linux_musl-x86 sysroots/x86_64-unknown-linux-musl
+git add manifest.xml linux_musl-x86 sysroots/x86_64-unknown-linux-musl
 git commit -m "Update kernel-build-tools to ab/${BUILD_NUMBER}
 
 https://ci.android.com/builds/branches/aosp_kernel-build-tools/grid?head=${BUILD_NUMBER}&tail=${BUILD_NUMBER}
