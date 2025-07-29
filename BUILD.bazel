@@ -151,6 +151,11 @@ prebuilt_tool(
 )
 
 prebuilt_tool(
+    name = "fsck.erofs",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
     name = "img2simg",
     visibility = ["//visibility:public"],
 )
