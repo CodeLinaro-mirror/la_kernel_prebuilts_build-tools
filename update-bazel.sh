@@ -65,3 +65,6 @@ popd > /dev/null
 rm -rf "${UPDATE_DIR}/bazel"
 mv "${STAGE}" "${UPDATE_DIR}/bazel"
 
+echo '****************************************'
+echo "See $(dirname $0)/docs/update-bazel.md for next steps."
+echo '****************************************'
