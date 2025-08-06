@@ -19,6 +19,11 @@ while getopts ":-:" opt; do
     esac
 done
 
+if [ "${use_musl}" != "true" ]; then
+    echo "ERROR: --musl MUST BE SET!" >&2
+    exit 1
+fi
+
 # Use toybox and other prebuilts even outside of the build (test running, go, etc)
 export PATH=${TOP}/prebuilts/build-tools/path/${OS}-x86:$PATH
 
@@ -31,7 +36,7 @@ if [ -n ${build_soong} ]; then
 {
     "Allow_missing_dependencies": true,
     "HostArch":"x86_64",
-    "HostMusl": $use_musl
+    "HostMusl": true
 }
 EOF
     SOONG_BINARIES=(
@@ -76,10 +81,7 @@ EOF
     # TODO: When we have a better method of extracting zips from Soong, use that.
     py3_stdlib_zip="${SOONG_OUT}/.intermediates/external/python/cpython3/Lib/py3-stdlib-zip/gen/py3-stdlib.zip"
 
-    musl_x86_64_sysroot=""
-    if [[ ${use_musl} = "true" ]]; then
-        musl_x86_64_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86_64/gen/libc_musl_sysroot.zip"
-    fi
+    musl_x86_64_sysroot="${SOONG_OUT}/.intermediates/external/musl/libc_musl_sysroot/linux_musl_x86_64/gen/libc_musl_sysroot.zip"
 
     # Build everything
     build/soong/soong_ui.bash --make-mode --soong-only --skip-config \
@@ -123,9 +125,7 @@ EOF
     mkdir -p ${share_dir}/swig
     cp -a ${TOP}/external/swig/Lib/* ${share_dir}/swig/
 
-    if [[ ${use_musl} = "true" ]]; then
-        cp ${musl_x86_64_sysroot} ${SOONG_OUT}/musl-sysroot-x86_64-unknown-linux-musl.zip
-    fi
+    cp ${musl_x86_64_sysroot} ${SOONG_OUT}/musl-sysroot-x86_64-unknown-linux-musl.zip
 
     # Patch dist dir
     (
@@ -146,9 +146,7 @@ if [ -n "${DIST_DIR}" ]; then
     if [ -n ${build_soong} ]; then
         cp ${SOONG_OUT}/dist/build-prebuilts.zip ${DIST_DIR}/
 
-        if [[ ${use_musl} = "true" ]]; then
-            cp ${SOONG_OUT}/musl-sysroot-x86_64-unknown-linux-musl.zip ${DIST_DIR}/
-        fi
+        cp ${SOONG_OUT}/musl-sysroot-x86_64-unknown-linux-musl.zip ${DIST_DIR}/
     fi
 fi
 
