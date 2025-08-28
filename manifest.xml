@@ -7,7 +7,7 @@
 
   <superproject name="kernel/superproject" remote="aosp" revision="build-tools" />
 
-  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="2b3f2503c73ab068478bfaf07d191852b4178014" />
+  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="ccac4df0a67431ac16bed1642832061ac3514c9e" />
 
   <project path="build/blueprint" name="platform/build/blueprint" revision="01c258e5834e8c548125cb47a82e08279892d743" />
 
@@ -75,7 +75,7 @@
 
   <project path="external/obstack" name="platform/external/obstack" revision="15b9686fb5352dfc3fda4c82b8c832c948b732e9" />
 
-  <project path="external/pcre" name="platform/external/pcre" revision="7e4a3a6023e174d22f542923c949d3c7eb287da4" />
+  <project path="external/pcre" name="platform/external/pcre" revision="44d6a0c3a116c62fbf26e2db33aa2d4cb7f7197c" />
 
   <project path="external/protobuf" name="platform/external/protobuf" revision="98d69db0c6d6388f6d626ad28f8b18e98030967b" />
 
@@ -93,7 +93,7 @@
 
   <project path="external/starlark-go" name="platform/external/starlark-go" revision="4947cdc739c985f6d86941e22894f5cefe7c9e9a" />
 
-  <project path="external/stg" name="platform/external/stg" revision="43b78fd4018588a221fcb623626dc83a7eb7ce7f" />
+  <project path="external/stg" name="platform/external/stg" revision="f28edd578e9b322c96dbbb9bc495c95a403c7179" />
 
   <project path="external/swig" name="platform/external/swig" revision="dcabe60c35082d3beab79359d48093a23f0b09aa" />
 
