@@ -55,6 +55,7 @@ EOF
         img2simg
         lpmake
         mkbootfs
+        mkbootimg
         mkdtboimg
         mkdtimg
         mke2fs
@@ -67,6 +68,7 @@ EOF
         swig
         tune2fs
         ufdt_apply_overlay
+        unpack_bootimg
     )
 
     SOONG_LIBRARIES=(
