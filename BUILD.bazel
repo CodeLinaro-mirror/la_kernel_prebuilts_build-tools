@@ -171,6 +171,11 @@ prebuilt_tool(
 )
 
 prebuilt_tool(
+    name = "mkbootimg",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
     name = "mkdtboimg",
     visibility = ["//visibility:public"],
 )
@@ -228,6 +233,11 @@ prebuilt_tool(
 
 prebuilt_tool(
     name = "ufdt_apply_overlay",
+    visibility = ["//build/kernel:__subpackages__"],
+)
+
+prebuilt_tool(
+    name = "unpack_bootimg",
     visibility = ["//build/kernel:__subpackages__"],
 )
 
