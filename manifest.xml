@@ -3,11 +3,11 @@
 <manifest>
   <remote name="aosp" fetch="https://android.googlesource.com/" review="https://android.googlesource.com/" />
 
-  <default revision="main-kernel" remote="aosp" sync-j="4" />
+  <default revision="main-kernel-2025" remote="aosp" sync-j="4" />
 
   <superproject name="kernel/superproject" remote="aosp" revision="build-tools" />
 
-  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="a11fc37d36940ac82afef6835e57111eb484958f" />
+  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="58d77882283e06807a1bfe419c9fb1bfe8353f36" />
 
   <project path="build/blueprint" name="platform/build/blueprint" revision="dc14b923a2526131c8ffedf3f7ce7a17e9e69a99" />
 
@@ -25,7 +25,7 @@
 
   <project path="prebuilts/jdk/jdk11" name="platform/prebuilts/jdk/jdk11" groups="pdk" clone-depth="1" revision="b43dc974b874d58e939c51c774276d3ed173e4e1" />
 
-  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="ba3b90995dd4a504b5d39ff9e13ec09ebedc37e4" />
+  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="9a98ca4072ec000f301bd3ece481ea2baca76ca5" />
 
   <project path="prebuilts/build-tools" name="platform/prebuilts/build-tools" clone-depth="1" revision="574765b494f226284968a8d156437e4c932aad61" />
 
@@ -39,7 +39,7 @@
 
   <project path="external/argp-standalone" name="platform/external/argp-standalone" revision="48db6cb4dca216f5b3b38dfd0dd8b9a2675cca0f" />
 
-  <project path="external/boringssl" name="platform/external/boringssl" revision="b1c91de530fd3dea963f6a610db9bd6099d957cd" />
+  <project path="external/boringssl" name="platform/external/boringssl" revision="e55d258ece08fee65442ec0a8a03021d439717b6" />
 
   <project path="external/dwarves" name="platform/external/dwarves" revision="bbb9bcdf3a185b1ef930703cb1fe2b88b362c977" />
 
@@ -93,7 +93,7 @@
 
   <project path="external/starlark-go" name="platform/external/starlark-go" revision="4947cdc739c985f6d86941e22894f5cefe7c9e9a" />
 
-  <project path="external/stg" name="platform/external/stg" revision="19cf4d956a00aeaee9678f51c9e857d57917b7c3" />
+  <project path="external/stg" name="platform/external/stg" revision="e4d1908c714b2367dcaa05aad9c7b8e74c023412" />
 
   <project path="external/swig" name="platform/external/swig" revision="dcabe60c35082d3beab79359d48093a23f0b09aa" />
 
@@ -123,7 +123,7 @@
 
   <project path="external/kmod" name="platform/external/kmod" revision="4d656fc0387c9272c7154ec0b4c80d95798534f7" />
 
-  <project path="system/tools/mkbootimg" name="platform/system/tools/mkbootimg" revision="d2bb0af5ba6d3198a3e99529c97eda1be0b5a093" />
+  <project path="system/tools/mkbootimg" name="platform/system/tools/mkbootimg" revision="167f905b0c2bf311fedb039e8b30840176750ae8" />
 
   <project path="tools/external_updater" name="platform/tools/external_updater" revision="d4266e5010f29a9178843e09d63d47a5f83f8509" />
 

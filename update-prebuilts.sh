@@ -24,7 +24,7 @@ function finish {
 trap finish EXIT
 
 function fetch_artifact() {
-    /google/data/ro/projects/android/fetch_artifact --branch aosp_kernel-build-tools --bid ${BUILD_NUMBER} --target $1 "$2" "$3"
+    /google/data/ro/projects/android/fetch_artifact --branch aosp_kernel-build-tools-2025 --bid ${BUILD_NUMBER} --target $1 "$2" "$3"
 }
 
 fetch_artifact linux build-prebuilts.zip "${tmpdir}/linux.zip"
