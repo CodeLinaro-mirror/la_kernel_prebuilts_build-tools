@@ -4,8 +4,8 @@
  * See https://android.googlesource.com/platform/bionic/+/master/libc/kernel/
  * for more information.
  */
-#ifndef __LINUX_NEIGHBOUR_H
-#define __LINUX_NEIGHBOUR_H
+#ifndef _UAPI__LINUX_NEIGHBOUR_H
+#define _UAPI__LINUX_NEIGHBOUR_H
 #include <linux/types.h>
 #include <linux/netlink.h>
 struct ndmsg {
@@ -49,6 +49,7 @@ enum {
 #define NTF_ROUTER (1 << 7)
 #define NTF_EXT_MANAGED (1 << 0)
 #define NTF_EXT_LOCKED (1 << 1)
+#define NTF_EXT_EXT_VALIDATED (1 << 2)
 #define NUD_INCOMPLETE 0x01
 #define NUD_REACHABLE 0x02
 #define NUD_STALE 0x04

@@ -4,8 +4,8 @@
  * See https://android.googlesource.com/platform/bionic/+/master/libc/kernel/
  * for more information.
  */
-#ifndef __LINUX_PKT_SCHED_H
-#define __LINUX_PKT_SCHED_H
+#ifndef _UAPI__LINUX_PKT_SCHED_H
+#define _UAPI__LINUX_PKT_SCHED_H
 #include <linux/const.h>
 #include <linux/types.h>
 #define TC_PRIO_BESTEFFORT 0
@@ -591,6 +591,7 @@ enum {
   TCA_FQ_HORIZON_DROP,
   TCA_FQ_PRIOMAP,
   TCA_FQ_WEIGHTS,
+  TCA_FQ_OFFLOAD_HORIZON,
   __TCA_FQ_MAX
 };
 #define TCA_FQ_MAX (__TCA_FQ_MAX - 1)
@@ -866,6 +867,7 @@ enum {
   TCA_TAPRIO_ATTR_SCHED_SINGLE_ENTRY,
   TCA_TAPRIO_ATTR_SCHED_CLOCKID,
   TCA_TAPRIO_PAD,
+  TCA_TAPRIO_ATTR_PAD = TCA_TAPRIO_PAD,
   TCA_TAPRIO_ATTR_ADMIN_SCHED,
   TCA_TAPRIO_ATTR_SCHED_CYCLE_TIME,
   TCA_TAPRIO_ATTR_SCHED_CYCLE_TIME_EXTENSION,
@@ -887,4 +889,64 @@ enum {
   __TCA_ETS_MAX,
 };
 #define TCA_ETS_MAX (__TCA_ETS_MAX - 1)
+enum tc_dualpi2_drop_overload {
+  TC_DUALPI2_DROP_OVERLOAD_OVERFLOW = 0,
+  TC_DUALPI2_DROP_OVERLOAD_DROP = 1,
+  __TCA_DUALPI2_DROP_OVERLOAD_MAX,
+};
+#define TCA_DUALPI2_DROP_OVERLOAD_MAX (__TCA_DUALPI2_DROP_OVERLOAD_MAX - 1)
+enum tc_dualpi2_drop_early {
+  TC_DUALPI2_DROP_EARLY_DROP_DEQUEUE = 0,
+  TC_DUALPI2_DROP_EARLY_DROP_ENQUEUE = 1,
+  __TCA_DUALPI2_DROP_EARLY_MAX,
+};
+#define TCA_DUALPI2_DROP_EARLY_MAX (__TCA_DUALPI2_DROP_EARLY_MAX - 1)
+enum tc_dualpi2_ecn_mask {
+  TC_DUALPI2_ECN_MASK_L4S_ECT = 1,
+  TC_DUALPI2_ECN_MASK_CLA_ECT = 2,
+  TC_DUALPI2_ECN_MASK_ANY_ECT = 3,
+  __TCA_DUALPI2_ECN_MASK_MAX,
+};
+#define TCA_DUALPI2_ECN_MASK_MAX (__TCA_DUALPI2_ECN_MASK_MAX - 1)
+enum tc_dualpi2_split_gso {
+  TC_DUALPI2_SPLIT_GSO_NO_SPLIT_GSO = 0,
+  TC_DUALPI2_SPLIT_GSO_SPLIT_GSO = 1,
+  __TCA_DUALPI2_SPLIT_GSO_MAX,
+};
+#define TCA_DUALPI2_SPLIT_GSO_MAX (__TCA_DUALPI2_SPLIT_GSO_MAX - 1)
+enum {
+  TCA_DUALPI2_UNSPEC,
+  TCA_DUALPI2_LIMIT,
+  TCA_DUALPI2_MEMORY_LIMIT,
+  TCA_DUALPI2_TARGET,
+  TCA_DUALPI2_TUPDATE,
+  TCA_DUALPI2_ALPHA,
+  TCA_DUALPI2_BETA,
+  TCA_DUALPI2_STEP_THRESH_PKTS,
+  TCA_DUALPI2_STEP_THRESH_US,
+  TCA_DUALPI2_MIN_QLEN_STEP,
+  TCA_DUALPI2_COUPLING,
+  TCA_DUALPI2_DROP_OVERLOAD,
+  TCA_DUALPI2_DROP_EARLY,
+  TCA_DUALPI2_C_PROTECTION,
+  TCA_DUALPI2_ECN_MASK,
+  TCA_DUALPI2_SPLIT_GSO,
+  TCA_DUALPI2_PAD,
+  __TCA_DUALPI2_MAX
+};
+#define TCA_DUALPI2_MAX (__TCA_DUALPI2_MAX - 1)
+struct tc_dualpi2_xstats {
+  __u32 prob;
+  __u32 delay_c;
+  __u32 delay_l;
+  __u32 packets_in_c;
+  __u32 packets_in_l;
+  __u32 maxq;
+  __u32 ecn_mark;
+  __u32 step_marks;
+  __s32 credit;
+  __u32 memory_used;
+  __u32 max_memory_used;
+  __u32 memory_limit;
+};
 #endif
