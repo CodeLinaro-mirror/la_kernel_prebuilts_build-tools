@@ -4,16 +4,14 @@
  * See https://android.googlesource.com/platform/bionic/+/master/libc/kernel/
  * for more information.
  */
-#ifndef __NET_DROPMON_H
-#define __NET_DROPMON_H
+#ifndef _UAPI__NET_DROPMON_H
+#define _UAPI__NET_DROPMON_H
 #include <linux/types.h>
 #include <linux/netlink.h>
 struct net_dm_drop_point {
   __u8 pc[8];
   __u32 count;
 };
-#define is_drop_point_hw(x) do { int ____i, ____j; for(____i = 0; ____i < 8; i ____i ++) ____j |= x[____i]; ____j; \
-} while(0)
 #define NET_DM_CFG_VERSION 0
 #define NET_DM_CFG_ALERT_COUNT 1
 #define NET_DM_CFG_ALERT_DELAY 2
