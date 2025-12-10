@@ -126,16 +126,6 @@ prebuilt_tool(
 )
 
 prebuilt_tool(
-    name = "depmod",
-    visibility = ["//build/kernel:__subpackages__"],
-)
-
-prebuilt_tool(
-    name = "dtc",
-    visibility = ["//build/kernel:__subpackages__"],
-)
-
-prebuilt_tool(
     name = "e2fsck",
     visibility = ["//build/kernel:__subpackages__"],
 )

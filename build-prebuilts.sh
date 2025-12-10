@@ -45,8 +45,6 @@ EOF
         build_image
         build_super_image
         certify_bootimg
-        depmod
-        dtc
         e2fsck
         e2fsdroid
         external_updater
