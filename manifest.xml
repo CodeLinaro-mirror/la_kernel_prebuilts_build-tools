@@ -7,15 +7,15 @@
 
   <superproject name="kernel/superproject" remote="goog" revision="main-kernel-build-tools" />
 
-  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="d55a7146726a409f3a25b6cc024341c877dcdad9" />
+  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="876c6fc2fefa4ea1f857711781ccf0cd35dbe649" />
 
-  <project path="build/blueprint" name="platform/build/blueprint" revision="e405ec6e0ff9c79b08024b488d24f98b5ef78c45" />
+  <project path="build/blueprint" name="platform/build/blueprint" revision="9526d729ca1ca6abe83b0c62c8d5e04afc071480" />
 
-  <project path="build/make" name="platform/build" groups="pdk" revision="db98192d865e677c9e0742480671ac5403ecdfcf">
+  <project path="build/make" name="platform/build" groups="pdk" revision="71d53fd576de91d2b87e69ca17597be8b3dbf6b7">
     <linkfile dest="build/tools" src="tools" />
 </project>
 
-  <project path="build/soong" name="platform/build/soong" revision="64ac208c966a88e99ed15023a0ce731d59df50d4">
+  <project path="build/soong" name="platform/build/soong" revision="645d3626f49bcfd4488c1e712f33d25b70b76994">
     <linkfile dest="Android.bp" src="root.bp" />
 
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
@@ -27,7 +27,7 @@
 
   <project path="prebuilts/jdk/jdk11" name="platform/prebuilts/jdk/jdk11" groups="pdk" clone-depth="1" revision="559b6c1784e6f579a2212eed78bd053474005fe1" />
 
-  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="1cafe071d3b0cd7f98ab7d310b22dc85be5698cf" />
+  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="216cff4e28000237f885fb82892ba392a7e193b6" />
 
   <project path="prebuilts/build-tools" name="platform/prebuilts/build-tools" clone-depth="1" revision="80a0f37c11622825211d0e60ac4cfd0956150509" />
 
@@ -35,7 +35,7 @@
 
   <project path="prebuilts/go/linux-x86" name="platform/prebuilts/go/linux-x86" groups="linux" clone-depth="1" revision="248e5987f7a24f37ec2f10d4dfa78ee46f001223" />
 
-  <project path="bionic" name="platform/bionic" revision="e9952717159c87c18e9f26b26bdf8464eba36b09" />
+  <project path="bionic" name="platform/bionic" revision="35500227ff10b3cdac13da3c1c09a29bd7d1cc4d" />
 
   <project path="external/abseil-cpp" name="platform/external/abseil-cpp" revision="34f531eb26755d71179b947b79da7a6640576a6e" />
 
@@ -105,9 +105,9 @@
 
   <project path="prebuilts/clang-tools" name="platform/prebuilts/clang-tools" clone-depth="1" revision="dd72c1c4e561602305c93667b010f3adf528c67e" />
 
-  <project path="system/core" name="platform/system/core" revision="625e3d003b6f484cd285ef281948ec6cd0e3e27d" />
+  <project path="system/core" name="platform/system/core" revision="cf8b09e3df768d790ad2af7ec1b1a983fb7dac04" />
 
-  <project path="system/fs/fs_mgr" name="platform/system/fs/fs_mgr" revision="af1bb08cab21fcee1dd21ec3f332ed276c838b86" />
+  <project path="system/fs/fs_mgr" name="platform/system/fs/fs_mgr" revision="fc7024a01e33017e1b60d3fd300ebfcebf8786d6" />
 
   <project path="system/logging" name="platform/system/logging" revision="452bc0b7277c2884ae31e63c3ea14fedfdb2d284" />
 
@@ -115,7 +115,7 @@
 
   <project path="system/libbase" name="platform/system/libbase" revision="41158d9e525f68ffc5178d3d9b83a605cf84d3be" />
 
-  <project path="system/security" name="platform/system/security" revision="bc4fa3e3405e35347a7f5b6e52a4f2701308168d" />
+  <project path="system/security" name="platform/system/security" revision="9c78bb4c5c2c189eddb940caf05efd95e1c6f74e" />
 
   <project path="system/tools/aidl" name="platform/system/tools/aidl" revision="437d147493cb9892939194f83b4e3a3f277bc9f9" />
 
