@@ -1472,6 +1472,7 @@ DEFINE_CONST_STACK_OF(SSL_CIPHER)
 #define SSL_CIPHER_ECDHE_RSA_WITH_AES_256_CBC_SHA 0xc014
 #define SSL_CIPHER_ECDHE_PSK_WITH_AES_128_CBC_SHA 0xc035
 #define SSL_CIPHER_ECDHE_PSK_WITH_AES_256_CBC_SHA 0xc036
+#define SSL_CIPHER_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 0xc023
 #define SSL_CIPHER_ECDHE_RSA_WITH_AES_128_CBC_SHA256 0xc027
 #define SSL_CIPHER_RSA_WITH_AES_128_GCM_SHA256 0x009c
 #define SSL_CIPHER_RSA_WITH_AES_256_GCM_SHA384 0x009d
@@ -2264,6 +2265,10 @@ OPENSSL_EXPORT int SSL_CTX_remove_session(SSL_CTX *ctx, SSL_SESSION *session);
 // of time |time|. If |time| is zero, all sessions are removed.
 OPENSSL_EXPORT void SSL_CTX_flush_sessions(SSL_CTX *ctx, uint64_t time);
 
+// SSL_new_session_cb is the type of the callback that is called when a new
+// session is established and ready to be cached.
+typedef int (*SSL_new_session_cb)(SSL *ssl, SSL_SESSION *session);
+
 // SSL_CTX_sess_set_new_cb sets the callback to be called when a new session is
 // established and ready to be cached. If the session cache is disabled (the
 // appropriate one of |SSL_SESS_CACHE_CLIENT| or |SSL_SESS_CACHE_SERVER| is
@@ -2282,13 +2287,16 @@ OPENSSL_EXPORT void SSL_CTX_flush_sessions(SSL_CTX *ctx, uint64_t time);
 // |SSL_do_handshake| or |SSL_connect| completes if False Start is enabled. Thus
 // it's recommended to use this callback over calling |SSL_get_session| on
 // handshake completion.
-OPENSSL_EXPORT void SSL_CTX_sess_set_new_cb(
-    SSL_CTX *ctx, int (*new_session_cb)(SSL *ssl, SSL_SESSION *session));
+OPENSSL_EXPORT void SSL_CTX_sess_set_new_cb(SSL_CTX *ctx,
+                                            SSL_new_session_cb new_session_cb);
 
 // SSL_CTX_sess_get_new_cb returns the callback set by
 // |SSL_CTX_sess_set_new_cb|.
-OPENSSL_EXPORT int (*SSL_CTX_sess_get_new_cb(SSL_CTX *ctx))(
-    SSL *ssl, SSL_SESSION *session);
+OPENSSL_EXPORT SSL_new_session_cb SSL_CTX_sess_get_new_cb(SSL_CTX *ctx);
+
+// SSL_remove_session_cb is the type of the callback that is called when a
+// session is removed from the internal session cache.
+typedef void (*SSL_remove_session_cb)(SSL_CTX *ctx, SSL_SESSION *session);
 
 // SSL_CTX_sess_set_remove_cb sets a callback which is called when a session is
 // removed from the internal session cache.
@@ -2296,13 +2304,16 @@ OPENSSL_EXPORT int (*SSL_CTX_sess_get_new_cb(SSL_CTX *ctx))(
 // TODO(davidben): What is the point of this callback? It seems useless since it
 // only fires on sessions in the internal cache.
 OPENSSL_EXPORT void SSL_CTX_sess_set_remove_cb(
-    SSL_CTX *ctx,
-    void (*remove_session_cb)(SSL_CTX *ctx, SSL_SESSION *session));
+    SSL_CTX *ctx, SSL_remove_session_cb remove_session_cb);
 
 // SSL_CTX_sess_get_remove_cb returns the callback set by
 // |SSL_CTX_sess_set_remove_cb|.
-OPENSSL_EXPORT void (*SSL_CTX_sess_get_remove_cb(SSL_CTX *ctx))(
-    SSL_CTX *ctx, SSL_SESSION *session);
+OPENSSL_EXPORT SSL_remove_session_cb SSL_CTX_sess_get_remove_cb(SSL_CTX *ctx);
+
+// SSL_get_session_cb is the type of the callback that is called to look up a
+// session by ID for a server.
+typedef SSL_SESSION *(*SSL_get_session_cb)(SSL *ssl, const uint8_t *id,
+                                           int id_len, int *out_copy);
 
 // SSL_CTX_sess_set_get_cb sets a callback to look up a session by ID for a
 // server. The callback is passed the session ID and should return a matching
@@ -2323,14 +2334,12 @@ OPENSSL_EXPORT void (*SSL_CTX_sess_get_remove_cb(SSL_CTX *ctx))(
 //
 // If the internal session cache is enabled, the callback is only consulted if
 // the internal cache does not return a match.
-OPENSSL_EXPORT void SSL_CTX_sess_set_get_cb(
-    SSL_CTX *ctx, SSL_SESSION *(*get_session_cb)(SSL *ssl, const uint8_t *id,
-                                                 int id_len, int *out_copy));
+OPENSSL_EXPORT void SSL_CTX_sess_set_get_cb(SSL_CTX *ctx,
+                                            SSL_get_session_cb get_session_cb);
 
 // SSL_CTX_sess_get_get_cb returns the callback set by
 // |SSL_CTX_sess_set_get_cb|.
-OPENSSL_EXPORT SSL_SESSION *(*SSL_CTX_sess_get_get_cb(SSL_CTX *ctx))(
-    SSL *ssl, const uint8_t *id, int id_len, int *out_copy);
+OPENSSL_EXPORT SSL_get_session_cb SSL_CTX_sess_get_get_cb(SSL_CTX *ctx);
 
 // SSL_magic_pending_session_ptr returns a magic |SSL_SESSION|* which indicates
 // that the session isn't currently unavailable. |SSL_get_error| will then
@@ -2565,6 +2574,40 @@ OPENSSL_EXPORT int SSL_CTX_set1_group_ids(SSL_CTX *ctx,
 // on success and zero on failure.
 OPENSSL_EXPORT int SSL_set1_group_ids(SSL *ssl, const uint16_t *group_ids,
                                       size_t num_group_ids);
+
+// SSL_GROUP_FLAG_* define flags used with SSL_CTX_set1_group_ids_with_flags
+// and SSL_set1_group_ids_with_flags.
+//
+// If configuring a server, SSL_GROUP_FLAG_EQUAL_PREFERENCE_WITH_NEXT indicates
+// that the corresponding group has equal preference with the next member of the
+// list of groups being configured. Assigning equal preference to a range of
+// consecutively listed groups allows a server to partially respect the
+// client's preferences when |SSL_OP_CIPHER_SERVER_PREFERENCE| is enabled.
+#define SSL_GROUP_FLAG_EQUAL_PREFERENCE_WITH_NEXT 0x01
+
+// SSL_CTX_set1_group_ids_with_flags sets the preferred groups for |ctx| to
+// |group_ids|, using the corresponding |flags| for each element, which is a set
+// of SSL_GROUP_FLAG_* values ORed together. Each element of |group_ids| should
+// be a unique one of the |SSL_GROUP_*| constants. If |group_ids| is empty, a
+// default list of groups and flags defaulting to zero will be set instead.
+// |group_ids| and |flags| should both have |num_group_ids| elements. It returns
+// one on success and zero on failure.
+OPENSSL_EXPORT int SSL_CTX_set1_group_ids_with_flags(SSL_CTX *ctx,
+                                                     const uint16_t *group_ids,
+                                                     const uint32_t *flags,
+                                                     size_t num_group_ids);
+
+// SSL_set1_group_ids_with_flags sets the preferred groups for |ssl| to
+// |group_ids|, using the corresponding |flags| for each element, which is a set
+// of SSL_GROUP_FLAG_* values ORed toegether. Each element of |group_ids| should
+// be a unique one of the |SSL_GROUP_*| constants. If |group_ids| is empty, a
+// default list of groups and flags defaulting to zero will be set instead.
+// |group_ids| and |flags| should both have |num_group_ids| elements.  It
+// returns one on success and zero on failure.
+OPENSSL_EXPORT int SSL_set1_group_ids_with_flags(SSL *ssl,
+                                                 const uint16_t *group_ids,
+                                                 const uint32_t *flags,
+                                                 size_t num_group_ids);
 
 // SSL_get_group_id returns the ID of the group used by |ssl|'s most recently
 // completed handshake, or 0 if not applicable.
