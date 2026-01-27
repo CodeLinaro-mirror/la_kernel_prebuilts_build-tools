@@ -5,9 +5,9 @@
 
   <default revision="main-kernel-2025" remote="aosp" sync-j="4" />
 
-  <superproject name="kernel/superproject" remote="aosp" revision="build-tools" />
+  <superproject name="kernel/superproject" remote="aosp" revision="build-tools-2025" />
 
-  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="58d77882283e06807a1bfe419c9fb1bfe8353f36" />
+  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="cd654f08119731b5cefdebaf595104fcd95f9210" />
 
   <project path="build/blueprint" name="platform/build/blueprint" revision="dc14b923a2526131c8ffedf3f7ce7a17e9e69a99" />
 
@@ -127,5 +127,5 @@
 
   <project path="tools/external_updater" name="platform/tools/external_updater" revision="d4266e5010f29a9178843e09d63d47a5f83f8509" />
 
-  <project path="tools/libufdt" name="platform/system/libufdt" revision="9b70f594cf149c7c73989c78f03d210f8aa1c1f6" />
+  <project path="tools/libufdt" name="platform/system/libufdt" revision="047d4c328099aec83f94d261be33c3548d18204c" />
 </manifest>
