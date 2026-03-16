@@ -7,15 +7,15 @@
 
   <superproject name="kernel/superproject" remote="goog" revision="main-kernel-build-tools" />
 
-  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="5941be8c4fa8f6c7a136136b9a6289dd7a0d965b" />
+  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="0f6f406a9b1cf09fb740e7c050ac49503f197d1a" />
 
-  <project path="build/blueprint" name="platform/build/blueprint" revision="18968920e96fddabd718bac1b80fbf987d1c4e61" />
+  <project path="build/blueprint" name="platform/build/blueprint" revision="cb754adb13c34c2c96a7c88c391c47140346c2bf" />
 
-  <project path="build/make" name="platform/build" groups="pdk" revision="852e12b4e4e2d1bb9cc8b1ebe1e10355bef17c38">
+  <project path="build/make" name="platform/build" groups="pdk" revision="f8aa53380a49adfd11357fa4fc8ab4ba89caf109">
     <linkfile dest="build/tools" src="tools" />
 </project>
 
-  <project path="build/soong" name="platform/build/soong" revision="ede4610eac9f49f5b6892682520edb5fc5f897f4">
+  <project path="build/soong" name="platform/build/soong" revision="4acb62aebcab958144793552ddf76a08926494ad">
     <linkfile dest="Android.bp" src="root.bp" />
 
     <linkfile dest="bootstrap.bash" src="bootstrap.bash" />
@@ -27,43 +27,45 @@
 
   <project path="prebuilts/jdk/jdk11" name="platform/prebuilts/jdk/jdk11" groups="pdk" clone-depth="1" revision="559b6c1784e6f579a2212eed78bd053474005fe1" />
 
-  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="105aba85d97a53d364585ca755752dae054b49e8" />
+  <project path="prebuilts/siso" name="platform/prebuilts/siso" groups="pdk" clone-depth="1" revision="31a9db1113b102c7a961299177f85308d54cb25a" />
 
-  <project path="prebuilts/build-tools" name="platform/prebuilts/build-tools" clone-depth="1" revision="8d028b29213547d4c940bd84a20c46d88ebad4fb" />
+  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="5a1418aea32676aa5062fda5bf246e43ec40da16" />
+
+  <project path="prebuilts/build-tools" name="platform/prebuilts/build-tools" clone-depth="1" revision="4b14b1ee7a0f28bb67911ea5cd6a5c85c5dcf73c" />
 
   <project path="prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8" name="platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8" clone-depth="1" revision="178883fce6d7bdb28eca348c971be6053ad706e0" />
 
   <project path="prebuilts/go/linux-x86" name="platform/prebuilts/go/linux-x86" groups="linux" clone-depth="1" revision="6dd2c20ce621ec1e806528c3a1f8cd799807faf5" />
 
-  <project path="bionic" name="platform/bionic" revision="542c22e5d01f64603375eef12be691429dc45da4" />
+  <project path="bionic" name="platform/bionic" revision="6a63c9080b91d49a6153730436e499d15a66cdb8" />
 
-  <project path="external/abseil-cpp" name="platform/external/abseil-cpp" revision="34f531eb26755d71179b947b79da7a6640576a6e" />
+  <project path="external/abseil-cpp" name="platform/external/abseil-cpp" revision="af6cf1ad0987a782bbb962da0193cbb0669aca2e" />
 
-  <project path="external/argp-standalone" name="platform/external/argp-standalone" revision="7021060780fea46dc0483b4839c8fe31108357cd" />
+  <project path="external/argp-standalone" name="platform/external/argp-standalone" revision="b09342f2ff7860701a65c3a07ba8b11ed664629c" />
 
-  <project path="external/boringssl" name="platform/external/boringssl" revision="cbde4cd98c990e6b4abf6e4e65f176d72158d830" />
+  <project path="external/boringssl" name="platform/external/boringssl" revision="9cbccdc1dc5e4759fdcddf52c529481c7ad3bacd" />
 
-  <project path="external/dwarves" name="platform/external/dwarves" revision="deac00a65703828d50efb23f5826ee78a950f77d" />
+  <project path="external/dwarves" name="platform/external/dwarves" revision="bd664d9efa0826ade58e5cd68da92c2961dcd5dc" />
 
   <project path="external/e2fsprogs" name="platform/external/e2fsprogs" revision="3eb17241db7cd4408cc1bce9d25b602465ace8ff" />
 
-  <project path="external/elfutils" name="platform/external/elfutils" revision="fad3237bf5b735f45ee2a15e5af2e31d93398f70" />
+  <project path="external/elfutils" name="platform/external/elfutils" revision="9cb268fea609b0fe5f36edb53ec4febfe43e5f1a" />
 
-  <project path="external/erofs-utils" name="platform/external/erofs-utils" revision="18040483e10be9750a85508f9ac07a73d0a78e9e" />
+  <project path="external/erofs-utils" name="platform/external/erofs-utils" revision="b6ed318ee85e4fb46435b0a7bb9baea9a828bcd7" />
 
-  <project path="external/expat" name="platform/external/expat" revision="5793b4f59346f91279d38453d5102cd777373c67" />
+  <project path="external/expat" name="platform/external/expat" revision="3b5839f966339a5643477fa529d82615b683b834" />
 
   <project path="external/fec" name="platform/external/fec" revision="90857deb7973c0ca24c79b9c1809fc9667f32c4f" />
 
-  <project path="external/fmtlib" name="platform/external/fmtlib" revision="141aa529dbf145687fb5e1b703e85a45447fc394" />
+  <project path="external/fmtlib" name="platform/external/fmtlib" revision="7dd2460b1bc2885c4a9bf98cd9863f38ab2d3735" />
 
-  <project path="external/go-cmp" name="platform/external/go-cmp" groups="pdk" revision="163db04d0a17fd9b25316c6203d2d911a40461f6" />
+  <project path="external/go-cmp" name="platform/external/go-cmp" groups="pdk" revision="50e67ec21623ef42fdccdb66d405613bb154ac85" />
 
-  <project path="external/icu" name="platform/external/icu" revision="6ce35ad02a09bc1365b8c17f6b7098b75abb70df" />
+  <project path="external/icu" name="platform/external/icu" revision="dbfcb240deef6b4b8da0f6579d5791774e74f262" />
 
-  <project path="external/jemalloc_new" name="platform/external/jemalloc_new" revision="e2505a442e87b48ae57caea98c91668b8982e67f" />
+  <project path="external/jemalloc_new" name="platform/external/jemalloc_new" revision="67b092d6af4c6737dc43b6b87fccd43872c3cbbd" />
 
-  <project path="external/libbpf" name="platform/external/libbpf" revision="a1db905b394e9ef8af270ba7a7b3fa4fff0d4ecf" />
+  <project path="external/libbpf" name="platform/external/libbpf" revision="bcbc0f0191caa58ac46e0dd9b3e08aabfd03289c" />
 
   <project path="external/libcxx" name="platform/external/libcxx" revision="88894a62bb97313ed9bf79a546f1486de4b2e723" />
 
@@ -73,23 +75,23 @@
 
   <project path="external/licenseclassifier" name="platform/external/licenseclassifier" revision="138a524227f441af0b7ae0faf21a771954e3324d" />
 
-  <project path="external/musl" name="platform/external/musl" revision="db77b51e128eb0bc4ce9a7dd4b886aef432a825b" />
+  <project path="external/musl" name="platform/external/musl" revision="21abb57483001179980f1921abda71633cf1808a" />
 
   <project path="external/obstack" name="platform/external/obstack" revision="44c78067a97ec001ed0f51be62aafb7e8fa4787b" />
 
-  <project path="external/pcre" name="platform/external/pcre" revision="7e23066fc9d3492ea062d531cbeaa5846aae8b65" />
+  <project path="external/pcre" name="platform/external/pcre" revision="bee110a0f6efd63ad53d8d0594417cc36a6ee7ef" />
 
-  <project path="external/protobuf" name="platform/external/protobuf" revision="ba3a949e3d760b5c4b83b387bcdbf4a0b3ea55aa" />
+  <project path="external/protobuf" name="platform/external/protobuf" revision="5d93c0cc05a054e8f315c2ba1c2c0a65314b7275" />
 
-  <project path="external/python/cpython3" name="platform/external/python/cpython3" revision="224166a546656e3bc149835a75df7a648a333216" />
+  <project path="external/python/cpython3" name="platform/external/python/cpython3" revision="20c3738752477da39dce309eb3083c2091f7b880" />
 
-  <project path="external/python/six" name="platform/external/python/six" revision="6bcdf679631e0af933943016f4bcc1f434bb1755" />
+  <project path="external/python/six" name="platform/external/python/six" revision="4f0a417267b8255873d0c667967eda0d20cba5be" />
 
-  <project path="external/selinux" name="platform/external/selinux" revision="a674eded71bf581c162f92f69896ddfd1f2ec348" />
+  <project path="external/selinux" name="platform/external/selinux" revision="0236cef0091e282358806cf8764fdcada21f54f7" />
 
   <project path="external/spdx-tools" name="platform/external/spdx-tools" revision="03140e41b24e113d0577c3641952ed27b8328dbe" />
 
-  <project path="external/sqlite" name="platform/external/sqlite" revision="ebd1d21b69e9b83f0f49d1b6e7c96083329f3395" />
+  <project path="external/sqlite" name="platform/external/sqlite" revision="a9b287adead5ce74b09044b2c44b7c57f977b45d" />
 
   <project path="external/squashfs-tools" name="platform/external/squashfs-tools" revision="0f1afb009e699504301b3c670fe00a679c5192ad" />
 
@@ -99,33 +101,33 @@
 
   <project path="external/swig" name="platform/external/swig" revision="dcabe60c35082d3beab79359d48093a23f0b09aa" />
 
-  <project path="external/zlib" name="platform/external/zlib" revision="92c6e723425c6947dd3afc4f828346e9326dca01" />
+  <project path="external/zlib" name="platform/external/zlib" revision="a5bf40485579be720172ecd65e852f3bc94487ff" />
 
-  <project path="external/zstd" name="platform/external/zstd" revision="500d87e8fab9cdc1b1163f19a0529f529cf44a2a" />
+  <project path="external/zstd" name="platform/external/zstd" revision="189c2afae425b607dacd66afdea38a688408fd07" />
 
   <project path="prebuilts/clang-tools" name="platform/prebuilts/clang-tools" clone-depth="1" revision="dd72c1c4e561602305c93667b010f3adf528c67e" />
 
-  <project path="system/core" name="platform/system/core" revision="9009a797838c09c5f64524643be607ebfdea21a7" />
+  <project path="system/core" name="platform/system/core" revision="74e422908a88e6577eb5999603a2bcd179d68cbd" />
 
-  <project path="system/fs/fs_mgr" name="platform/system/fs/fs_mgr" revision="e21dab97b602905f99d7e7fe90074a47cd502390" />
+  <project path="system/fs/fs_mgr" name="platform/system/fs/fs_mgr" revision="fca14ca9a8647ccdcc8f5d4ebc5dac5c7c2b7168" />
 
-  <project path="system/logging" name="platform/system/logging" revision="19c2f2a4d3d95958274961da9285b932b8c12ecb" />
+  <project path="system/logging" name="platform/system/logging" revision="bb9f624cb36a54e1a0bce8249361e887b765d4b3" />
 
-  <project path="system/extras" name="platform/system/extras" revision="c83a2f4f69d2dbd28ec1ef37a8ba864bfdc24c35" />
+  <project path="system/extras" name="platform/system/extras" revision="0e3bfe74a12116e71bc48c511520d5c93e9eca0e" />
 
-  <project path="system/libbase" name="platform/system/libbase" revision="41158d9e525f68ffc5178d3d9b83a605cf84d3be" />
+  <project path="system/libbase" name="platform/system/libbase" revision="ed0bce85fc9b9f3ba0eb544966acb3d2fadc535b" />
 
-  <project path="system/security" name="platform/system/security" revision="264c92d07f7649767ce4626e2b92d0154c324dc1" />
+  <project path="system/security" name="platform/system/security" revision="b51245a7e890e31431485373e4b49016513c7920" />
 
-  <project path="system/tools/aidl" name="platform/system/tools/aidl" revision="589f44d069ceac5447daa01b9294eb12d6cfc942" />
+  <project path="system/tools/aidl" name="platform/system/tools/aidl" revision="e99ce589dbd0dc54be71dec82db3e644e8454864" />
 
-  <project path="external/avb" name="platform/external/avb" revision="6fce968716e94c61fd8d754bb2a7f6a0805a0bec" />
+  <project path="external/avb" name="platform/external/avb" revision="2b0158ee8312b4ca8d934a247fa6c01ce0c01182" />
 
-  <project path="external/dtc" name="platform/external/dtc" revision="a698893c7389aa0a61069d00fd718e0954e952bf" />
+  <project path="external/dtc" name="platform/external/dtc" revision="9efb497f47771a647291a292c77e94a17c3eb06d" />
 
-  <project path="external/lz4" name="platform/external/lz4" revision="e4456d5aade9141d3cd627726e45451139ba6c7d" />
+  <project path="external/lz4" name="platform/external/lz4" revision="fa07808cdff4ec7263a0a38efcbd008797a83e91" />
 
-  <project path="system/tools/mkbootimg" name="platform/system/tools/mkbootimg" revision="174640457eb5667aa4259a6c6e001e169ea29929" />
+  <project path="system/tools/mkbootimg" name="platform/system/tools/mkbootimg" revision="ba1d624931f627c4364e37927de8fb1ddd3da77a" />
 
   <project path="tools/external_updater" name="platform/tools/external_updater" revision="b8c5e2ad8f8083f4d086d9a68b07f6f6aac2b850" />
 
