@@ -7,7 +7,7 @@
 
   <superproject name="kernel/superproject" remote="aosp" revision="build-tools-2025" />
 
-  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="cd654f08119731b5cefdebaf595104fcd95f9210" />
+  <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="b12d639efb8844ee1be5b437d707e7c94be3ce3a" />
 
   <project path="build/blueprint" name="platform/build/blueprint" revision="dc14b923a2526131c8ffedf3f7ce7a17e9e69a99" />
 
@@ -25,7 +25,7 @@
 
   <project path="prebuilts/jdk/jdk11" name="platform/prebuilts/jdk/jdk11" groups="pdk" clone-depth="1" revision="b43dc974b874d58e939c51c774276d3ed173e4e1" />
 
-  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="9a98ca4072ec000f301bd3ece481ea2baca76ca5" />
+  <project path="prebuilts/clang/host/linux-x86" name="platform/prebuilts/clang/host/linux-x86" groups="linux" clone-depth="1" revision="77c95e8253c2c82ffd4fee92c0ad9f5ac1e8ca04" />
 
   <project path="prebuilts/build-tools" name="platform/prebuilts/build-tools" clone-depth="1" revision="574765b494f226284968a8d156437e4c932aad61" />
 
@@ -127,5 +127,5 @@
 
   <project path="tools/external_updater" name="platform/tools/external_updater" revision="d4266e5010f29a9178843e09d63d47a5f83f8509" />
 
-  <project path="tools/libufdt" name="platform/system/libufdt" revision="047d4c328099aec83f94d261be33c3548d18204c" />
+  <project path="tools/libufdt" name="platform/system/libufdt" revision="1601937b4c0e9246c28026f981443a7915899ead" />
 </manifest>
