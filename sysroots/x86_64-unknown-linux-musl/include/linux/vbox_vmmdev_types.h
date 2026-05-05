@@ -144,7 +144,7 @@ struct vmmdev_hgcm_function_parameter32 {
       __u32 size;
       __u32 offset;
     } page_list;
-  } u;
+  } __attribute__((__packed__)) u;
 } __attribute__((__packed__));
 struct vmmdev_hgcm_function_parameter64 {
   enum vmmdev_hgcm_function_parameter_type type;
@@ -156,7 +156,7 @@ struct vmmdev_hgcm_function_parameter64 {
       union {
         __u64 phys_addr;
         __u64 linear_addr;
-      } u;
+      } __attribute__((__packed__)) u;
     } __attribute__((__packed__)) pointer;
     struct {
       __u32 size;

@@ -6,6 +6,7 @@
  */
 #ifndef _DMA_BUF_UAPI_H_
 #define _DMA_BUF_UAPI_H_
+#include <linux/ioctl.h>
 #include <linux/types.h>
 struct dma_buf_sync {
   __u64 flags;

@@ -7,9 +7,9 @@
 #ifndef _UAPI_LINUX_ETHTOOL_H
 #define _UAPI_LINUX_ETHTOOL_H
 #include <linux/const.h>
+#include <linux/typelimits.h>
 #include <linux/types.h>
 #include <linux/if_ether.h>
-#include <limits.h>
 struct ethtool_cmd {
   __u32 cmd;
   __u32 supported;
@@ -197,6 +197,8 @@ enum ethtool_link_ext_state {
   ETHTOOL_LINK_EXT_STATE_POWER_BUDGET_EXCEEDED,
   ETHTOOL_LINK_EXT_STATE_OVERHEAT,
   ETHTOOL_LINK_EXT_STATE_MODULE,
+  ETHTOOL_LINK_EXT_STATE_OTP_SPEED_VIOLATION,
+  ETHTOOL_LINK_EXT_STATE_BMC_REQUEST_DOWN,
 };
 enum ethtool_link_ext_substate_autoneg {
   ETHTOOL_LINK_EXT_SUBSTATE_AN_NO_PARTNER_DETECTED = 1,
@@ -907,6 +909,7 @@ enum ethtool_link_mode_bit_indices {
 #define SPEED_40000 40000
 #define SPEED_50000 50000
 #define SPEED_56000 56000
+#define SPEED_80000 80000
 #define SPEED_100000 100000
 #define SPEED_200000 200000
 #define SPEED_400000 400000

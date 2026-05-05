@@ -19,6 +19,7 @@ enum {
   BNXT_RE_UCNTX_CMASK_DBR_PACING_ENABLED = 0x08ULL,
   BNXT_RE_UCNTX_CMASK_POW2_DISABLED = 0x10ULL,
   BNXT_RE_UCNTX_CMASK_MSN_TABLE_ENABLED = 0x40,
+  BNXT_RE_UCNTX_CMASK_QP_RATE_LIMIT_ENABLED = 0x80ULL,
 };
 enum bnxt_re_wqe_mode {
   BNXT_QPLIB_WQE_MODE_STATIC = 0x00,
@@ -144,5 +145,14 @@ enum bnxt_re_toggle_mem_attrs {
 enum bnxt_re_toggle_mem_methods {
   BNXT_RE_METHOD_GET_TOGGLE_MEM = (1U << UVERBS_ID_NS_SHIFT),
   BNXT_RE_METHOD_RELEASE_TOGGLE_MEM,
+};
+struct bnxt_re_packet_pacing_caps {
+  __u32 qp_rate_limit_min;
+  __u32 qp_rate_limit_max;
+  __u32 supported_qpts;
+  __u32 reserved;
+};
+struct bnxt_re_query_device_ex_resp {
+  struct bnxt_re_packet_pacing_caps packet_pacing_caps;
 };
 #endif

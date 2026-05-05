@@ -7,7 +7,8 @@
 #ifndef _LINUX_TASKSTATS_H
 #define _LINUX_TASKSTATS_H
 #include <linux/types.h>
-#define TASKSTATS_VERSION 16
+#include <linux/time_types.h>
+#define TASKSTATS_VERSION 17
 #define TS_COMM_LEN 32
 struct taskstats {
   __u16 version;
@@ -83,6 +84,14 @@ struct taskstats {
   __u64 wpcopy_delay_min;
   __u64 irq_delay_max;
   __u64 irq_delay_min;
+  struct __kernel_timespec cpu_delay_max_ts;
+  struct __kernel_timespec blkio_delay_max_ts;
+  struct __kernel_timespec swapin_delay_max_ts;
+  struct __kernel_timespec freepages_delay_max_ts;
+  struct __kernel_timespec thrashing_delay_max_ts;
+  struct __kernel_timespec compact_delay_max_ts;
+  struct __kernel_timespec wpcopy_delay_max_ts;
+  struct __kernel_timespec irq_delay_max_ts;
 };
 enum {
   TASKSTATS_CMD_UNSPEC = 0,

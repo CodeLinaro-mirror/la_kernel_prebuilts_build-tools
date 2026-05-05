@@ -429,14 +429,14 @@ enum perf_callchain_context {
 union perf_mem_data_src {
   __u64 val;
   struct {
-    __u64 mem_op : 5, mem_lvl : 14, mem_snoop : 5, mem_lock : 2, mem_dtlb : 7, mem_lvl_num : 4, mem_remote : 1, mem_snoopx : 2, mem_blk : 3, mem_hops : 3, mem_rsvd : 18;
+    __u64 mem_op : 5, mem_lvl : 14, mem_snoop : 5, mem_lock : 2, mem_dtlb : 7, mem_lvl_num : 4, mem_remote : 1, mem_snoopx : 2, mem_blk : 3, mem_hops : 3, mem_region : 5, mem_rsvd : 13;
   };
 };
 #elif defined(__BIG_ENDIAN_BITFIELD)
 union perf_mem_data_src {
   __u64 val;
   struct {
-    __u64 mem_rsvd : 18, mem_hops : 3, mem_blk : 3, mem_snoopx : 2, mem_remote : 1, mem_lvl_num : 4, mem_dtlb : 7, mem_lock : 2, mem_snoop : 5, mem_lvl : 14, mem_op : 5;
+    __u64 mem_rsvd : 13, mem_region : 5, mem_hops : 3, mem_blk : 3, mem_snoopx : 2, mem_remote : 1, mem_lvl_num : 4, mem_dtlb : 7, mem_lock : 2, mem_snoop : 5, mem_lvl : 14, mem_op : 5;
   };
 };
 #else
@@ -471,6 +471,7 @@ union perf_mem_data_src {
 #define PERF_MEM_LVLNUM_L4 0x0004
 #define PERF_MEM_LVLNUM_L2_MHB 0x0005
 #define PERF_MEM_LVLNUM_MSC 0x0006
+#define PERF_MEM_LVLNUM_L0 0x0007
 #define PERF_MEM_LVLNUM_UNC 0x0008
 #define PERF_MEM_LVLNUM_CXL 0x0009
 #define PERF_MEM_LVLNUM_IO 0x000a
@@ -509,6 +510,23 @@ union perf_mem_data_src {
 #define PERF_MEM_HOPS_2 0x0003
 #define PERF_MEM_HOPS_3 0x0004
 #define PERF_MEM_HOPS_SHIFT 43
+#define PERF_MEM_REGION_NA 0x0
+#define PERF_MEM_REGION_RSVD 0x01
+#define PERF_MEM_REGION_L_SHARE 0x02
+#define PERF_MEM_REGION_L_NON_SHARE 0x03
+#define PERF_MEM_REGION_O_IO 0x04
+#define PERF_MEM_REGION_O_SHARE 0x05
+#define PERF_MEM_REGION_O_NON_SHARE 0x06
+#define PERF_MEM_REGION_MMIO 0x07
+#define PERF_MEM_REGION_MEM0 0x08
+#define PERF_MEM_REGION_MEM1 0x09
+#define PERF_MEM_REGION_MEM2 0x0a
+#define PERF_MEM_REGION_MEM3 0x0b
+#define PERF_MEM_REGION_MEM4 0x0c
+#define PERF_MEM_REGION_MEM5 0x0d
+#define PERF_MEM_REGION_MEM6 0x0e
+#define PERF_MEM_REGION_MEM7 0x0f
+#define PERF_MEM_REGION_SHIFT 46
 #define PERF_MEM_S(a,s) (((__u64) PERF_MEM_ ##a ##_ ##s) << PERF_MEM_ ##a ##_SHIFT)
 struct perf_branch_entry {
   __u64 from;

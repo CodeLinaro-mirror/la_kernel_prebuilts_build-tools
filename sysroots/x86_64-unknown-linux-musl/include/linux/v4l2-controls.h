@@ -946,6 +946,8 @@ enum v4l2_flash_strobe_source {
 #define V4L2_FLASH_FAULT_LED_OVER_TEMPERATURE (1 << 8)
 #define V4L2_CID_FLASH_CHARGE (V4L2_CID_FLASH_CLASS_BASE + 11)
 #define V4L2_CID_FLASH_READY (V4L2_CID_FLASH_CLASS_BASE + 12)
+#define V4L2_CID_FLASH_DURATION (V4L2_CID_FLASH_CLASS_BASE + 13)
+#define V4L2_CID_FLASH_STROBE_OE (V4L2_CID_FLASH_CLASS_BASE + 14)
 #define V4L2_CID_JPEG_CLASS_BASE (V4L2_CTRL_CLASS_JPEG | 0x900)
 #define V4L2_CID_JPEG_CLASS (V4L2_CTRL_CLASS_JPEG | 1)
 #define V4L2_CID_JPEG_CHROMA_SUBSAMPLING (V4L2_CID_JPEG_CLASS_BASE + 1)
@@ -1369,6 +1371,8 @@ struct v4l2_ctrl_mpeg2_quantisation {
 #define V4L2_CID_STATELESS_HEVC_DECODE_MODE (V4L2_CID_CODEC_STATELESS_BASE + 405)
 #define V4L2_CID_STATELESS_HEVC_START_CODE (V4L2_CID_CODEC_STATELESS_BASE + 406)
 #define V4L2_CID_STATELESS_HEVC_ENTRY_POINT_OFFSETS (V4L2_CID_CODEC_STATELESS_BASE + 407)
+#define V4L2_CID_STATELESS_HEVC_EXT_SPS_ST_RPS (V4L2_CID_CODEC_STATELESS_BASE + 408)
+#define V4L2_CID_STATELESS_HEVC_EXT_SPS_LT_RPS (V4L2_CID_CODEC_STATELESS_BASE + 409)
 enum v4l2_stateless_hevc_decode_mode {
   V4L2_STATELESS_HEVC_DECODE_MODE_SLICE_BASED,
   V4L2_STATELESS_HEVC_DECODE_MODE_FRAME_BASED,
@@ -1559,6 +1563,24 @@ struct v4l2_ctrl_hevc_scaling_matrix {
   __u8 scaling_list_32x32[2][64];
   __u8 scaling_list_dc_coef_16x16[6];
   __u8 scaling_list_dc_coef_32x32[2];
+};
+#define V4L2_HEVC_EXT_SPS_ST_RPS_FLAG_INTER_REF_PIC_SET_PRED 0x1
+struct v4l2_ctrl_hevc_ext_sps_st_rps {
+  __u8 delta_idx_minus1;
+  __u8 delta_rps_sign;
+  __u8 num_negative_pics;
+  __u8 num_positive_pics;
+  __u32 used_by_curr_pic;
+  __u32 use_delta_flag;
+  __u16 abs_delta_rps_minus1;
+  __u16 delta_poc_s0_minus1[16];
+  __u16 delta_poc_s1_minus1[16];
+  __u16 flags;
+};
+#define V4L2_HEVC_EXT_SPS_LT_RPS_FLAG_USED_LT 0x1
+struct v4l2_ctrl_hevc_ext_sps_lt_rps {
+  __u16 lt_ref_pic_poc_lsb_sps;
+  __u16 flags;
 };
 #define V4L2_VP9_LOOP_FILTER_FLAG_DELTA_ENABLED 0x1
 #define V4L2_VP9_LOOP_FILTER_FLAG_DELTA_UPDATE 0x2

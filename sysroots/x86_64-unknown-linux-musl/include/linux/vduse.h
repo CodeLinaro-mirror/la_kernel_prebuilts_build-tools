@@ -9,6 +9,7 @@
 #include <linux/types.h>
 #define VDUSE_BASE 0x81
 #define VDUSE_API_VERSION 0
+#define VDUSE_API_VERSION_1 1
 #define VDUSE_GET_API_VERSION _IOR(VDUSE_BASE, 0x00, __u64)
 #define VDUSE_SET_API_VERSION _IOW(VDUSE_BASE, 0x01, __u64)
 struct vduse_dev_config {
@@ -19,7 +20,9 @@ struct vduse_dev_config {
   __u64 features;
   __u32 vq_num;
   __u32 vq_align;
-  __u32 reserved[13];
+  __u32 ngroups;
+  __u32 nas;
+  __u32 reserved[11];
   __u32 config_size;
   __u8 config[];
 };
@@ -46,7 +49,9 @@ struct vduse_config_data {
 struct vduse_vq_config {
   __u32 index;
   __u16 max_size;
-  __u16 reserved[13];
+  __u16 reserved1;
+  __u32 group;
+  __u16 reserved2[10];
 };
 #define VDUSE_VQ_SETUP _IOW(VDUSE_BASE, 0x14, struct vduse_vq_config)
 struct vduse_vq_state_split {
@@ -57,6 +62,10 @@ struct vduse_vq_state_packed {
   __u16 last_avail_idx;
   __u16 last_used_counter;
   __u16 last_used_idx;
+};
+struct vduse_vq_group_asid {
+  __u32 group;
+  __u32 asid;
 };
 struct vduse_vq_info {
   __u32 index;
@@ -82,7 +91,8 @@ struct vduse_iova_umem {
   __u64 uaddr;
   __u64 iova;
   __u64 size;
-  __u64 reserved[3];
+  __u32 asid;
+  __u32 reserved[5];
 };
 #define VDUSE_IOTLB_REG_UMEM _IOW(VDUSE_BASE, 0x18, struct vduse_iova_umem)
 #define VDUSE_IOTLB_DEREG_UMEM _IOW(VDUSE_BASE, 0x19, struct vduse_iova_umem)
@@ -91,13 +101,25 @@ struct vduse_iova_info {
   __u64 last;
 #define VDUSE_IOVA_CAP_UMEM (1 << 0)
   __u64 capability;
-  __u64 reserved[3];
+  __u32 asid;
+  __u32 reserved[5];
 };
 #define VDUSE_IOTLB_GET_INFO _IOWR(VDUSE_BASE, 0x1a, struct vduse_iova_info)
+struct vduse_iotlb_entry_v2 {
+  __u64 offset;
+  __u64 start;
+  __u64 last;
+  __u8 perm;
+  __u8 padding[7];
+  __u32 asid;
+  __u32 reserved[11];
+};
+#define VDUSE_IOTLB_GET_FD2 _IOWR(VDUSE_BASE, 0x1b, struct vduse_iotlb_entry_v2)
 enum vduse_req_type {
   VDUSE_GET_VQ_STATE,
   VDUSE_SET_STATUS,
   VDUSE_UPDATE_IOTLB,
+  VDUSE_SET_VQ_GROUP_ASID,
 };
 struct vduse_vq_state {
   __u32 index;
@@ -113,6 +135,12 @@ struct vduse_iova_range {
   __u64 start;
   __u64 last;
 };
+struct vduse_iova_range_v2 {
+  __u64 start;
+  __u64 last;
+  __u32 asid;
+  __u32 padding;
+};
 struct vduse_dev_request {
   __u32 type;
   __u32 request_id;
@@ -121,6 +149,8 @@ struct vduse_dev_request {
     struct vduse_vq_state vq_state;
     struct vduse_dev_status s;
     struct vduse_iova_range iova;
+    struct vduse_iova_range_v2 iova_v2;
+    struct vduse_vq_group_asid vq_group_asid;
     __u32 padding[32];
   };
 };
