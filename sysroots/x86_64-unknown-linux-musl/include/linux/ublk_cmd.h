@@ -33,6 +33,7 @@
 #define UBLK_U_CMD_DEL_DEV_ASYNC _IOR('u', 0x14, struct ublksrv_ctrl_cmd)
 #define UBLK_U_CMD_UPDATE_SIZE _IOWR('u', 0x15, struct ublksrv_ctrl_cmd)
 #define UBLK_U_CMD_QUIESCE_DEV _IOWR('u', 0x16, struct ublksrv_ctrl_cmd)
+#define UBLK_U_CMD_TRY_STOP_DEV _IOWR('u', 0x17, struct ublksrv_ctrl_cmd)
 #define UBLK_FEATURES_LEN 8
 #define UBLK_IO_FETCH_REQ 0x20
 #define UBLK_IO_COMMIT_AND_FETCH_REQ 0x21
@@ -42,6 +43,9 @@
 #define UBLK_U_IO_NEED_GET_DATA _IOWR('u', UBLK_IO_NEED_GET_DATA, struct ublksrv_io_cmd)
 #define UBLK_U_IO_REGISTER_IO_BUF _IOWR('u', 0x23, struct ublksrv_io_cmd)
 #define UBLK_U_IO_UNREGISTER_IO_BUF _IOWR('u', 0x24, struct ublksrv_io_cmd)
+#define UBLK_U_IO_PREP_IO_CMDS _IOWR('u', 0x25, struct ublk_batch_io)
+#define UBLK_U_IO_COMMIT_IO_CMDS _IOWR('u', 0x26, struct ublk_batch_io)
+#define UBLK_U_IO_FETCH_IO_CMDS _IOWR('u', 0x27, struct ublk_batch_io)
 #define UBLK_IO_RES_OK 0
 #define UBLK_IO_RES_NEED_GET_DATA 1
 #define UBLK_IO_RES_ABORT (- ENODEV)
@@ -60,6 +64,8 @@
 #define UBLK_MAX_NR_QUEUES (1U << UBLK_QID_BITS)
 #define UBLKSRV_IO_BUF_TOTAL_BITS (UBLK_QID_OFF + UBLK_QID_BITS)
 #define UBLKSRV_IO_BUF_TOTAL_SIZE (1ULL << UBLKSRV_IO_BUF_TOTAL_BITS)
+#define UBLK_INTEGRITY_FLAG_OFF 62
+#define UBLKSRV_IO_INTEGRITY_FLAG (1ULL << UBLK_INTEGRITY_FLAG_OFF)
 #define UBLK_F_SUPPORT_ZERO_COPY (1ULL << 0)
 #define UBLK_F_URING_CMD_COMP_IN_TASK (1ULL << 1)
 #define UBLK_F_NEED_GET_DATA (1UL << 2)
@@ -75,6 +81,10 @@
 #define UBLK_F_QUIESCE (1ULL << 12)
 #define UBLK_F_PER_IO_DAEMON (1ULL << 13)
 #define UBLK_F_BUF_REG_OFF_DAEMON (1ULL << 14)
+#define UBLK_F_BATCH_IO (1ULL << 15)
+#define UBLK_F_INTEGRITY (1ULL << 16)
+#define UBLK_F_SAFE_STOP_DEV (1ULL << 17)
+#define UBLK_F_NO_AUTO_PART_SCAN (1ULL << 18)
 #define UBLK_S_DEV_DEAD 0
 #define UBLK_S_DEV_LIVE 1
 #define UBLK_S_DEV_QUIESCED 2
@@ -126,6 +136,7 @@ struct ublksrv_ctrl_dev_info {
 #define UBLK_IO_F_NOUNMAP (1U << 15)
 #define UBLK_IO_F_SWAP (1U << 16)
 #define UBLK_IO_F_NEED_REG_BUF (1U << 17)
+#define UBLK_IO_F_INTEGRITY (1UL << 18)
 struct ublksrv_io_desc {
   __u32 op_flags;
   union {
@@ -151,6 +162,22 @@ struct ublksrv_io_cmd {
     __u64 addr;
     __u64 zone_append_lba;
   };
+};
+struct ublk_elem_header {
+  __u16 tag;
+  __u16 buf_index;
+  __s32 result;
+};
+struct ublk_batch_io {
+  __u16 q_id;
+#define UBLK_BATCH_F_HAS_ZONE_LBA (1 << 0)
+#define UBLK_BATCH_F_HAS_BUF_ADDR (1 << 1)
+#define UBLK_BATCH_F_AUTO_BUF_REG_FALLBACK (1 << 2)
+  __u16 flags;
+  __u16 nr_elem;
+  __u8 elem_bytes;
+  __u8 reserved;
+  __u64 reserved2;
 };
 struct ublk_param_basic {
 #define UBLK_ATTR_READ_ONLY (1 << 0)
@@ -198,6 +225,16 @@ struct ublk_param_segment {
   __u16 max_segments;
   __u8 pad[2];
 };
+struct ublk_param_integrity {
+  __u32 flags;
+  __u16 max_integrity_segments;
+  __u8 interval_exp;
+  __u8 metadata_size;
+  __u8 pi_offset;
+  __u8 csum_type;
+  __u8 tag_size;
+  __u8 pad[5];
+};
 struct ublk_params {
   __u32 len;
 #define UBLK_PARAM_TYPE_BASIC (1 << 0)
@@ -206,6 +243,7 @@ struct ublk_params {
 #define UBLK_PARAM_TYPE_ZONED (1 << 3)
 #define UBLK_PARAM_TYPE_DMA_ALIGN (1 << 4)
 #define UBLK_PARAM_TYPE_SEGMENT (1 << 5)
+#define UBLK_PARAM_TYPE_INTEGRITY (1 << 6)
   __u32 types;
   struct ublk_param_basic basic;
   struct ublk_param_discard discard;
@@ -213,5 +251,6 @@ struct ublk_params {
   struct ublk_param_zoned zoned;
   struct ublk_param_dma_align dma;
   struct ublk_param_segment seg;
+  struct ublk_param_integrity integrity;
 };
 #endif

@@ -47,6 +47,7 @@
 #define EMULTIHOP 72
 #define EDOTDOT 73
 #define EBADMSG 74
+#define EFSBADCRC EBADMSG
 #define EOVERFLOW 75
 #define ENOTUNIQ 76
 #define EBADFD 77
@@ -90,6 +91,7 @@
 #define EINPROGRESS 115
 #define ESTALE 116
 #define EUCLEAN 117
+#define EFSCORRUPTED EUCLEAN
 #define ENOTNAM 118
 #define ENAVAIL 119
 #define EISNAM 120

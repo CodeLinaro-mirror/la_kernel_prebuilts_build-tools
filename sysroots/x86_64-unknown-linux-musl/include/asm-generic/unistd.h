@@ -419,8 +419,9 @@
 #define __NR_file_getattr 468
 #define __NR_file_setattr 469
 #define __NR_listns 470
+#define __NR_rseq_slice_yield 471
 #undef __NR_syscalls
-#define __NR_syscalls 471
+#define __NR_syscalls 472
 #if __BITS_PER_LONG == 64 && !defined(__SYSCALL_COMPAT)
 #define __NR_fcntl __NR3264_fcntl
 #define __NR_statfs __NR3264_statfs

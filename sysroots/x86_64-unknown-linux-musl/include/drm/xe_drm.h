@@ -24,6 +24,7 @@ extern "C" {
 #define DRM_XE_OBSERVATION 0x0b
 #define DRM_XE_MADVISE 0x0c
 #define DRM_XE_VM_QUERY_MEM_RANGE_ATTRS 0x0d
+#define DRM_XE_EXEC_QUEUE_SET_PROPERTY 0x0e
 #define DRM_IOCTL_XE_DEVICE_QUERY DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_DEVICE_QUERY, struct drm_xe_device_query)
 #define DRM_IOCTL_XE_GEM_CREATE DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_GEM_CREATE, struct drm_xe_gem_create)
 #define DRM_IOCTL_XE_GEM_MMAP_OFFSET DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_GEM_MMAP_OFFSET, struct drm_xe_gem_mmap_offset)
@@ -38,6 +39,7 @@ extern "C" {
 #define DRM_IOCTL_XE_OBSERVATION DRM_IOW(DRM_COMMAND_BASE + DRM_XE_OBSERVATION, struct drm_xe_observation_param)
 #define DRM_IOCTL_XE_MADVISE DRM_IOW(DRM_COMMAND_BASE + DRM_XE_MADVISE, struct drm_xe_madvise)
 #define DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_QUERY_MEM_RANGE_ATTRS, struct drm_xe_vm_query_mem_range_attr)
+#define DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_SET_PROPERTY, struct drm_xe_exec_queue_set_property)
 struct drm_xe_user_extension {
   __u64 next_extension;
   __u32 name;
@@ -47,7 +49,10 @@ struct drm_xe_ext_set_property {
   struct drm_xe_user_extension base;
   __u32 property;
   __u32 pad;
-  __u64 value;
+  union {
+    __u64 value;
+    __u64 ptr;
+  };
   __u64 reserved[2];
 };
 struct drm_xe_engine_class_instance {
@@ -98,6 +103,7 @@ struct drm_xe_query_config {
 #define DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM (1 << 0)
 #define DRM_XE_QUERY_CONFIG_FLAG_HAS_LOW_LATENCY (1 << 1)
 #define DRM_XE_QUERY_CONFIG_FLAG_HAS_CPU_ADDR_MIRROR (1 << 2)
+#define DRM_XE_QUERY_CONFIG_FLAG_HAS_NO_COMPRESSION_HINT (1 << 3)
 #define DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT 2
 #define DRM_XE_QUERY_CONFIG_VA_BITS 3
 #define DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY 4
@@ -186,6 +192,7 @@ struct drm_xe_gem_create {
 #define DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING (1 << 0)
 #define DRM_XE_GEM_CREATE_FLAG_SCANOUT (1 << 1)
 #define DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM (1 << 2)
+#define DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION (1 << 3)
   __u32 flags;
   __u32 vm_id;
   __u32 handle;
@@ -268,6 +275,10 @@ struct drm_xe_exec_queue_create {
 #define DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY 0
 #define DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE 1
 #define DRM_XE_EXEC_QUEUE_SET_PROPERTY_PXP_TYPE 2
+#define DRM_XE_EXEC_QUEUE_SET_HANG_REPLAY_STATE 3
+#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP 4
+#define DRM_XE_MULTI_GROUP_CREATE (1ull << 63)
+#define DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY 5
   __u64 extensions;
   __u16 width;
   __u16 num_placements;
@@ -363,6 +374,7 @@ enum drm_xe_oa_unit_type {
   DRM_XE_OA_UNIT_TYPE_OAG,
   DRM_XE_OA_UNIT_TYPE_OAM,
   DRM_XE_OA_UNIT_TYPE_OAM_SAG,
+  DRM_XE_OA_UNIT_TYPE_MERT,
 };
 struct drm_xe_oa_unit {
   __u64 extensions;
@@ -374,8 +386,11 @@ struct drm_xe_oa_unit {
 #define DRM_XE_OA_CAPS_OA_BUFFER_SIZE (1 << 2)
 #define DRM_XE_OA_CAPS_WAIT_NUM_REPORTS (1 << 3)
 #define DRM_XE_OA_CAPS_OAM (1 << 4)
+#define DRM_XE_OA_CAPS_OA_UNIT_GT_ID (1 << 5)
   __u64 oa_timestamp_freq;
-  __u64 reserved[4];
+  __u16 gt_id;
+  __u16 reserved1[3];
+  __u64 reserved[3];
   __u64 num_engines;
   struct drm_xe_engine_class_instance eci[];
 };
@@ -471,7 +486,7 @@ struct drm_xe_madvise {
 #define DRM_XE_MIGRATE_ALL_PAGES 0
 #define DRM_XE_MIGRATE_ONLY_SYSTEM_PAGES 1
       __u16 migration_policy;
-      __u16 pad;
+      __u16 region_instance;
       __u64 reserved;
     } preferred_mem_loc;
     struct {
@@ -517,6 +532,13 @@ struct drm_xe_vm_query_mem_range_attr {
   __u64 range;
   __u64 sizeof_mem_range_attr;
   __u64 vector_of_mem_attr;
+  __u64 reserved[2];
+};
+struct drm_xe_exec_queue_set_property {
+  __u64 extensions;
+  __u32 exec_queue_id;
+  __u32 property;
+  __u64 value;
   __u64 reserved[2];
 };
 #ifdef __cplusplus

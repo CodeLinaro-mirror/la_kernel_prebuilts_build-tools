@@ -33,6 +33,8 @@ struct vmclock_abi {
 #define VMCLOCK_FLAG_TIME_ESTERROR_VALID (1 << 5)
 #define VMCLOCK_FLAG_TIME_MAXERROR_VALID (1 << 6)
 #define VMCLOCK_FLAG_TIME_MONOTONIC (1 << 7)
+#define VMCLOCK_FLAG_VM_GEN_COUNTER_PRESENT (1 << 8)
+#define VMCLOCK_FLAG_NOTIFICATION_PRESENT (1 << 9)
   __u8 pad[2];
   __u8 clock_status;
 #define VMCLOCK_STATUS_UNKNOWN 0
@@ -61,5 +63,6 @@ struct vmclock_abi {
   __le64 time_frac_sec;
   __le64 time_esterror_nanosec;
   __le64 time_maxerror_nanosec;
+  __le64 vm_generation_counter;
 };
 #endif

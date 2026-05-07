@@ -27,6 +27,7 @@ enum uverbs_default_objects {
   UVERBS_OBJECT_COUNTERS,
   UVERBS_OBJECT_ASYNC_EVENT,
   UVERBS_OBJECT_DMAH,
+  UVERBS_OBJECT_DMABUF,
 };
 enum {
   UVERBS_ID_DRIVER_NS = 1UL << UVERBS_ID_NS_SHIFT,
@@ -42,6 +43,7 @@ enum uverbs_methods_device {
   UVERBS_METHOD_QUERY_CONTEXT,
   UVERBS_METHOD_QUERY_GID_TABLE,
   UVERBS_METHOD_QUERY_GID_ENTRY,
+  UVERBS_METHOD_QUERY_PORT_SPEED,
 };
 enum uverbs_attrs_invoke_write_cmd_attr_ids {
   UVERBS_ATTR_CORE_IN,
@@ -51,6 +53,10 @@ enum uverbs_attrs_invoke_write_cmd_attr_ids {
 enum uverbs_attrs_query_port_cmd_attr_ids {
   UVERBS_ATTR_QUERY_PORT_PORT_NUM,
   UVERBS_ATTR_QUERY_PORT_RESP,
+};
+enum uverbs_attrs_query_port_speed_cmd_attr_ids {
+  UVERBS_ATTR_QUERY_PORT_SPEED_PORT_NUM,
+  UVERBS_ATTR_QUERY_PORT_SPEED_RESP,
 };
 enum uverbs_attrs_get_context_attr_ids {
   UVERBS_ATTR_GET_CONTEXT_NUM_COMP_VECTORS,
@@ -197,6 +203,13 @@ enum uverbs_attrs_free_dmah_cmd_attr_ids {
 enum uverbs_methods_dmah {
   UVERBS_METHOD_DMAH_ALLOC,
   UVERBS_METHOD_DMAH_FREE,
+};
+enum uverbs_attrs_alloc_dmabuf_cmd_attr_ids {
+  UVERBS_ATTR_ALLOC_DMABUF_HANDLE,
+  UVERBS_ATTR_ALLOC_DMABUF_PGOFF,
+};
+enum uverbs_methods_dmabuf {
+  UVERBS_METHOD_DMABUF_ALLOC,
 };
 enum uverbs_attrs_reg_dm_mr_cmd_attr_ids {
   UVERBS_ATTR_REG_DM_MR_HANDLE,
