@@ -22,6 +22,8 @@ extern "C" {
 #define DRM_PANFROST_SET_LABEL_BO 0x09
 #define DRM_PANFROST_JM_CTX_CREATE 0x0a
 #define DRM_PANFROST_JM_CTX_DESTROY 0x0b
+#define DRM_PANFROST_SYNC_BO 0x0c
+#define DRM_PANFROST_QUERY_BO_INFO 0x0d
 #define DRM_IOCTL_PANFROST_SUBMIT DRM_IOW(DRM_COMMAND_BASE + DRM_PANFROST_SUBMIT, struct drm_panfrost_submit)
 #define DRM_IOCTL_PANFROST_WAIT_BO DRM_IOW(DRM_COMMAND_BASE + DRM_PANFROST_WAIT_BO, struct drm_panfrost_wait_bo)
 #define DRM_IOCTL_PANFROST_CREATE_BO DRM_IOWR(DRM_COMMAND_BASE + DRM_PANFROST_CREATE_BO, struct drm_panfrost_create_bo)
@@ -32,6 +34,8 @@ extern "C" {
 #define DRM_IOCTL_PANFROST_SET_LABEL_BO DRM_IOWR(DRM_COMMAND_BASE + DRM_PANFROST_SET_LABEL_BO, struct drm_panfrost_set_label_bo)
 #define DRM_IOCTL_PANFROST_JM_CTX_CREATE DRM_IOWR(DRM_COMMAND_BASE + DRM_PANFROST_JM_CTX_CREATE, struct drm_panfrost_jm_ctx_create)
 #define DRM_IOCTL_PANFROST_JM_CTX_DESTROY DRM_IOWR(DRM_COMMAND_BASE + DRM_PANFROST_JM_CTX_DESTROY, struct drm_panfrost_jm_ctx_destroy)
+#define DRM_IOCTL_PANFROST_SYNC_BO DRM_IOWR(DRM_COMMAND_BASE + DRM_PANFROST_SYNC_BO, struct drm_panfrost_sync_bo)
+#define DRM_IOCTL_PANFROST_QUERY_BO_INFO DRM_IOWR(DRM_COMMAND_BASE + DRM_PANFROST_QUERY_BO_INFO, struct drm_panfrost_query_bo_info)
 #define DRM_IOCTL_PANFROST_PERFCNT_ENABLE DRM_IOW(DRM_COMMAND_BASE + DRM_PANFROST_PERFCNT_ENABLE, struct drm_panfrost_perfcnt_enable)
 #define DRM_IOCTL_PANFROST_PERFCNT_DUMP DRM_IOW(DRM_COMMAND_BASE + DRM_PANFROST_PERFCNT_DUMP, struct drm_panfrost_perfcnt_dump)
 #define PANFROST_JD_REQ_FS (1 << 0)
@@ -54,6 +58,7 @@ struct drm_panfrost_wait_bo {
 };
 #define PANFROST_BO_NOEXEC 1
 #define PANFROST_BO_HEAP 2
+#define PANFROST_BO_WB_MMAP 4
 struct drm_panfrost_create_bo {
   __u32 size;
   __u32 flags;
@@ -111,6 +116,12 @@ enum drm_panfrost_param {
   DRM_PANFROST_PARAM_SYSTEM_TIMESTAMP,
   DRM_PANFROST_PARAM_SYSTEM_TIMESTAMP_FREQUENCY,
   DRM_PANFROST_PARAM_ALLOWED_JM_CTX_PRIORITIES,
+  DRM_PANFROST_PARAM_SELECTED_COHERENCY,
+};
+enum drm_panfrost_gpu_coherency {
+  DRM_PANFROST_GPU_COHERENCY_ACE_LITE = 0,
+  DRM_PANFROST_GPU_COHERENCY_ACE = 1,
+  DRM_PANFROST_GPU_COHERENCY_NONE = 31,
 };
 struct drm_panfrost_get_param {
   __u32 param;
@@ -140,6 +151,26 @@ struct drm_panfrost_set_label_bo {
   __u32 handle;
   __u32 pad;
   __u64 label;
+};
+#define PANFROST_BO_SYNC_CPU_CACHE_FLUSH 0
+#define PANFROST_BO_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE 1
+struct drm_panfrost_bo_sync_op {
+  __u32 handle;
+  __u32 type;
+  __u32 offset;
+  __u32 size;
+};
+struct drm_panfrost_sync_bo {
+  __u64 ops;
+  __u32 op_count;
+  __u32 pad;
+};
+#define DRM_PANFROST_BO_IS_IMPORTED (1 << 0)
+struct drm_panfrost_query_bo_info {
+  __u32 handle;
+  __u32 extra_flags;
+  __u32 create_flags;
+  __u32 pad;
 };
 #define PANFROSTDUMP_MAJOR 1
 #define PANFROSTDUMP_MINOR 0

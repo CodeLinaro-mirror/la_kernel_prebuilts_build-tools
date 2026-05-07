@@ -57,8 +57,7 @@ extern "C" {
 #define AMDGPU_GEM_DOMAIN_GWS 0x10
 #define AMDGPU_GEM_DOMAIN_OA 0x20
 #define AMDGPU_GEM_DOMAIN_DOORBELL 0x40
-#define AMDGPU_GEM_DOMAIN_MMIO_REMAP 0x80
-#define AMDGPU_GEM_DOMAIN_MASK (AMDGPU_GEM_DOMAIN_CPU | AMDGPU_GEM_DOMAIN_GTT | AMDGPU_GEM_DOMAIN_VRAM | AMDGPU_GEM_DOMAIN_GDS | AMDGPU_GEM_DOMAIN_GWS | AMDGPU_GEM_DOMAIN_OA | AMDGPU_GEM_DOMAIN_DOORBELL | AMDGPU_GEM_DOMAIN_MMIO_REMAP)
+#define AMDGPU_GEM_DOMAIN_MASK (AMDGPU_GEM_DOMAIN_CPU | AMDGPU_GEM_DOMAIN_GTT | AMDGPU_GEM_DOMAIN_VRAM | AMDGPU_GEM_DOMAIN_GDS | AMDGPU_GEM_DOMAIN_GWS | AMDGPU_GEM_DOMAIN_OA | AMDGPU_GEM_DOMAIN_DOORBELL)
 #define AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED (1 << 0)
 #define AMDGPU_GEM_CREATE_NO_CPU_ACCESS (1 << 1)
 #define AMDGPU_GEM_CREATE_CPU_GTT_USWC (1 << 2)
@@ -733,6 +732,7 @@ struct drm_amdgpu_info_vbios {
 #define AMDGPU_VRAM_TYPE_LPDDR4 11
 #define AMDGPU_VRAM_TYPE_LPDDR5 12
 #define AMDGPU_VRAM_TYPE_HBM3E 13
+#define AMDGPU_VRAM_TYPE_HBM4 14
 struct drm_amdgpu_info_device {
   __u32 device_id;
   __u32 chip_rev;
@@ -864,9 +864,19 @@ struct drm_amdgpu_info_uq_metadata_gfx {
   __u32 csa_size;
   __u32 csa_alignment;
 };
+struct drm_amdgpu_info_uq_metadata_compute {
+  __u32 eop_size;
+  __u32 eop_alignment;
+};
+struct drm_amdgpu_info_uq_metadata_sdma {
+  __u32 csa_size;
+  __u32 csa_alignment;
+};
 struct drm_amdgpu_info_uq_metadata {
   union {
     struct drm_amdgpu_info_uq_metadata_gfx gfx;
+    struct drm_amdgpu_info_uq_metadata_compute compute;
+    struct drm_amdgpu_info_uq_metadata_sdma sdma;
   };
 };
 #define AMDGPU_FAMILY_UNKNOWN 0
@@ -885,6 +895,7 @@ struct drm_amdgpu_info_uq_metadata {
 #define AMDGPU_FAMILY_GC_10_3_6 149
 #define AMDGPU_FAMILY_GC_10_3_7 151
 #define AMDGPU_FAMILY_GC_11_5_0 150
+#define AMDGPU_FAMILY_GC_11_5_4 154
 #define AMDGPU_FAMILY_GC_12_0_0 152
 #ifdef __cplusplus
 }

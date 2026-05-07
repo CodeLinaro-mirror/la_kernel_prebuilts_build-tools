@@ -141,6 +141,7 @@ enum io_uring_sqe_flags_bit {
 #define IORING_SETUP_HYBRID_IOPOLL (1U << 17)
 #define IORING_SETUP_CQE_MIXED (1U << 18)
 #define IORING_SETUP_SQE_MIXED (1U << 19)
+#define IORING_SETUP_SQ_REWIND (1U << 20)
 enum io_uring_op {
   IORING_OP_NOP,
   IORING_OP_READV,
@@ -378,6 +379,7 @@ enum io_uring_register_op {
   IORING_REGISTER_MEM_REGION = 34,
   IORING_REGISTER_QUERY = 35,
   IORING_REGISTER_ZCRX_CTRL = 36,
+  IORING_REGISTER_BPF_FILTER = 37,
   IORING_REGISTER_LAST,
   IORING_REGISTER_USE_REGISTERED_RING = 1U << 31
 };
@@ -454,6 +456,12 @@ struct io_uring_restriction {
   };
   __u8 resv;
   __u32 resv2[3];
+};
+struct io_uring_task_restriction {
+  __u16 flags;
+  __u16 nr_res;
+  __u32 resv[3];
+  __DECLARE_FLEX_ARRAY(struct io_uring_restriction, restrictions);
 };
 struct io_uring_clock_register {
   __u32 clockid;
@@ -614,6 +622,9 @@ struct io_uring_zcrx_area_reg {
 enum zcrx_reg_flags {
   ZCRX_REG_IMPORT = 1,
 };
+enum zcrx_features {
+  ZCRX_FEATURE_RX_PAGE_SIZE = 1 << 0,
+};
 struct io_uring_zcrx_ifq_reg {
   __u32 if_idx;
   __u32 if_rxq;
@@ -623,7 +634,7 @@ struct io_uring_zcrx_ifq_reg {
   __u64 region_ptr;
   struct io_uring_zcrx_offsets offsets;
   __u32 zcrx_id;
-  __u32 __resv2;
+  __u32 rx_buf_len;
   __u64 __resv[3];
 };
 enum zcrx_ctrl_op {

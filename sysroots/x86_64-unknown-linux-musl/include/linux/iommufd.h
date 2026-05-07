@@ -156,10 +156,14 @@ struct iommu_hwpt_vtd_s1 {
 struct iommu_hwpt_arm_smmuv3 {
   __aligned_le64 ste[2];
 };
+struct iommu_hwpt_amd_guest {
+  __aligned_u64 dte[4];
+};
 enum iommu_hwpt_data_type {
   IOMMU_HWPT_DATA_NONE = 0,
   IOMMU_HWPT_DATA_VTD_S1 = 1,
   IOMMU_HWPT_DATA_ARM_SMMUV3 = 2,
+  IOMMU_HWPT_DATA_AMD_GUEST = 3,
 };
 struct iommu_hwpt_alloc {
   __u32 size;
@@ -198,12 +202,17 @@ struct iommu_hw_info_tegra241_cmdqv {
   __u8 log2vsids;
   __u8 __reserved;
 };
+struct iommu_hw_info_amd {
+  __aligned_u64 efr;
+  __aligned_u64 efr2;
+};
 enum iommu_hw_info_type {
   IOMMU_HW_INFO_TYPE_NONE = 0,
   IOMMU_HW_INFO_TYPE_DEFAULT = 0,
   IOMMU_HW_INFO_TYPE_INTEL_VTD = 1,
   IOMMU_HW_INFO_TYPE_ARM_SMMUV3 = 2,
   IOMMU_HW_INFO_TYPE_TEGRA241_CMDQV = 3,
+  IOMMU_HW_INFO_TYPE_AMD = 4,
 };
 enum iommufd_hw_capabilities {
   IOMMU_HW_CAP_DIRTY_TRACKING = 1 << 0,

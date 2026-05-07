@@ -42,7 +42,8 @@
 #define MS_RMT_MASK (MS_RDONLY | MS_SYNCHRONOUS | MS_MANDLOCK | MS_I_VERSION | MS_LAZYTIME)
 #define MS_MGC_VAL 0xC0ED0000
 #define MS_MGC_MSK 0xffff0000
-#define OPEN_TREE_CLONE 1
+#define OPEN_TREE_CLONE (1 << 0)
+#define OPEN_TREE_NAMESPACE (1 << 1)
 #define OPEN_TREE_CLOEXEC O_CLOEXEC
 #define MOVE_MOUNT_F_SYMLINKS 0x00000001
 #define MOVE_MOUNT_F_AUTOMOUNTS 0x00000002
@@ -125,7 +126,10 @@ struct statmount {
 };
 struct mnt_id_req {
   __u32 size;
-  __u32 mnt_ns_fd;
+  union {
+    __u32 mnt_ns_fd;
+    __u32 mnt_fd;
+  };
   __u64 mnt_id;
   __u64 param;
   __u64 mnt_ns_id;
@@ -149,4 +153,5 @@ struct mnt_id_req {
 #define STATMOUNT_MNT_GIDMAP 0x00004000U
 #define LSMT_ROOT 0xffffffffffffffff
 #define LISTMOUNT_REVERSE (1 << 0)
+#define STATMOUNT_BY_FD 0x00000001U
 #endif

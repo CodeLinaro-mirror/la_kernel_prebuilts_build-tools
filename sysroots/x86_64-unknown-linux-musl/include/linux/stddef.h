@@ -29,5 +29,8 @@
 #ifndef __counted_by_be
 #define __counted_by_be(m)
 #endif
+#ifndef __counted_by_ptr
+#define __counted_by_ptr(m)
+#endif
 #define __kernel_nonstring
 #endif

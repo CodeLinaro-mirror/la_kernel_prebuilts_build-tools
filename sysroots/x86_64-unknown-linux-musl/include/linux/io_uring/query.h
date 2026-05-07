@@ -35,7 +35,7 @@ struct io_uring_query_zcrx {
   __u64 register_flags;
   __u64 area_flags;
   __u32 nr_ctrl_opcodes;
-  __u32 __resv1;
+  __u32 features;
   __u32 rq_hdr_size;
   __u32 rq_hdr_alignment;
   __u64 __resv2;

@@ -9,7 +9,7 @@
 #include <drm/drm.h>
 #include <linux/ioctl.h>
 #define KFD_IOCTL_MAJOR_VERSION 1
-#define KFD_IOCTL_MINOR_VERSION 18
+#define KFD_IOCTL_MINOR_VERSION 22
 struct kfd_ioctl_get_version_args {
   __u32 major_version;
   __u32 minor_version;
@@ -39,7 +39,7 @@ struct kfd_ioctl_create_queue_args {
   __u32 ctx_save_restore_size;
   __u32 ctl_stack_size;
   __u32 sdma_engine_id;
-  __u32 pad;
+  __u32 metadata_ring_size;
 };
 struct kfd_ioctl_destroy_queue_args {
   __u32 queue_id;
@@ -93,6 +93,8 @@ struct kfd_dbg_device_info_entry {
   __u32 num_xcc;
   __u32 capability;
   __u32 debug_prop;
+  __u32 capability2;
+  __u32 pad;
 };
 #define KFD_IOC_CACHE_POLICY_COHERENT 0
 #define KFD_IOC_CACHE_POLICY_NONCOHERENT 1
@@ -485,6 +487,7 @@ enum kfd_dbg_trap_address_watch_mode {
 enum kfd_dbg_trap_flags {
   KFD_DBG_TRAP_FLAG_SINGLE_MEM_OP = 1,
   KFD_DBG_TRAP_FLAG_SINGLE_ALU_OP = 2,
+  KFD_DBG_TRAP_FLAG_LDS_OUT_OF_ADDR_RANGE = 4
 };
 enum kfd_dbg_trap_exception_code {
   EC_NONE = 0,
@@ -725,6 +728,7 @@ struct kfd_ioctl_dbg_trap_args {
 #define AMDKFD_IOC_EXPORT_DMABUF AMDKFD_IOWR(0x24, struct kfd_ioctl_export_dmabuf_args)
 #define AMDKFD_IOC_RUNTIME_ENABLE AMDKFD_IOWR(0x25, struct kfd_ioctl_runtime_enable_args)
 #define AMDKFD_IOC_DBG_TRAP AMDKFD_IOWR(0x26, struct kfd_ioctl_dbg_trap_args)
+#define AMDKFD_IOC_CREATE_PROCESS AMDKFD_IO(0x27)
 #define AMDKFD_COMMAND_START 0x01
-#define AMDKFD_COMMAND_END 0x27
+#define AMDKFD_COMMAND_END 0x28
 #endif

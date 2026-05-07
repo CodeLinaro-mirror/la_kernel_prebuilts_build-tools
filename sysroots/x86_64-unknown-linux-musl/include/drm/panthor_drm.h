@@ -30,6 +30,8 @@ enum drm_panthor_ioctl_id {
   DRM_PANTHOR_TILER_HEAP_DESTROY,
   DRM_PANTHOR_BO_SET_LABEL,
   DRM_PANTHOR_SET_USER_MMIO_OFFSET,
+  DRM_PANTHOR_BO_SYNC,
+  DRM_PANTHOR_BO_QUERY_INFO,
 };
 struct drm_panthor_obj_array {
   __u32 stride;
@@ -54,6 +56,11 @@ enum drm_panthor_dev_query_type {
   DRM_PANTHOR_DEV_QUERY_CSIF_INFO,
   DRM_PANTHOR_DEV_QUERY_TIMESTAMP_INFO,
   DRM_PANTHOR_DEV_QUERY_GROUP_PRIORITIES_INFO,
+};
+enum drm_panthor_gpu_coherency {
+  DRM_PANTHOR_GPU_COHERENCY_ACE_LITE = 0,
+  DRM_PANTHOR_GPU_COHERENCY_ACE = 1,
+  DRM_PANTHOR_GPU_COHERENCY_NONE = 31,
 };
 struct drm_panthor_gpu_info {
   __u32 gpu_id;
@@ -84,7 +91,7 @@ struct drm_panthor_gpu_info {
   __u32 coherency_features;
   __u32 texture_features[4];
   __u32 as_present;
-  __u32 pad0;
+  __u32 selected_coherency;
   __u64 shader_present;
   __u64 l2_present;
   __u64 tiler_present;
@@ -158,6 +165,7 @@ struct drm_panthor_vm_get_state {
 };
 enum drm_panthor_bo_flags {
   DRM_PANTHOR_BO_NO_MMAP = (1 << 0),
+  DRM_PANTHOR_BO_WB_MMAP = (1 << 1),
 };
 struct drm_panthor_bo_create {
   __u64 size;
@@ -245,6 +253,28 @@ struct drm_panthor_bo_set_label {
 struct drm_panthor_set_user_mmio_offset {
   __u64 offset;
 };
+enum drm_panthor_bo_sync_op_type {
+  DRM_PANTHOR_BO_SYNC_CPU_CACHE_FLUSH = 0,
+  DRM_PANTHOR_BO_SYNC_CPU_CACHE_FLUSH_AND_INVALIDATE = 1,
+};
+struct drm_panthor_bo_sync_op {
+  __u32 handle;
+  __u32 type;
+  __u64 offset;
+  __u64 size;
+};
+struct drm_panthor_bo_sync {
+  struct drm_panthor_obj_array ops;
+};
+enum drm_panthor_bo_extra_flags {
+  DRM_PANTHOR_BO_IS_IMPORTED = (1 << 0),
+};
+struct drm_panthor_bo_query_info {
+  __u32 handle;
+  __u32 extra_flags;
+  __u32 create_flags;
+  __u32 pad;
+};
 #define DRM_IOCTL_PANTHOR(__access,__id,__type) DRM_IO ##__access(DRM_COMMAND_BASE + DRM_PANTHOR_ ##__id, struct drm_panthor_ ##__type)
 enum {
   DRM_IOCTL_PANTHOR_DEV_QUERY = DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query),
@@ -262,6 +292,8 @@ enum {
   DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY = DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy),
   DRM_IOCTL_PANTHOR_BO_SET_LABEL = DRM_IOCTL_PANTHOR(WR, BO_SET_LABEL, bo_set_label),
   DRM_IOCTL_PANTHOR_SET_USER_MMIO_OFFSET = DRM_IOCTL_PANTHOR(WR, SET_USER_MMIO_OFFSET, set_user_mmio_offset),
+  DRM_IOCTL_PANTHOR_BO_SYNC = DRM_IOCTL_PANTHOR(WR, BO_SYNC, bo_sync),
+  DRM_IOCTL_PANTHOR_BO_QUERY_INFO = DRM_IOCTL_PANTHOR(WR, BO_QUERY_INFO, bo_query_info),
 };
 #ifdef __cplusplus
 }

@@ -9,7 +9,6 @@
 #include <linux/ipc.h>
 #include <linux/errno.h>
 #include <asm-generic/hugetlb_encode.h>
-#include <unistd.h>
 #define SHMMIN 1
 #define SHMMNI 4096
 #define SHMMAX (ULONG_MAX - (1UL << 24))

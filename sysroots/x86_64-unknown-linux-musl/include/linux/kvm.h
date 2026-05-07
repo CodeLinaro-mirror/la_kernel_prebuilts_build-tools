@@ -9,6 +9,7 @@
 #include <linux/const.h>
 #include <linux/types.h>
 #include <linux/compiler.h>
+#include <linux/stddef.h>
 #include <linux/ioctl.h>
 #include <asm/kvm.h>
 #define KVM_API_VERSION 12
@@ -102,6 +103,11 @@ struct kvm_xen_exit {
     } hcall;
   } u;
 };
+struct kvm_exit_snp_req_certs {
+  __u64 gpa;
+  __u64 npages;
+  __u64 ret;
+};
 #define KVM_S390_GET_SKEYS_NONE 1
 #define KVM_S390_SKEYS_MAX 1048576
 #define KVM_EXIT_UNKNOWN 0
@@ -146,6 +152,8 @@ struct kvm_xen_exit {
 #define KVM_EXIT_MEMORY_FAULT 39
 #define KVM_EXIT_TDX 40
 #define KVM_EXIT_ARM_SEA 41
+#define KVM_EXIT_ARM_LDST64B 42
+#define KVM_EXIT_SNP_REQ_CERTS 43
 #define KVM_INTERNAL_ERROR_EMULATION 1
 #define KVM_INTERNAL_ERROR_SIMUL_EX 2
 #define KVM_INTERNAL_ERROR_DELIVERY_EV 3
@@ -362,6 +370,7 @@ struct kvm_run {
       __u64 gva;
       __u64 gpa;
     } arm_sea;
+    struct kvm_exit_snp_req_certs snp_req_certs;
     char padding[256];
   };
 #define SYNC_REGS_SIZE_BYTES 2048
@@ -391,7 +400,7 @@ struct kvm_coalesced_mmio {
 };
 struct kvm_coalesced_mmio_ring {
   __u32 first, last;
-  struct kvm_coalesced_mmio coalesced_mmio[];
+  __DECLARE_FLEX_ARRAY(struct kvm_coalesced_mmio, coalesced_mmio);
 };
 #define KVM_COALESCED_MMIO_MAX ((PAGE_SIZE - sizeof(struct kvm_coalesced_mmio_ring)) / sizeof(struct kvm_coalesced_mmio))
 struct kvm_translation {
@@ -424,7 +433,7 @@ struct kvm_clear_dirty_log {
 };
 struct kvm_signal_mask {
   __u32 len;
-  __u8 sigset[];
+  __DECLARE_FLEX_ARRAY(__u8, sigset);
 };
 struct kvm_tpr_access_ctl {
   __u32 enabled;
@@ -765,6 +774,7 @@ struct kvm_enable_cap {
 #define KVM_CAP_GUEST_MEMFD_FLAGS 244
 #define KVM_CAP_ARM_SEA_TO_USER 245
 #define KVM_CAP_S390_USER_OPEREXEC 246
+#define KVM_CAP_S390_KEYOP 247
 struct kvm_irq_routing_irqchip {
   __u32 irqchip;
   __u32 pin;
@@ -817,7 +827,7 @@ struct kvm_irq_routing_entry {
 struct kvm_irq_routing {
   __u32 nr;
   __u32 flags;
-  struct kvm_irq_routing_entry entries[];
+  __DECLARE_FLEX_ARRAY(struct kvm_irq_routing_entry, entries);
 };
 #define KVM_IRQFD_FLAG_DEASSIGN (1 << 0)
 #define KVM_IRQFD_FLAG_RESAMPLE (1 << 1)
@@ -876,7 +886,7 @@ struct kvm_dirty_tlb {
 #define KVM_REG_SIZE_U2048 0x0080000000000000ULL
 struct kvm_reg_list {
   __u64 n;
-  __u64 reg[];
+  __DECLARE_FLEX_ARRAY(__u64, reg);
 };
 struct kvm_one_reg {
   __u64 id;
@@ -949,6 +959,15 @@ struct kvm_vfio_spapr_tce {
   __s32 groupfd;
   __s32 tablefd;
 };
+#define KVM_S390_KEYOP_ISKE 0x01
+#define KVM_S390_KEYOP_RRBE 0x02
+#define KVM_S390_KEYOP_SSKE 0x03
+struct kvm_s390_keyop {
+  __u64 guest_addr;
+  __u8 key;
+  __u8 operation;
+  __u8 pad[6];
+};
 #define KVM_CREATE_VCPU _IO(KVMIO, 0x41)
 #define KVM_GET_DIRTY_LOG _IOW(KVMIO, 0x42, struct kvm_dirty_log)
 #define KVM_SET_NR_MMU_PAGES _IO(KVMIO, 0x44)
@@ -960,6 +979,7 @@ struct kvm_vfio_spapr_tce {
 #define KVM_S390_UCAS_MAP _IOW(KVMIO, 0x50, struct kvm_s390_ucas_mapping)
 #define KVM_S390_UCAS_UNMAP _IOW(KVMIO, 0x51, struct kvm_s390_ucas_mapping)
 #define KVM_S390_VCPU_FAULT _IOW(KVMIO, 0x52, unsigned long)
+#define KVM_S390_KEYOP _IOWR(KVMIO, 0x53, struct kvm_s390_keyop)
 #define KVM_CREATE_IRQCHIP _IO(KVMIO, 0x60)
 #define KVM_IRQ_LINE _IOW(KVMIO, 0x61, struct kvm_irq_level)
 #define KVM_GET_IRQCHIP _IOWR(KVMIO, 0x62, struct kvm_irqchip)
@@ -1140,7 +1160,7 @@ struct kvm_stats_desc {
   __u16 size;
   __u32 offset;
   __u32 bucket_size;
-  char name[];
+  __DECLARE_FLEX_ARRAY(char, name);
 };
 #define KVM_GET_STATS_FD _IO(KVMIO, 0xce)
 #define KVM_GET_XSAVE2 _IOR(KVMIO, 0xcf, struct kvm_xsave)

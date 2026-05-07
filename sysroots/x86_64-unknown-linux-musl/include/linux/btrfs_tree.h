@@ -25,6 +25,7 @@
 #define BTRFS_FREE_SPACE_TREE_OBJECTID 10ULL
 #define BTRFS_BLOCK_GROUP_TREE_OBJECTID 11ULL
 #define BTRFS_RAID_STRIPE_TREE_OBJECTID 12ULL
+#define BTRFS_REMAP_TREE_OBJECTID 13ULL
 #define BTRFS_DEV_STATS_OBJECTID 0ULL
 #define BTRFS_BALANCE_OBJECTID - 4ULL
 #define BTRFS_ORPHAN_OBJECTID - 5ULL
@@ -74,6 +75,9 @@
 #define BTRFS_DEV_ITEM_KEY 216
 #define BTRFS_CHUNK_ITEM_KEY 228
 #define BTRFS_RAID_STRIPE_KEY 230
+#define BTRFS_IDENTITY_REMAP_KEY 234
+#define BTRFS_REMAP_KEY 235
+#define BTRFS_REMAP_BACKREF_KEY 236
 #define BTRFS_QGROUP_STATUS_KEY 240
 #define BTRFS_QGROUP_INFO_KEY 242
 #define BTRFS_QGROUP_LIMIT_KEY 244
@@ -257,7 +261,10 @@ struct btrfs_super_block {
   __le64 uuid_tree_generation;
   __u8 metadata_uuid[BTRFS_FSID_SIZE];
   __u64 nr_global_roots;
-  __le64 reserved[27];
+  __le64 remap_root;
+  __le64 remap_root_generation;
+  __u8 remap_root_level;
+  __u8 reserved[199];
   __u8 sys_chunk_array[BTRFS_SYSTEM_CHUNK_ARRAY_SIZE];
   struct btrfs_root_backup super_roots[BTRFS_NUM_BACKUP_ROOTS];
   __u8 padding[565];
@@ -496,8 +503,10 @@ struct btrfs_dev_replace_item {
 #define BTRFS_BLOCK_GROUP_RAID6 (1ULL << 8)
 #define BTRFS_BLOCK_GROUP_RAID1C3 (1ULL << 9)
 #define BTRFS_BLOCK_GROUP_RAID1C4 (1ULL << 10)
+#define BTRFS_BLOCK_GROUP_REMAPPED (1ULL << 11)
+#define BTRFS_BLOCK_GROUP_METADATA_REMAP (1ULL << 12)
 #define BTRFS_BLOCK_GROUP_RESERVED (BTRFS_AVAIL_ALLOC_BIT_SINGLE | BTRFS_SPACE_INFO_GLOBAL_RSV)
-#define BTRFS_BLOCK_GROUP_TYPE_MASK (BTRFS_BLOCK_GROUP_DATA | BTRFS_BLOCK_GROUP_SYSTEM | BTRFS_BLOCK_GROUP_METADATA)
+#define BTRFS_BLOCK_GROUP_TYPE_MASK (BTRFS_BLOCK_GROUP_DATA | BTRFS_BLOCK_GROUP_SYSTEM | BTRFS_BLOCK_GROUP_METADATA | BTRFS_BLOCK_GROUP_METADATA_REMAP)
 #define BTRFS_BLOCK_GROUP_PROFILE_MASK (BTRFS_BLOCK_GROUP_RAID0 | BTRFS_BLOCK_GROUP_RAID1 | BTRFS_BLOCK_GROUP_RAID1C3 | BTRFS_BLOCK_GROUP_RAID1C4 | BTRFS_BLOCK_GROUP_RAID5 | BTRFS_BLOCK_GROUP_RAID6 | BTRFS_BLOCK_GROUP_DUP | BTRFS_BLOCK_GROUP_RAID10)
 #define BTRFS_BLOCK_GROUP_RAID56_MASK (BTRFS_BLOCK_GROUP_RAID5 | BTRFS_BLOCK_GROUP_RAID6)
 #define BTRFS_BLOCK_GROUP_RAID1_MASK (BTRFS_BLOCK_GROUP_RAID1 | BTRFS_BLOCK_GROUP_RAID1C3 | BTRFS_BLOCK_GROUP_RAID1C4)
@@ -508,6 +517,13 @@ struct btrfs_block_group_item {
   __le64 used;
   __le64 chunk_objectid;
   __le64 flags;
+} __attribute__((__packed__));
+struct btrfs_block_group_item_v2 {
+  __le64 used;
+  __le64 chunk_objectid;
+  __le64 flags;
+  __le64 remap_bytes;
+  __le32 identity_remap_count;
 } __attribute__((__packed__));
 struct btrfs_free_space_info {
   __le32 extent_count;
@@ -546,5 +562,8 @@ struct btrfs_verity_descriptor_item {
   __le64 size;
   __le64 reserved[2];
   __u8 encryption;
+} __attribute__((__packed__));
+struct btrfs_remap_item {
+  __le64 address;
 } __attribute__((__packed__));
 #endif
