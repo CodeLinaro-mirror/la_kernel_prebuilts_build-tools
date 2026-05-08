@@ -1,7 +1,7 @@
 1.  Update Bazel to your desired version.
 
     ```sh
-    prebuilts/kernel-build-tools/update-bazel.sh 8.3.1
+    prebuilts/kernel-build-tools/update-bazel.sh 8.7.0
     ```
 
 2.  Update the registry. Googlers: See go/kleaf-update-bcr.
