@@ -72,7 +72,7 @@ alias(
         "//build/kernel/kleaf/platforms/libc:glibc": ":linux_x86_imported_libs",
         "//build/kernel/kleaf/platforms/libc:musl": ":linux_musl_x86_imported_libs",
     }),
-    visibility = ["//build/kernel/kleaf:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
