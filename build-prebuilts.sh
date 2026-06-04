@@ -73,6 +73,7 @@ EOF
         libcrypto-host.so
         libdw.so
         libelf.so
+        libxml2.so
     )
 
     binaries="${SOONG_BINARIES[@]/#/${SOONG_HOST_OUT}/bin/}"
@@ -112,6 +113,10 @@ EOF
     cp -a ${TOP}/external/elfutils/libdw/dwarf.h ${include_dir}/
     cp -a ${TOP}/external/elfutils/libdw/libdw.h ${include_dir}/elfutils/
     cp -a ${TOP}/external/elfutils/libdwfl/libdwfl.h ${include_dir}/elfutils/
+
+    # libxml2
+    mkdir -p ${include_dir}/libxml
+    cp -a ${TOP}/external/libxml2/include/libxml/* ${include_dir}/libxml
 
     # Stage share files
     share_dir=${SOONG_OUT}/dist/share
