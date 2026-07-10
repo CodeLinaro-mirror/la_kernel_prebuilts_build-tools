@@ -6,7 +6,7 @@ if [ -z $1 ]; then
 fi
 
 readonly BUILD_NUMBER=$1
-readonly CI_BRANCH=git_main-kernel-build-tools
+readonly CI_BRANCH=git_main-kernel-build-tools-2026
 
 cd "$(dirname $0)"
 
