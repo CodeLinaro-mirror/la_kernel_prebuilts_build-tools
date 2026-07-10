@@ -3,9 +3,9 @@
 <manifest>
   <remote name="goog" fetch="https://googleplex-android.googlesource.com/" review="https://googleplex-android.googlesource.com/" />
 
-  <default revision="main" remote="goog" sync-j="32" />
+  <default revision="main-kernel-2026" remote="goog" sync-j="32" />
 
-  <superproject name="kernel/superproject" remote="goog" revision="main-kernel-build-tools" />
+  <superproject name="kernel/superproject" remote="goog" revision="main-kernel-build-tools-2026" />
 
   <project path="prebuilts/kernel-build-tools" name="kernel/prebuilts/build-tools" clone-depth="1" revision="93459a7407a3d313266a4cfeb683563b00c803ab" />
 
