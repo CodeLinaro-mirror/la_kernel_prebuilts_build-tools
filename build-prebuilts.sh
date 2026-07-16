@@ -73,6 +73,7 @@ EOF
         libcrypto-host.so
         libdw.so
         libelf.so
+        libjemalloc5.so
         libxml2.so
     )
 
