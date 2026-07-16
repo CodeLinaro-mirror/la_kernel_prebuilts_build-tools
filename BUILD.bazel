@@ -57,6 +57,14 @@ import_libraries(
     visibility = ["@toybox//:__subpackages__"],
 )
 
+import_libraries(
+    name = "libjemalloc",
+    hdrs = [],
+    shared_libraries = ["linux_musl-x86/lib64/libjemalloc5.so"],
+    strip_include_prefix = "",
+    visibility = ["@toybox//:__subpackages__"],
+)
+
 filegroup(
     name = "musl_sysroot_files",
     srcs = glob([
