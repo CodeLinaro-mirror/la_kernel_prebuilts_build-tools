@@ -60,8 +60,6 @@ struct sockaddr_pppol2tpv3in6 {
   unsigned int sa_protocol;
   struct pppol2tpv3in6_addr pppol2tp;
 } __attribute__((__packed__));
-#define PPPOEIOCSFWD _IOW(0xB1, 0, size_t)
-#define PPPOEIOCDFWD _IO(0xB1, 1)
 #define PADI_CODE 0x09
 #define PADO_CODE 0x07
 #define PADR_CODE 0x19

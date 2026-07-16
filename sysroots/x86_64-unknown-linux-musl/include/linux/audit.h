@@ -364,7 +364,7 @@ struct audit_tty_status {
   __u32 enabled;
   __u32 log_passwd;
 };
-#define AUDIT_UID_UNSET (unsigned int) - 1
+#define AUDIT_UID_UNSET ((unsigned int) - 1)
 #define AUDIT_SID_UNSET ((unsigned int) - 1)
 struct audit_rule_data {
   __u32 flags;

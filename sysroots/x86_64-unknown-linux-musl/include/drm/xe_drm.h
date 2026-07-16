@@ -25,6 +25,7 @@ extern "C" {
 #define DRM_XE_MADVISE 0x0c
 #define DRM_XE_VM_QUERY_MEM_RANGE_ATTRS 0x0d
 #define DRM_XE_EXEC_QUEUE_SET_PROPERTY 0x0e
+#define DRM_XE_VM_GET_PROPERTY 0x0f
 #define DRM_IOCTL_XE_DEVICE_QUERY DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_DEVICE_QUERY, struct drm_xe_device_query)
 #define DRM_IOCTL_XE_GEM_CREATE DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_GEM_CREATE, struct drm_xe_gem_create)
 #define DRM_IOCTL_XE_GEM_MMAP_OFFSET DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_GEM_MMAP_OFFSET, struct drm_xe_gem_mmap_offset)
@@ -40,6 +41,7 @@ extern "C" {
 #define DRM_IOCTL_XE_MADVISE DRM_IOW(DRM_COMMAND_BASE + DRM_XE_MADVISE, struct drm_xe_madvise)
 #define DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_QUERY_MEM_RANGE_ATTRS, struct drm_xe_vm_query_mem_range_attr)
 #define DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_SET_PROPERTY, struct drm_xe_exec_queue_set_property)
+#define DRM_IOCTL_XE_VM_GET_PROPERTY DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_GET_PROPERTY, struct drm_xe_vm_get_property)
 struct drm_xe_user_extension {
   __u64 next_extension;
   __u32 name;
@@ -104,6 +106,8 @@ struct drm_xe_query_config {
 #define DRM_XE_QUERY_CONFIG_FLAG_HAS_LOW_LATENCY (1 << 1)
 #define DRM_XE_QUERY_CONFIG_FLAG_HAS_CPU_ADDR_MIRROR (1 << 2)
 #define DRM_XE_QUERY_CONFIG_FLAG_HAS_NO_COMPRESSION_HINT (1 << 3)
+#define DRM_XE_QUERY_CONFIG_FLAG_HAS_DISABLE_STATE_CACHE_PERF_FIX (1 << 4)
+#define DRM_XE_QUERY_CONFIG_FLAG_HAS_PURGING_SUPPORT (1 << 5)
 #define DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT 2
 #define DRM_XE_QUERY_CONFIG_VA_BITS 3
 #define DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY 4
@@ -215,6 +219,7 @@ struct drm_xe_vm_create {
 #define DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE (1 << 0)
 #define DRM_XE_VM_CREATE_FLAG_LR_MODE (1 << 1)
 #define DRM_XE_VM_CREATE_FLAG_FAULT_MODE (1 << 2)
+#define DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT (1 << 3)
   __u32 flags;
   __u32 vm_id;
   __u64 reserved[2];
@@ -249,6 +254,7 @@ struct drm_xe_vm_bind_op {
 #define DRM_XE_VM_BIND_FLAG_CHECK_PXP (1 << 4)
 #define DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR (1 << 5)
 #define DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET (1 << 6)
+#define DRM_XE_VM_BIND_FLAG_DECOMPRESS (1 << 7)
   __u32 flags;
 #define DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC - 1
   __u32 prefetch_mem_region_instance;
@@ -270,6 +276,39 @@ struct drm_xe_vm_bind {
   __u64 syncs;
   __u64 reserved[2];
 };
+struct xe_vm_fault {
+  __u64 address;
+  __u32 address_precision;
+#define FAULT_ACCESS_TYPE_READ 0
+#define FAULT_ACCESS_TYPE_WRITE 1
+#define FAULT_ACCESS_TYPE_ATOMIC 2
+  __u8 access_type;
+#define FAULT_TYPE_NOT_PRESENT 0
+#define FAULT_TYPE_WRITE_ACCESS 1
+#define FAULT_TYPE_ATOMIC_ACCESS 2
+  __u8 fault_type;
+#define FAULT_LEVEL_PTE 0
+#define FAULT_LEVEL_PDE 1
+#define FAULT_LEVEL_PDP 2
+#define FAULT_LEVEL_PML4 3
+#define FAULT_LEVEL_PML5 4
+  __u8 fault_level;
+  __u8 pad;
+  __u64 reserved[4];
+};
+struct drm_xe_vm_get_property {
+  __u64 extensions;
+  __u32 vm_id;
+#define DRM_XE_VM_GET_PROPERTY_FAULTS 0
+  __u32 property;
+  __u32 size;
+  __u32 pad;
+  union {
+    __u64 data;
+    __u64 value;
+  };
+  __u64 reserved[3];
+};
 struct drm_xe_exec_queue_create {
 #define DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY 0
 #define DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY 0
@@ -279,6 +318,7 @@ struct drm_xe_exec_queue_create {
 #define DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP 4
 #define DRM_XE_MULTI_GROUP_CREATE (1ull << 63)
 #define DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY 5
+#define DRM_XE_EXEC_QUEUE_SET_DISABLE_STATE_CACHE_PERF_FIX 6
   __u64 extensions;
   __u16 width;
   __u16 num_placements;
@@ -477,6 +517,7 @@ struct drm_xe_madvise {
 #define DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC 0
 #define DRM_XE_MEM_RANGE_ATTR_ATOMIC 1
 #define DRM_XE_MEM_RANGE_ATTR_PAT 2
+#define DRM_XE_VMA_ATTR_PURGEABLE_STATE 3
   __u32 type;
   union {
     struct {
@@ -503,6 +544,13 @@ struct drm_xe_madvise {
       __u32 pad;
       __u64 reserved;
     } pat_index;
+    struct {
+#define DRM_XE_VMA_PURGEABLE_STATE_WILLNEED 0
+#define DRM_XE_VMA_PURGEABLE_STATE_DONTNEED 1
+      __u32 val;
+      __u32 pad;
+      __u64 retained_ptr;
+    } purge_state_val;
   };
   __u64 reserved[2];
 };
@@ -541,6 +589,20 @@ struct drm_xe_exec_queue_set_property {
   __u64 value;
   __u64 reserved[2];
 };
+enum drm_xe_ras_error_severity {
+  DRM_XE_RAS_ERR_SEV_CORRECTABLE = 0,
+  DRM_XE_RAS_ERR_SEV_UNCORRECTABLE,
+  DRM_XE_RAS_ERR_SEV_MAX
+};
+enum drm_xe_ras_error_component {
+  DRM_XE_RAS_ERR_COMP_CORE_COMPUTE = 1,
+  DRM_XE_RAS_ERR_COMP_SOC_INTERNAL,
+  DRM_XE_RAS_ERR_COMP_MAX
+};
+#define DRM_XE_RAS_ERROR_SEVERITY_NAMES {[DRM_XE_RAS_ERR_SEV_CORRECTABLE] = "correctable-errors",[DRM_XE_RAS_ERR_SEV_UNCORRECTABLE] = "uncorrectable-errors", \
+}
+#define DRM_XE_RAS_ERROR_COMPONENT_NAMES {[DRM_XE_RAS_ERR_COMP_CORE_COMPUTE] = "core-compute",[DRM_XE_RAS_ERR_COMP_SOC_INTERNAL] = "soc-internal" \
+}
 #ifdef __cplusplus
 }
 #endif

@@ -75,6 +75,8 @@ struct kvm_riscv_timer {
   __u64 compare;
   __u64 state;
 };
+#define KVM_RISCV_TIMER_STATE_OFF 0
+#define KVM_RISCV_TIMER_STATE_ON 1
 enum KVM_RISCV_ISA_EXT_ID {
   KVM_RISCV_ISA_EXT_A = 0,
   KVM_RISCV_ISA_EXT_C,
@@ -186,8 +188,6 @@ struct kvm_riscv_sbi_fwft {
   struct kvm_riscv_sbi_fwft_feature misaligned_deleg;
   struct kvm_riscv_sbi_fwft_feature pointer_masking;
 };
-#define KVM_RISCV_TIMER_STATE_OFF 0
-#define KVM_RISCV_TIMER_STATE_ON 1
 #define KVM_REG_RISCV_TYPE_MASK 0x00000000FF000000
 #define KVM_REG_RISCV_TYPE_SHIFT 24
 #define KVM_REG_RISCV_SUBTYPE_MASK 0x0000000000FF0000

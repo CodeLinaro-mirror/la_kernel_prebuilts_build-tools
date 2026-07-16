@@ -9,6 +9,11 @@
 #include <linux/types.h>
 #define BTF_MAGIC 0xeB9F
 #define BTF_VERSION 1
+struct btf_layout {
+  __u8 info_sz;
+  __u8 elem_sz;
+  __u16 flags;
+};
 struct btf_header {
   __u16 magic;
   __u8 version;
@@ -18,6 +23,8 @@ struct btf_header {
   __u32 type_len;
   __u32 str_off;
   __u32 str_len;
+  __u32 layout_off;
+  __u32 layout_len;
 };
 #define BTF_MAX_TYPE 0x000fffff
 #define BTF_MAX_NAME_OFFSET 0x00ffffff

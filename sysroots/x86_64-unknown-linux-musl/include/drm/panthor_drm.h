@@ -107,10 +107,26 @@ struct drm_panthor_csif_info {
   __u32 unpreserved_cs_reg_count;
   __u32 pad;
 };
+enum drm_panthor_timestamp_info_flags {
+  DRM_PANTHOR_TIMESTAMP_GPU = 1 << 0,
+  DRM_PANTHOR_TIMESTAMP_CPU_NONE = 0 << 1,
+  DRM_PANTHOR_TIMESTAMP_CPU_MONOTONIC = 1 << 1,
+  DRM_PANTHOR_TIMESTAMP_CPU_MONOTONIC_RAW = 2 << 1,
+  DRM_PANTHOR_TIMESTAMP_CPU_TYPE_MASK = 7 << 1,
+  DRM_PANTHOR_TIMESTAMP_GPU_OFFSET = 1 << 4,
+  DRM_PANTHOR_TIMESTAMP_GPU_CYCLE_COUNT = 1 << 5,
+  DRM_PANTHOR_TIMESTAMP_FREQ = 1 << 6,
+  DRM_PANTHOR_TIMESTAMP_DURATION = 1 << 7,
+};
 struct drm_panthor_timestamp_info {
   __u64 timestamp_frequency;
   __u64 current_timestamp;
   __u64 timestamp_offset;
+  __u32 flags;
+  __u32 duration_nsec;
+  __u64 cycle_count;
+  __u64 cpu_timestamp_sec;
+  __u64 cpu_timestamp_nsec;
 };
 struct drm_panthor_group_priorities_info {
   __u8 allowed_mask;

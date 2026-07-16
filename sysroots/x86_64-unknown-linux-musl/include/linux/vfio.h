@@ -349,6 +349,7 @@ enum vfio_device_mig_state {
 struct vfio_precopy_info {
   __u32 argsz;
   __u32 flags;
+#define VFIO_PRECOPY_INFO_REINIT (1 << 0)
   __aligned_u64 initial_bytes;
   __aligned_u64 dirty_bytes;
 };
@@ -401,6 +402,7 @@ struct vfio_device_feature_dma_buf {
   __u32 nr_ranges;
   struct vfio_region_dma_range dma_ranges[] __counted_by(nr_ranges);
 };
+#define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2 12
 struct vfio_iommu_type1_info {
   __u32 argsz;
   __u32 flags;

@@ -21,8 +21,8 @@ struct trace_buffer_meta {
   __u64 entries;
   __u64 overrun;
   __u64 read;
-  __u64 Reserved1;
-  __u64 Reserved2;
+  __u64 pages_lost;
+  __u64 pages_touched;
 };
 #define TRACE_MMAP_IOCTL_GET_READER _IO('R', 0x20)
 #endif

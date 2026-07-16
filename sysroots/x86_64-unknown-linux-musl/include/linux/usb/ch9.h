@@ -48,6 +48,8 @@
 #define USB_REQ_LOOPBACK_DATA_WRITE 0x15
 #define USB_REQ_LOOPBACK_DATA_READ 0x16
 #define USB_REQ_SET_INTERFACE_DS 0x17
+#define USB_REQ_AUTH_IN 0x18
+#define USB_REQ_AUTH_OUT 0x19
 #define USB_REQ_GET_PARTNER_PDO 20
 #define USB_REQ_GET_BATTERY_STATUS 21
 #define USB_REQ_SET_PDO 22
@@ -62,6 +64,7 @@
 #define USB_DEVICE_A_HNP_SUPPORT 4
 #define USB_DEVICE_A_ALT_HNP_SUPPORT 5
 #define USB_DEVICE_DEBUG_MODE 6
+#define USB_DEVICE_BULK_MAX_PACKET_UPDATE 8
 #define USB_TEST_J 1
 #define USB_TEST_K 2
 #define USB_TEST_SE0_NAK 3
@@ -542,6 +545,13 @@ struct usb_ptm_cap_descriptor {
 } __attribute__((packed));
 #define USB_DT_USB_PTM_ID_SIZE 3
 #define USB_DT_USB_SSP_CAP_SIZE(ssac) (12 + (ssac + 1) * 4)
+struct usb_authentication_capability_descriptor {
+  __u8 bLength;
+  __u8 bDescriptorType;
+  __u8 bmAttributes;
+  __u8 bcdProtocolVersion;
+  __u8 bcdCapability;
+} __attribute__((packed));
 struct usb_wireless_ep_comp_descriptor {
   __u8 bLength;
   __u8 bDescriptorType;

@@ -133,6 +133,7 @@ struct tee_ioctl_object_invoke_arg {
   __u32 op;
   __u32 ret;
   __u32 num_params;
+  __u32 : 32;
   struct tee_ioctl_param params[];
 };
 #define TEE_IOC_OBJECT_INVOKE _IOR(TEE_IOC_MAGIC, TEE_IOC_BASE + 10, struct tee_ioctl_buf_data)

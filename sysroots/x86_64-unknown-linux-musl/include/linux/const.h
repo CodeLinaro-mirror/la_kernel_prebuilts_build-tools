@@ -24,4 +24,7 @@
 #define __ALIGN_KERNEL(x,a) __ALIGN_KERNEL_MASK(x, (__typeof__(x)) (a) - 1)
 #define __ALIGN_KERNEL_MASK(x,mask) (((x) + (mask)) & ~(mask))
 #define __KERNEL_DIV_ROUND_UP(n,d) (((n) + (d) - 1) / (d))
+#define __KERNEL_DIV_ROUND_CLOSEST(x,divisor) \
+({ __typeof__(x) __x = x; __typeof__(divisor) __d = divisor; (((__typeof__(x)) - 1) > 0 || ((__typeof__(divisor)) - 1) > 0 || (((__x) > 0) == ((__d) > 0))) ? (((__x) + ((__d) / 2)) / (__d)) : (((__x) - ((__d) / 2)) / (__d)); \
+})
 #endif
