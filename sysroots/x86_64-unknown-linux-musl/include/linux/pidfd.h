@@ -21,9 +21,11 @@
 #define PIDFD_INFO_COREDUMP (1UL << 4)
 #define PIDFD_INFO_SUPPORTED_MASK (1UL << 5)
 #define PIDFD_INFO_COREDUMP_SIGNAL (1UL << 6)
+#define PIDFD_INFO_COREDUMP_CODE (1UL << 7)
 #define PIDFD_INFO_SIZE_VER0 64
 #define PIDFD_INFO_SIZE_VER1 72
 #define PIDFD_INFO_SIZE_VER2 80
+#define PIDFD_INFO_SIZE_VER3 88
 #define PIDFD_COREDUMPED (1U << 0)
 #define PIDFD_COREDUMP_SKIP (1U << 1)
 #define PIDFD_COREDUMP_USER (1U << 2)
@@ -48,6 +50,8 @@ struct pidfd_info {
   struct {
     __u32 coredump_mask;
     __u32 coredump_signal;
+    __u32 coredump_code;
+    __u32 coredump_pad;
   };
   __u64 supported_mask;
 };

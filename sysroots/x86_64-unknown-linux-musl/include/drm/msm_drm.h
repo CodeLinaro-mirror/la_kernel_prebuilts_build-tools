@@ -43,6 +43,7 @@ struct drm_msm_timespec {
 #define MSM_PARAM_UCHE_TRAP_BASE 0x14
 #define MSM_PARAM_HAS_PRR 0x15
 #define MSM_PARAM_EN_VM_BIND 0x16
+#define MSM_PARAM_AQE 0x17
 #define MSM_PARAM_NR_RINGS MSM_PARAM_PRIORITIES
 struct drm_msm_param {
   __u32 pipe;

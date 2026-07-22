@@ -85,10 +85,11 @@ struct amdxdna_drm_config_hwctx {
 };
 enum amdxdna_bo_type {
   AMDXDNA_BO_INVALID = 0,
-  AMDXDNA_BO_SHMEM,
-  AMDXDNA_BO_DEV_HEAP,
-  AMDXDNA_BO_DEV,
-  AMDXDNA_BO_CMD,
+  AMDXDNA_BO_SHMEM = 1,
+  AMDXDNA_BO_SHARE = 1,
+  AMDXDNA_BO_DEV_HEAP = 2,
+  AMDXDNA_BO_DEV = 3,
+  AMDXDNA_BO_CMD = 4,
 };
 struct amdxdna_drm_va_entry {
   __u64 vaddr;
@@ -175,7 +176,8 @@ struct amdxdna_drm_query_clock_metadata {
   struct amdxdna_drm_query_clock h_clock;
 };
 enum amdxdna_sensor_type {
-  AMDXDNA_SENSOR_TYPE_POWER
+  AMDXDNA_SENSOR_TYPE_POWER,
+  AMDXDNA_SENSOR_TYPE_COLUMN_UTILIZATION
 };
 struct amdxdna_drm_query_sensor {
   __u8 label[64];
@@ -291,8 +293,15 @@ struct amdxdna_async_error {
   __u64 ts_us;
   __u64 ex_err_code;
 };
+struct amdxdna_drm_bo_usage {
+  __s64 pid;
+  __u64 total_usage;
+  __u64 internal_usage;
+  __u64 heap_usage;
+};
 #define DRM_AMDXDNA_HW_CONTEXT_ALL 0
 #define DRM_AMDXDNA_HW_LAST_ASYNC_ERR 2
+#define DRM_AMDXDNA_BO_USAGE 6
 struct amdxdna_drm_get_array {
   __u32 param;
   __u32 element_size;

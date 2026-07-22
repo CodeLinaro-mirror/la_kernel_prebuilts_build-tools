@@ -34,6 +34,15 @@
 #define UBLK_U_CMD_UPDATE_SIZE _IOWR('u', 0x15, struct ublksrv_ctrl_cmd)
 #define UBLK_U_CMD_QUIESCE_DEV _IOWR('u', 0x16, struct ublksrv_ctrl_cmd)
 #define UBLK_U_CMD_TRY_STOP_DEV _IOWR('u', 0x17, struct ublksrv_ctrl_cmd)
+#define UBLK_U_CMD_REG_BUF _IOWR('u', 0x18, struct ublksrv_ctrl_cmd)
+#define UBLK_U_CMD_UNREG_BUF _IOWR('u', 0x19, struct ublksrv_ctrl_cmd)
+struct ublk_shmem_buf_reg {
+  __u64 addr;
+  __u64 len;
+  __u32 flags;
+  __u32 reserved;
+};
+#define UBLK_SHMEM_BUF_READ_ONLY (1U << 0)
 #define UBLK_FEATURES_LEN 8
 #define UBLK_IO_FETCH_REQ 0x20
 #define UBLK_IO_COMMIT_AND_FETCH_REQ 0x21
@@ -85,6 +94,7 @@
 #define UBLK_F_INTEGRITY (1ULL << 16)
 #define UBLK_F_SAFE_STOP_DEV (1ULL << 17)
 #define UBLK_F_NO_AUTO_PART_SCAN (1ULL << 18)
+#define UBLK_F_SHMEM_ZC (1ULL << 19)
 #define UBLK_S_DEV_DEAD 0
 #define UBLK_S_DEV_LIVE 1
 #define UBLK_S_DEV_QUIESCED 2
@@ -137,6 +147,7 @@ struct ublksrv_ctrl_dev_info {
 #define UBLK_IO_F_SWAP (1U << 16)
 #define UBLK_IO_F_NEED_REG_BUF (1U << 17)
 #define UBLK_IO_F_INTEGRITY (1UL << 18)
+#define UBLK_IO_F_SHMEM_ZC (1U << 19)
 struct ublksrv_io_desc {
   __u32 op_flags;
   union {
@@ -253,4 +264,7 @@ struct ublk_params {
   struct ublk_param_segment seg;
   struct ublk_param_integrity integrity;
 };
+#define UBLK_SHMEM_ZC_OFF_MASK 0xffffffffULL
+#define UBLK_SHMEM_ZC_IDX_OFF 32
+#define UBLK_SHMEM_ZC_IDX_MASK 0xffffULL
 #endif

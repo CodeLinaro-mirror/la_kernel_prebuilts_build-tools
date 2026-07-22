@@ -208,7 +208,9 @@ struct drm_amdgpu_userq_signal {
   __u32 queue_id;
   __u32 pad;
   __u64 syncobj_handles;
-  __u64 num_syncobj_handles;
+  __u16 num_syncobj_handles;
+  __u16 pad0;
+  __u32 pad1;
   __u64 bo_read_handles;
   __u64 bo_write_handles;
   __u32 num_bo_read_handles;
@@ -228,7 +230,8 @@ struct drm_amdgpu_userq_wait {
   __u64 bo_write_handles;
   __u16 num_syncobj_timeline_handles;
   __u16 num_fences;
-  __u32 num_syncobj_handles;
+  __u16 num_syncobj_handles;
+  __u16 pad0;
   __u32 num_bo_read_handles;
   __u32 num_bo_write_handles;
   __u64 out_fences;

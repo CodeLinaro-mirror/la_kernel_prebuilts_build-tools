@@ -14,6 +14,11 @@
 #define DMA_MAP_BIDIRECTIONAL 0
 #define DMA_MAP_TO_DEVICE 1
 #define DMA_MAP_FROM_DEVICE 2
+enum {
+  DMA_MAP_BENCH_SINGLE_MODE,
+  DMA_MAP_BENCH_SG_MODE,
+  DMA_MAP_BENCH_MODE_MAX
+};
 struct map_benchmark {
   __u64 avg_map_100ns;
   __u64 map_stddev;
@@ -26,6 +31,7 @@ struct map_benchmark {
   __u32 dma_dir;
   __u32 dma_trans_ns;
   __u32 granule;
-  __u8 expansion[76];
+  __u8 map_mode;
+  __u8 expansion[75];
 };
 #endif

@@ -48,4 +48,20 @@ struct sg_io_v4 {
   __u32 spare_out;
   __u32 padding;
 };
+struct bsg_uring_cmd {
+  __u64 request;
+  __u32 request_len;
+  __u32 protocol;
+  __u32 subprotocol;
+  __u32 max_response_len;
+  __u64 response;
+  __u64 dout_xferp;
+  __u32 dout_xfer_len;
+  __u32 dout_iovec_count;
+  __u64 din_xferp;
+  __u32 din_xfer_len;
+  __u32 din_iovec_count;
+  __u32 timeout_ms;
+  __u8 reserved[12];
+};
 #endif

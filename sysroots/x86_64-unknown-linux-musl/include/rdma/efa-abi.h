@@ -10,11 +10,11 @@
 #include <rdma/ib_user_ioctl_cmds.h>
 #define EFA_UVERBS_ABI_VERSION 1
 enum {
-  EFA_ALLOC_UCONTEXT_CMD_COMP_TX_BATCH = 1 << 0,
-  EFA_ALLOC_UCONTEXT_CMD_COMP_MIN_SQ_WR = 1 << 1,
+  EFA_ALLOC_UCONTEXT_CMD_SUPP_CAPS_TX_BATCH = 1 << 0,
+  EFA_ALLOC_UCONTEXT_CMD_SUPP_CAPS_MIN_SQ_WR = 1 << 1,
 };
 struct efa_ibv_alloc_ucontext_cmd {
-  __u32 comp_mask;
+  __u32 supported_caps;
   __u8 reserved_20[4];
 };
 enum efa_ibv_user_cmds_supp_udata {
@@ -29,7 +29,8 @@ struct efa_ibv_alloc_ucontext_resp {
   __u32 max_llq_size;
   __u16 max_tx_batch;
   __u16 min_sq_wr;
-  __u8 reserved_a0[4];
+  __u16 inline_buf_size_ex;
+  __u8 reserved_b0[2];
 };
 struct efa_ibv_alloc_pd_resp {
   __u32 comp_mask;

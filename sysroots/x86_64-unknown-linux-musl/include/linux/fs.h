@@ -296,4 +296,8 @@ struct procmap_query {
   __u64 vma_name_addr;
   __u64 build_id_addr;
 };
+#define FS_IOC_SHUTDOWN _IOR('X', 125, __u32)
+#define FS_SHUTDOWN_FLAGS_DEFAULT 0x0
+#define FS_SHUTDOWN_FLAGS_LOGFLUSH 0x1
+#define FS_SHUTDOWN_FLAGS_NOLOGFLUSH 0x2
 #endif
