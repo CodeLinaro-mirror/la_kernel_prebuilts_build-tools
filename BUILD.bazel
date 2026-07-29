@@ -202,11 +202,6 @@ prebuilt_tool(
 )
 
 prebuilt_tool(
-    name = "pahole",
-    visibility = ["//build/kernel:__subpackages__"],
-)
-
-prebuilt_tool(
     name = "simg2img",
     visibility = ["//build/kernel:__subpackages__"],
 )
