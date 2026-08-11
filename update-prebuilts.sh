@@ -6,6 +6,7 @@ if [ -z $1 ]; then
 fi
 
 readonly BUILD_NUMBER=$1
+readonly CI_BRANCH="aosp_kernel-build-tools-2025"
 
 cd "$(dirname $0)"
 
@@ -24,7 +25,7 @@ function finish {
 trap finish EXIT
 
 function fetch_artifact() {
-    /google/data/ro/projects/android/fetch_artifact --branch aosp_kernel-build-tools-2025 --bid ${BUILD_NUMBER} --target $1 "$2" "$3"
+    /google/data/ro/projects/android/fetch_artifact --branch "${CI_BRANCH}" --bid "${BUILD_NUMBER}" --target "$1" "$2" "$3"
 }
 
 fetch_artifact linux build-prebuilts.zip "${tmpdir}/linux.zip"
@@ -47,6 +48,6 @@ cp -f "${tmpdir}/manifest.xml" manifest.xml
 git add manifest.xml linux-x86 linux_musl-x86 sysroots/x86_64-unknown-linux-musl
 git commit -m "Update kernel-build-tools to ab/${BUILD_NUMBER}
 
-https://ci.android.com/builds/branches/aosp_kernel-build-tools/grid?head=${BUILD_NUMBER}&tail=${BUILD_NUMBER}
+https://ci.android.com/builds/branches/${CI_BRANCH}/grid?head=${BUILD_NUMBER}&tail=${BUILD_NUMBER}
 
 Test: treehugger"
