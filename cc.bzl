@@ -14,6 +14,8 @@
 
 """CC rules for this package."""
 
+load("@rules_cc//cc:defs.bzl", "cc_import", "cc_library")
+
 def import_libraries(
         name,
         hdrs,
@@ -38,14 +40,14 @@ def import_libraries(
 
     targets = []
     for f in shared_libraries:
-        native.cc_import(
+        cc_import(
             name = name + "_" + f,
             shared_library = f,
             **private_kwargs
         )
         targets.append(name + "_" + f)
 
-    native.cc_library(
+    cc_library(
         name = name,
         deps = targets,
         hdrs = hdrs,
