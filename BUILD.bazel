@@ -207,16 +207,6 @@ prebuilt_tool(
 )
 
 prebuilt_tool(
-    name = "stg",
-    visibility = ["//build/kernel:__subpackages__"],
-)
-
-prebuilt_tool(
-    name = "stgdiff",
-    visibility = ["//build/kernel:__subpackages__"],
-)
-
-prebuilt_tool(
     name = "swig",
     data = glob(["linux_musl-x86/share/swig/**"]),
     visibility = ["//build/kernel:__subpackages__"],

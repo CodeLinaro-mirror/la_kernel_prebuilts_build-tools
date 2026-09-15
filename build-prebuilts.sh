@@ -60,8 +60,6 @@ EOF
         mkfs.erofs
         mkuserimg_mke2fs
         simg2img
-        stg
-        stgdiff
         swig
         tune2fs
         ufdt_apply_overlay
