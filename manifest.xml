@@ -97,7 +97,7 @@
 
   <project path="external/starlark-go" name="platform/external/starlark-go" revision="4947cdc739c985f6d86941e22894f5cefe7c9e9a" />
 
-  <project path="external/stg" name="platform/external/stg" revision="3b3e3a189e9f4afffb7cd564500d0867cb15f83f" />
+  <project path="external/stg" name="platform/external/stg" revision="c2235265798ea4cde59a7e85450b929ceb6eaccb" />
 
   <project path="external/swig" name="platform/external/swig" revision="dcabe60c35082d3beab79359d48093a23f0b09aa" />
 
